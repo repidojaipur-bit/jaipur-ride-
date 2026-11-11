@@ -7,13 +7,13 @@ import androidx.compose.ui.unit.dp
 val DriveShapes = Shapes(
     extraSmall = RoundedCornerShape(4.dp),
     small = RoundedCornerShape(8.dp),
-    medium = RoundedCornerShape(16.dp),
-    large = RoundedCornerShape(24.dp),
-    extraLarge = RoundedCornerShape(28.dp)
+    medium = RoundedCornerShape(12.dp),
+    large = RoundedCornerShape(16.dp),
+    extraLarge = RoundedCornerShape(24.dp)
 )
 
-// Reusable custom rounded card shapes
+// Reusable Design.md shape tokens
 val DriveCardShape = RoundedCornerShape(16.dp)
-val DriveChipShape = RoundedCornerShape(20.dp)
+val DriveChipShape = RoundedCornerShape(999.dp)
 val DriveButtonShape = RoundedCornerShape(12.dp)
 val DriveSheetShape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp)

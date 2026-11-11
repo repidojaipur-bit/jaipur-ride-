@@ -1,62 +1,21 @@
 package com.drivepartner.app.data.repository
 
+import com.drivepartner.app.core.config.DataOrigin
+import com.drivepartner.app.core.network.ApiResult
 import com.drivepartner.app.data.model.PartnerProfile
 import com.drivepartner.app.data.model.PartnerStatus
 import com.drivepartner.app.data.model.ServiceType
 import kotlinx.coroutines.flow.StateFlow
 
-/**
- * PartnerRepository - Domain boundary interface for managing driver partner state.
- *
- * Exposes thread-safe StateFlow observables for partner status and profile details,
- * and provides coroutine-friendly methods for duty toggle and profile updates.
- */
 interface PartnerRepository {
-    /**
-     * Observable stream of current duty status (ONLINE / OFFLINE).
-     */
+    val dataOrigin: DataOrigin
     val partnerStatus: StateFlow<PartnerStatus>
-
-    /**
-     * Observable stream of partner profile details.
-     */
-    val partnerProfile: StateFlow<PartnerProfile>
-
-    /**
-     * Observable convenience stream representing whether partner is currently online.
-     */
+    val partnerProfile: StateFlow<PartnerProfile?>
     val isOnline: StateFlow<Boolean>
+    val boundaryMessage: StateFlow<String?>
 
-    /**
-     * Sets explicit duty status.
-     * @param isOnline true to go ONLINE and accept bookings, false to go OFFLINE.
-     */
-    suspend fun setDutyStatus(isOnline: Boolean)
-
-    /**
-     * Toggles duty status between ONLINE and OFFLINE.
-     * @return the new [PartnerStatus] after toggle.
-     */
-    suspend fun toggleDutyStatus(): PartnerStatus
-
-    /**
-     * Switches the active service category (Bike Taxi, Auto, Cab, Delivery).
-     */
-    suspend fun switchServiceType(serviceType: ServiceType)
-
-    /**
-     * Updates basic partner profile details.
-     */
-    suspend fun updateProfileDetails(
-        name: String? = null,
-        phone: String? = null,
-        vehicleNumber: String? = null,
-        vehicleModel: String? = null,
-        city: String? = null
-    )
-
-    /**
-     * Updates partner KYC verification status.
-     */
-    suspend fun setVerificationStatus(isVerified: Boolean)
+    suspend fun setDutyStatus(isOnline: Boolean): ApiResult<PartnerStatus>
+    suspend fun toggleDutyStatus(): ApiResult<PartnerStatus>
+    suspend fun switchServiceType(serviceType: ServiceType): ApiResult<Unit>
+    suspend fun refreshProfile(): ApiResult<Unit>
 }

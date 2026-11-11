@@ -1,0 +1,555 @@
+openapi: 3.1.0
+info:
+  title: Drive Partner Backend API
+  version: 1.0.0
+  description: >
+    Canonical HTTP REST contract implemented 1-to-1 by `/backend` (Fastify + TypeScript + PostgreSQL + PostGIS)
+    and consumed by the native Android client (`app/`).
+    All money fields represent integer minor units (`paise`, `int64`, `currency: "INR"`).
+    All enum values match `docs/05_SCHEMA (1).md` (`D-018` reconciled).
+servers:
+  - url: http://localhost:8080
+    description: Local development server (emulator uses http://10.0.2.2:8080)
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Supabase Auth JWT (ES256/RS256 verified via SUPABASE_JWKS_URL) in staging/production or hs256-dev JWT in local/CI tests.
+    AdminApiKey:
+      type: apiKey
+      in: header
+      name: x-admin-api-key
+  schemas:
+    AccountStatus:
+      type: string
+      enum: [APPLICANT, PENDING_REVIEW, ACTIVE, SUSPENDED, REJECTED, CLOSED]
+    ServiceCategory:
+      type: string
+      enum: [BIKE, AUTO, CAB, DELIVERY]
+    DocumentType:
+      type: string
+      enum: [DRIVING_LICENSE, VEHICLE_RC, VEHICLE_INSURANCE, PERMIT, PAN_CARD, AADHAAR_COMPLIANT_REF, PROFILE_PHOTO]
+    DocumentStatus:
+      type: string
+      enum: [NOT_SUBMITTED, UPLOADED, UNDER_REVIEW, APPROVED, REJECTED, EXPIRED]
+    DutyStatus:
+      type: string
+      enum: [OFFLINE, GOING_ONLINE, ONLINE, GOING_OFFLINE, BLOCKED]
+    OfferStatus:
+      type: string
+      enum: [CREATED, OFFERED, ACCEPTED, REJECTED, EXPIRED, WITHDRAWN]
+    TripStatus:
+      type: string
+      enum: [ASSIGNED, EN_ROUTE_TO_PICKUP, ARRIVED_AT_PICKUP, IN_PROGRESS, COMPLETED, CANCELLED, DISPUTED]
+    PayoutStatus:
+      type: string
+      enum: [REQUESTED, PROCESSING, PAID, FAILED, CANCELLED, REVERSED]
+    TicketStatus:
+      type: string
+      enum: [OPEN, IN_PROGRESS, WAITING_FOR_DRIVER, RESOLVED, CLOSED]
+    ApiErrorEnvelope:
+      type: object
+      required: [error]
+      properties:
+        error:
+          type: object
+          required: [code, message, requestId, retryable]
+          properties:
+            code: { type: string }
+            message: { type: string }
+            requestId: { type: string }
+            retryable: { type: boolean }
+            fieldErrors:
+              type: object
+              additionalProperties: { type: string }
+    HealthResponse:
+      type: object
+      required: [status, databaseReady, postgisReady, serverTimeUtc, environment]
+      properties:
+        status: { type: string, enum: [ok, degraded] }
+        databaseReady: { type: boolean }
+        postgisReady: { type: boolean }
+        serverTimeUtc: { type: string, format: date-time }
+        environment: { type: string }
+    AuthSessionResponse:
+      type: object
+      required: [userId, driverId, accountStatus, requiresProfile, requiresVehicle, requiresKyc, serverTimeUtc]
+      properties:
+        userId: { type: string, format: uuid }
+        driverId: { type: string, format: uuid }
+        accountStatus: { $ref: "#/components/schemas/AccountStatus" }
+        requiresProfile: { type: boolean }
+        requiresVehicle: { type: boolean }
+        requiresKyc: { type: boolean }
+        serverTimeUtc: { type: string, format: date-time }
+        phoneMasked: { type: ["string", "null"] }
+    WorkOfferDto:
+      type: object
+      required:
+        - offerId
+        - orderId
+        - serviceCategoryCode
+        - pickupSummary
+        - dropSummary
+        - pickupDistanceMeters
+        - distanceMeters
+        - durationSeconds
+        - estimatedBaseMinor
+        - eligibleIncentiveMinor
+        - estimatedTotalMinor
+        - currency
+        - isEstimate
+        - expiresAtUtc
+        - serverNowUtc
+        - status
+      properties:
+        offerId: { type: string, format: uuid }
+        orderId: { type: string, format: uuid }
+        serviceCategoryCode: { $ref: "#/components/schemas/ServiceCategory" }
+        priorityLabel: { type: ["string", "null"] }
+        pickupSummary: { type: string }
+        dropSummary: { type: string }
+        pickupDistanceMeters: { type: integer }
+        distanceMeters: { type: integer }
+        durationSeconds: { type: integer }
+        estimatedBaseMinor: { type: integer, format: int64 }
+        eligibleIncentiveMinor: { type: integer, format: int64 }
+        estimatedTotalMinor: { type: integer, format: int64 }
+        currency: { type: string, enum: [INR] }
+        isEstimate: { type: boolean }
+        expiresAtUtc: { type: string, format: date-time }
+        serverNowUtc: { type: string, format: date-time }
+        status: { $ref: "#/components/schemas/OfferStatus" }
+
+paths:
+  /api/v1/health:
+    get:
+      summary: Service & PostgreSQL/PostGIS readiness check
+      responses:
+        "200":
+          description: Service ready
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/HealthResponse" }
+        "503":
+          description: Database or PostGIS unavailable
+
+  /api/v1/auth/session:
+    post:
+      summary: Verify Supabase JWT (or hs256-dev JWT) via JWKS and establish driver session
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                idToken: { type: string }
+                firebaseIdToken: { type: string, description: "Transitional alias for idToken" }
+                phoneE164: { type: string }
+      responses:
+        "200":
+          description: Session established
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/AuthSessionResponse" }
+        "401":
+          description: Invalid or expired token
+
+  /api/v1/me:
+    get:
+      security: [{ BearerAuth: [] }]
+      summary: Fetch current authenticated session & onboarding gate booleans
+      responses:
+        "200": { description: Current session }
+
+  /api/v1/auth/logout:
+    post:
+      security: [{ BearerAuth: [] }]
+      summary: End session (blocked with 409 ACTIVE_TRIP_LOGOUT_BLOCKED during an active trip)
+      responses:
+        "204": { description: Signed out }
+        "409": { description: Active trip in progress }
+
+  /api/v1/drivers/me:
+    get:
+      security: [{ BearerAuth: [] }]
+      summary: Get driver profile summary
+      responses: { "200": { description: Driver profile } }
+
+  /api/v1/drivers/profile:
+    post:
+      security: [{ BearerAuth: [] }]
+      summary: Create or update driver profile draft / submission
+      responses: { "200": { description: Updated profile } }
+
+  /api/v1/vehicles:
+    get:
+      security: [{ BearerAuth: [] }]
+      summary: List driver vehicles
+      responses: { "200": { description: Vehicle list } }
+    post:
+      security: [{ BearerAuth: [] }]
+      summary: Create or update driver vehicle (enforces unique normalized registration across active vehicles)
+      responses:
+        "200": { description: Saved vehicle }
+        "409": { description: DUPLICATE_VEHICLE_REGISTRATION }
+
+  /api/v1/documents/upload-intent:
+    post:
+      security: [{ BearerAuth: [] }]
+      summary: Issue short-lived private storage upload intent
+      responses: { "200": { description: Upload intent } }
+
+  /api/v1/documents:
+    get:
+      security: [{ BearerAuth: [] }]
+      summary: List KYC documents for authenticated driver
+      responses: { "200": { description: KYC document list } }
+    post:
+      security: [{ BearerAuth: [] }]
+      summary: Confirm private storage object key upload (blocks raw Aadhaar & public URLs)
+      responses:
+        "200": { description: Document queued under UNDER_REVIEW }
+        "422": { description: Invalid masked reference or public URL rejected }
+
+  /api/v1/home:
+    get:
+      security: [{ BearerAuth: [] }]
+      summary: Driver Home dashboard summary
+      responses: { "200": { description: Home summary } }
+
+  /api/v1/drivers/eligibility:
+    get:
+      security: [{ BearerAuth: [] }]
+      summary: Evaluate authoritative eligibility for going online
+      responses: { "200": { description: Eligibility result } }
+
+  /api/v1/drivers/preferences:
+    get:
+      security: [{ BearerAuth: [] }]
+      summary: Fetch preferred zones, active category & Auto Boost preference
+      responses: { "200": { description: Driver preferences } }
+    put:
+      security: [{ BearerAuth: [] }]
+      summary: Update preferred zones, active category & Auto Boost preference
+      responses: { "200": { description: Updated preferences } }
+
+  /api/v1/zones:
+    get:
+      security: [{ BearerAuth: [] }]
+      summary: Fetch configured service zones for a city
+      parameters:
+        - in: query
+          name: city
+          schema: { type: string, default: JAI }
+      responses: { "200": { description: Zone list } }
+
+  /api/v1/availability/online:
+    post:
+      security: [{ BearerAuth: [] }]
+      summary: Transition driver to ONLINE after server eligibility & location checks
+      parameters:
+        - in: header
+          name: Idempotency-Key
+          required: false
+          schema: { type: string }
+      responses:
+        "200": { description: Duty state ONLINE }
+        "403": { description: DRIVER_INELIGIBLE }
+
+  /api/v1/availability/offline:
+    post:
+      security: [{ BearerAuth: [] }]
+      summary: Transition driver to OFFLINE (blocked if active trip exists)
+      responses:
+        "200": { description: Duty state OFFLINE }
+
+  /api/v1/locations:
+    post:
+      security: [{ BearerAuth: [] }]
+      summary: Record spatial PostGIS location ping while ONLINE or on active trip
+      responses: { "200": { description: Ping acknowledged } }
+
+  /api/v1/offers/active:
+    get:
+      security: [{ BearerAuth: [] }]
+      summary: List unexpired OFFERED invitations for authenticated driver
+      responses: { "200": { description: Active offers response } }
+
+  /api/v1/offers/{offerId}:
+    get:
+      security: [{ BearerAuth: [] }]
+      summary: Fetch authoritative offer details
+      parameters:
+        - in: path
+          name: offerId
+          required: true
+          schema: { type: string, format: uuid }
+      responses: { "200": { description: Offer details } }
+
+  /api/v1/offers/{offerId}/accept:
+    post:
+      security: [{ BearerAuth: [] }]
+      summary: Atomically claim an order offer (Row lock on order + offer; single-winner)
+      parameters:
+        - in: path
+          name: offerId
+          required: true
+          schema: { type: string, format: uuid }
+        - in: header
+          name: Idempotency-Key
+          required: false
+          schema: { type: string }
+      responses:
+        "200": { description: Offer accepted and trip created }
+        "409": { description: OFFER_ALREADY_CLAIMED / ORDER_ALREADY_ASSIGNED / OFFER_EXPIRED / DRIVER_OFFLINE }
+
+  /api/v1/offers/{offerId}/reject:
+    post:
+      security: [{ BearerAuth: [] }]
+      summary: Reject an offer explicitly
+      parameters:
+        - in: path
+          name: offerId
+          required: true
+          schema: { type: string, format: uuid }
+      responses: { "204": { description: Offer rejected } }
+
+  /api/v1/trips/active:
+    get:
+      security: [{ BearerAuth: [] }]
+      summary: Restore active trip for authenticated driver
+      responses: { "200": { description: Active trip or null } }
+
+  /api/v1/trips/{tripId}/events:
+    post:
+      security: [{ BearerAuth: [] }]
+      summary: Transition trip state with optimistic version locking and Idempotency-Key
+      parameters:
+        - in: path
+          name: tripId
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        "200": { description: Transition succeeded }
+        "403": { description: FORBIDDEN_CROSS_DRIVER }
+        "409": { description: VERSION_CONFLICT / INVALID_TRIP_TRANSITION }
+
+  /api/v1/orders:
+    get:
+      security: [{ BearerAuth: [] }]
+      summary: Paginated driver order history (all | completed | cancelled)
+      responses: { "200": { description: Paged order summaries } }
+
+  /api/v1/orders/{orderId}:
+    get:
+      security: [{ BearerAuth: [] }]
+      summary: Authoritative order detail & timeline
+      parameters:
+        - in: path
+          name: orderId
+          required: true
+          schema: { type: string, format: uuid }
+      responses: { "200": { description: Order details } }
+
+  /api/v1/earnings/summary:
+    get:
+      security: [{ BearerAuth: [] }]
+      summary: Earnings breakdown summary (today | week | month)
+      responses: { "200": { description: Earnings summary in minor paise } }
+
+  /api/v1/earnings/transactions:
+    get:
+      security: [{ BearerAuth: [] }]
+      summary: Append-only driver ledger entries
+      responses: { "200": { description: Paged ledger entries } }
+
+  /api/v1/earnings/statements/{statementId}:
+    get:
+      security: [{ BearerAuth: [] }]
+      summary: Itemized fare & fee breakdown for one finalized trip
+      parameters:
+        - in: path
+          name: statementId
+          required: true
+          schema: { type: string, format: uuid }
+      responses: { "200": { description: Earning statement } }
+
+  /api/v1/wallet:
+    get:
+      security: [{ BearerAuth: [] }]
+      summary: Derived available, pending & settled wallet balances + payout feature flag
+      responses: { "200": { description: Wallet summary } }
+
+  /api/v1/payout-accounts:
+    get:
+      security: [{ BearerAuth: [] }]
+      summary: List tokenized bank payout accounts
+      responses: { "200": { description: Payout accounts } }
+    post:
+      security: [{ BearerAuth: [] }]
+      summary: Link tokenized bank payout account (IFSC validated; never returns raw account number)
+      responses: { "200": { description: Masked payout account } }
+
+  /api/v1/payouts:
+    get:
+      security: [{ BearerAuth: [] }]
+      summary: List payout withdrawal history
+      responses: { "200": { description: Paged payouts } }
+    post:
+      security: [{ BearerAuth: [] }]
+      summary: Request payout withdrawal (requires LIVE_PAYOUTS_ENABLED=true + verified account + sufficient balance)
+      responses:
+        "200": { description: Payout created in PROCESSING status }
+        "409": { description: INSUFFICIENT_BALANCE }
+        "503": { description: LIVE_PAYOUTS_DISABLED }
+
+  /api/v1/webhooks/payouts/{provider}:
+    post:
+      summary: Signed payout settlement / failure reversal webhook (HMAC-SHA256 verified + idempotent dedupe)
+      parameters:
+        - in: path
+          name: provider
+          required: true
+          schema: { type: string }
+      responses:
+        "200": { description: Webhook processed or deduplicated }
+        "401": { description: INVALID_WEBHOOK_SIGNATURE }
+
+  /api/v1/campaigns:
+    get:
+      security: [{ BearerAuth: [] }]
+      summary: Active incentive campaigns & driver eligibility
+      responses: { "200": { description: Campaign list } }
+
+  /api/v1/referrals/me:
+    get:
+      security: [{ BearerAuth: [] }]
+      summary: Driver referral code, share link & tracking stats
+      responses: { "200": { description: Referral summary } }
+
+  /api/v1/referrals/apply:
+    post:
+      security: [{ BearerAuth: [] }]
+      summary: Apply another driver's referral code (blocks self-referral)
+      responses:
+        "200": { description: Referral attributed }
+        "409": { description: SELF_REFERRAL_FORBIDDEN }
+
+  /api/v1/safety/contacts:
+    get:
+      security: [{ BearerAuth: [] }]
+      summary: List driver emergency contacts
+      responses: { "200": { description: Contacts } }
+    post:
+      security: [{ BearerAuth: [] }]
+      summary: Add emergency contact
+      responses: { "200": { description: Created contact } }
+
+  /api/v1/safety/sos:
+    post:
+      security: [{ BearerAuth: [] }]
+      summary: Trigger emergency SOS (requires configured responder webhook; returns 503 SOS_RESPONDER_UNCONFIGURED otherwise)
+      responses:
+        "200": { description: SOS acknowledged by responder }
+        "503": { description: SOS_RESPONDER_UNCONFIGURED }
+
+  /api/v1/safety/incidents:
+    post:
+      security: [{ BearerAuth: [] }]
+      summary: Submit safety incident report
+      responses: { "200": { description: Incident created } }
+
+  /api/v1/safety/insurance:
+    get:
+      security: [{ BearerAuth: [] }]
+      summary: Fetch verified insurance policy state (unverified default when D-004 pending)
+      responses: { "200": { description: Insurance status } }
+
+  /api/v1/support/tickets:
+    get:
+      security: [{ BearerAuth: [] }]
+      summary: List driver's own support tickets
+      responses: { "200": { description: Paged tickets } }
+    post:
+      security: [{ BearerAuth: [] }]
+      summary: Create support ticket
+      responses: { "200": { description: Created ticket } }
+
+  /api/v1/support/tickets/{ticketId}/messages:
+    get:
+      security: [{ BearerAuth: [] }]
+      summary: List driver-visible support messages (strips is_internal_note = true)
+      parameters:
+        - in: path
+          name: ticketId
+          required: true
+          schema: { type: string, format: uuid }
+      responses: { "200": { description: Message list } }
+    post:
+      security: [{ BearerAuth: [] }]
+      summary: Post message on owned support ticket
+      parameters:
+        - in: path
+          name: ticketId
+          required: true
+          schema: { type: string, format: uuid }
+      responses: { "200": { description: Created message } }
+
+  /api/v1/notifications:
+    get:
+      security: [{ BearerAuth: [] }]
+      summary: List user notifications
+      responses: { "200": { description: Paged notifications } }
+
+  /api/v1/notifications/{notificationId}/read:
+    post:
+      security: [{ BearerAuth: [] }]
+      summary: Mark notification read
+      parameters:
+        - in: path
+          name: notificationId
+          required: true
+          schema: { type: string, format: uuid }
+      responses: { "204": { description: Marked read } }
+
+  /api/v1/notifications/preferences:
+    get:
+      security: [{ BearerAuth: [] }]
+      summary: Get notification alert preferences
+      responses: { "200": { description: Preferences } }
+    put:
+      security: [{ BearerAuth: [] }]
+      summary: Update notification alert preferences
+      responses: { "200": { description: Updated preferences } }
+
+  /api/v1/admin/drivers/{driverId}/documents/{documentId}/review:
+    post:
+      security: [{ AdminApiKey: [] }]
+      summary: Admin/Reviewer approve or reject KYC document with audit log entry
+      parameters:
+        - in: path
+          name: driverId
+          required: true
+          schema: { type: string, format: uuid }
+        - in: path
+          name: documentId
+          required: true
+          schema: { type: string, format: uuid }
+      responses: { "200": { description: Updated driver session & activation check } }
+
+  /api/v1/admin/orders:
+    post:
+      security: [{ AdminApiKey: [] }]
+      summary: Admin dispatch test order & create offer invitation (emits WS offer.created)
+      responses: { "200": { description: Order and offer IDs } }
+
+  /api/v1/admin/audit-logs:
+    get:
+      security: [{ AdminApiKey: [] }]
+      summary: List immutable admin audit log entries
+      responses: { "200": { description: Audit log list } }

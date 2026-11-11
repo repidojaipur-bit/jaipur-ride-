@@ -1,0 +1,37 @@
+name: Android CI
+
+on:
+  push:
+    branches: [ main, "arena/**" ]
+  pull_request:
+
+jobs:
+  android-foundation:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Set up Gradle 8.11.1
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: "8.11.1"
+
+      - name: Compile Demo & Live Debug variants
+        run: gradle assembleDemoDebug assembleLiveDebug
+
+      - name: Verify Live Release R8 Compilation
+        run: gradle assembleLiveRelease
+
+      - name: Run Android Lint
+        run: gradle lintDemoDebug lintLiveDebug
+
+      - name: Run JVM Unit Tests
+        run: gradle testDemoDebugUnitTest testLiveDebugUnitTest

@@ -9,11 +9,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.drivepartner.app.navigation.DriveDestination
 import com.drivepartner.app.ui.theme.DriveBlueContainer
 import com.drivepartner.app.ui.theme.DriveBluePrimary
-import com.drivepartner.app.ui.theme.DriveSurfaceBorder
 import com.drivepartner.app.ui.theme.DriveSurfaceWhite
 import com.drivepartner.app.ui.theme.DriveTextMuted
 
@@ -30,6 +30,7 @@ fun DriveBottomNavigation(
     ) {
         DriveDestination.bottomBarItems.forEach { destination ->
             val isSelected = currentRoute == destination.route
+            val label = stringResource(destination.titleRes)
 
             NavigationBarItem(
                 selected = isSelected,
@@ -37,15 +38,18 @@ fun DriveBottomNavigation(
                 icon = {
                     Icon(
                         imageVector = destination.icon,
-                        contentDescription = stringResource(destination.titleRes)
+                        contentDescription = label
                     )
                 },
                 label = {
                     Text(
-                        text = stringResource(destination.titleRes),
-                        style = MaterialTheme.typography.labelSmall
+                        text = label,
+                        style = MaterialTheme.typography.labelSmall,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
                     )
                 },
+                alwaysShowLabel = true,
                 colors = NavigationBarItemDefaults.colors(
                     selectedIconColor = DriveBluePrimary,
                     selectedTextColor = DriveBluePrimary,

@@ -1,95 +1,60 @@
 package com.drivepartner.app.data.repository
 
+import com.drivepartner.app.core.common.DefaultDispatcherProvider
+import com.drivepartner.app.core.common.DispatcherProvider
+import com.drivepartner.app.core.config.AppEnvironmentConfig
+import com.drivepartner.app.core.config.DataOrigin
+import com.drivepartner.app.core.network.ApiResult
+import com.drivepartner.app.data.datasource.PartnerDataSource
 import com.drivepartner.app.data.model.PartnerProfile
 import com.drivepartner.app.data.model.PartnerStatus
 import com.drivepartner.app.data.model.ServiceType
-import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 
 /**
- * PartnerRepositoryImpl - Thread-safe state repository implementing [PartnerRepository].
- *
- * Utilizes Kotlin [MutableStateFlow] with private backing properties and read-only
- * public exposures to manage driver partner duty status, profile details, and service settings.
+ * Repository delegating strictly to a single configured [PartnerDataSource]
+ * ([com.drivepartner.app.data.datasource.demo.DemoDataSource] or
+ * [com.drivepartner.app.data.datasource.live.LiveApiDataSource]).
  */
-class PartnerRepositoryImpl : PartnerRepository {
+class PartnerRepositoryImpl(
+    private val dataSource: PartnerDataSource = PartnerRepositoryProvider.providePartnerDataSource(
+        AppEnvironmentConfig.fromBuildConfig()
+    ),
+    dispatchers: DispatcherProvider = DefaultDispatcherProvider()
+) : PartnerRepository {
 
-    // Private mutable backing flows
-    private val _partnerStatus = MutableStateFlow(PartnerStatus.OFFLINE)
-    override val partnerStatus: StateFlow<PartnerStatus> = _partnerStatus.asStateFlow()
+    private val repoScope = CoroutineScope(SupervisorJob() + dispatchers.default)
 
-    private val _isOnline = MutableStateFlow(false)
-    override val isOnline: StateFlow<Boolean> = _isOnline.asStateFlow()
+    override val dataOrigin: DataOrigin = dataSource.origin
 
-    private val _partnerProfile = MutableStateFlow(
-        PartnerProfile(
-            id = "DP-7842",
-            name = "Rajesh Kumar",
-            phone = "+91 98765 43210",
-            vehicleNumber = "RJ-14-EA-2024",
-            vehicleModel = "Hero Splendor Plus",
-            serviceType = ServiceType.BIKE_TAXI,
-            city = "Jaipur",
-            isVerified = true,
-            documentsVerified = true,
-            rating = 4.9f
+    override val partnerStatus: StateFlow<PartnerStatus> = dataSource.partnerStatus
+
+    override val partnerProfile: StateFlow<PartnerProfile?> = dataSource.partnerProfile
+
+    override val isOnline: StateFlow<Boolean> = dataSource.partnerStatus
+        .map { it.isOnline }
+        .stateIn(
+            scope = repoScope,
+            started = SharingStarted.Eagerly,
+            initialValue = dataSource.partnerStatus.value.isOnline
         )
-    )
-    override val partnerProfile: StateFlow<PartnerProfile> = _partnerProfile.asStateFlow()
 
-    override suspend fun setDutyStatus(isOnline: Boolean) {
-        val newStatus = if (isOnline) PartnerStatus.ONLINE else PartnerStatus.OFFLINE
-        _partnerStatus.update { newStatus }
-        _isOnline.update { isOnline }
-    }
+    override val boundaryMessage: StateFlow<String?> = dataSource.lastBoundaryMessage
 
-    override suspend fun toggleDutyStatus(): PartnerStatus {
-        var updatedStatus = PartnerStatus.OFFLINE
-        _partnerStatus.update { current ->
-            if (current == PartnerStatus.ONLINE) {
-                updatedStatus = PartnerStatus.OFFLINE
-                PartnerStatus.OFFLINE
-            } else {
-                updatedStatus = PartnerStatus.ONLINE
-                PartnerStatus.ONLINE
-            }
-        }
-        _isOnline.update { updatedStatus.isOnline }
-        return updatedStatus
-    }
+    override suspend fun setDutyStatus(isOnline: Boolean): ApiResult<PartnerStatus> =
+        dataSource.setDutyStatus(isOnline)
 
-    override suspend fun switchServiceType(serviceType: ServiceType) {
-        _partnerProfile.update { current ->
-            current.copy(serviceType = serviceType)
-        }
-    }
+    override suspend fun toggleDutyStatus(): ApiResult<PartnerStatus> =
+        dataSource.toggleDutyStatus()
 
-    override suspend fun updateProfileDetails(
-        name: String?,
-        phone: String?,
-        vehicleNumber: String?,
-        vehicleModel: String?,
-        city: String?
-    ) {
-        _partnerProfile.update { current ->
-            current.copy(
-                name = name ?: current.name,
-                phone = phone ?: current.phone,
-                vehicleNumber = vehicleNumber ?: current.vehicleNumber,
-                vehicleModel = vehicleModel ?: current.vehicleModel,
-                city = city ?: current.city
-            )
-        }
-    }
+    override suspend fun switchServiceType(serviceType: ServiceType): ApiResult<Unit> =
+        dataSource.switchServiceType(serviceType)
 
-    override suspend fun setVerificationStatus(isVerified: Boolean) {
-        _partnerProfile.update { current ->
-            current.copy(
-                isVerified = isVerified,
-                documentsVerified = isVerified
-            )
-        }
-    }
+    override suspend fun refreshProfile(): ApiResult<Unit> =
+        dataSource.refreshFromSource()
 }
