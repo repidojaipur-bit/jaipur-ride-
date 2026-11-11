@@ -32,6 +32,18 @@
     <string name="home_duty_status">ड्यूटी स्थिति</string>
     <string name="home_today_summary">आज का विवरण</string>
     <string name="home_empty_message">इस समय कोई सक्रिय राइड या डिलीवरी अनुरोध नहीं है।</string>
+    <string name="home_nav_shortcuts">त्वरित शॉर्टकट</string>
+    <string name="home_online_hours">ऑनलाइन समय</string>
+    <string name="home_completed_trips">पूर्ण ट्रिप्स</string>
+    <string name="home_acceptance_rate">स्वीकृति दर</string>
+    <string name="home_active_orders_card">ऑर्डर्स और ट्रिप्स</string>
+    <string name="home_active_orders_desc">सक्रिय बुकिंग और पिछली रसीदें देखें</string>
+    <string name="home_earnings_card">कमाई और वॉलेट</string>
+    <string name="home_earnings_desc">आज का पेआउट बैलेंस और लेजर देखें</string>
+    <string name="home_rewards_card">रिवार्ड्स और टियर</string>
+    <string name="home_rewards_desc">लक्ष्य माइलस्टोन और ईंधन इंसेंटिव</string>
+    <string name="home_profile_card">प्रोफाइल और वाहन</string>
+    <string name="home_profile_desc">केवाईसी दस्तावेज, वाहन विवरण और सेटिंग्स</string>
 
     <!-- Orders Destination -->
     <string name="orders_title">ऑर्डर्स और ट्रिप्स</string>
@@ -58,11 +70,18 @@
 
     <!-- Profile Destination -->
     <string name="profile_title">पार्टनर प्रोफाइल</string>
+    <string name="profile_section_service">सेवा चयन</string>
+    <string name="profile_section_vehicle_docs">वाहन और दस्तावेज</string>
+    <string name="profile_section_preferences">प्राथमिकताएं और सेटिंग्स</string>
+    <string name="profile_section_support_safety">सुरक्षा और सहायता</string>
     <string name="profile_vehicle_info">वाहन विवरण</string>
     <string name="profile_documents">केवाईसी और सत्यापन दस्तावेज</string>
     <string name="profile_support">पार्टनर सहायता और हेल्प डेस्क</string>
     <string name="profile_settings">ऐप सेटिंग्स</string>
     <string name="profile_emergency_sos">आपातकालीन एसओएस सहायता</string>
+    <string name="profile_notifications">पुश सूचनाएं और अलर्ट</string>
+    <string name="profile_terms_privacy">सेवा की शर्तें और गोपनीयता</string>
+    <string name="profile_app_version">ऐप संस्करण 1.0.0 (बिल्ड 1)</string>
 
     <!-- Reusable UI Component States -->
     <string name="state_loading">जानकारी लोड हो रही है…</string>
@@ -80,4 +99,19 @@
     <string name="action_view_details">विवरण देखें</string>
     <string name="action_switch_language">Switch to English</string>
     <string name="action_help">सहायता</string>
+
+    <!-- Design System Components -->
+    <string name="order_request_title">नया बुकिंग अनुरोध</string>
+    <string name="order_request_accept">स्वीकार करें</string>
+    <string name="order_request_decline">अस्वीकार करें</string>
+    <string name="order_request_pickup">पिकअप</string>
+    <string name="order_request_drop">ड्रॉप</string>
+    <string name="order_request_est_fare">अनुमानित कमाई</string>
+    <string name="order_request_expires_in">%1$d सेकंड में समाप्त</string>
+    <string name="transaction_credit_label">राइड किराया जमा</string>
+    <string name="transaction_payout_label">बैंक में निकासी</string>
+    <string name="reward_target_label">लक्ष्य माइलस्टोन</string>
+    <string name="reward_progress_format">%1$d/%2$d पूर्ण</string>
+    <string name="duty_switch_online_desc">ऑनलाइन • राइड्स स्वीकार करने के लिए तैयार</string>
+    <string name="duty_switch_offline_desc">ऑफ़लाइन • शिफ्ट निष्क्रिय</string>
 </resources>

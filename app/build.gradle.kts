@@ -77,5 +77,8 @@ dependencies {
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.kotlinx.coroutines.android)
 
+    // Google Play Services Location
+    implementation(libs.play.services.location)
+
     debugImplementation(libs.androidx.ui.tooling)
 }

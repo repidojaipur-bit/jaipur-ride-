@@ -31,7 +31,9 @@ import {
   CheckCircle2,
   PhoneCall,
   FileText,
-  LifeBuoy
+  LifeBuoy,
+  Clock,
+  Wallet
 } from 'lucide-react';
 
 type Destination = 'home' | 'orders' | 'earnings' | 'rewards' | 'profile';
@@ -107,6 +109,69 @@ export default function App() {
   };
 
   const codeFiles: Record<string, { path: string; language: string; content: string }> = {
+    'LocationManager.kt': {
+      path: 'app/src/main/java/com/drivepartner/app/data/location/LocationManager.kt',
+      language: 'kotlin',
+      content: `package com.drivepartner.app.data.location
+
+import android.Manifest
+import android.annotation.SuppressLint
+import android.content.Context
+import android.content.pm.PackageManager
+import android.location.Location
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationCallback
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationResult as GmsLocationResult
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.Priority
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.suspendCancellableCoroutine
+
+class LocationManager(
+    private val context: Context,
+    private val fusedLocationClient: FusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(context)
+) {
+    fun hasLocationPermission(): Boolean { ... }
+    fun isGpsEnabled(): Boolean { ... }
+
+    suspend fun getCurrentLocation(): Location? { ... }
+
+    fun getLocationUpdates(
+        intervalMs: Long = 10000L,
+        minUpdateDistanceMeters: Float = 5f
+    ): Flow<Location> = callbackFlow { ... }
+}`
+    },
+    'ProfileScreen.kt': {
+      path: 'app/src/main/java/com/drivepartner/app/ui/screens/profile/ProfileScreen.kt',
+      language: 'kotlin',
+      content: `@Composable
+fun ProfileScreen(
+    partnerProfile: PartnerProfile?,
+    onServiceTypeChange: (ServiceType) -> Unit,
+    onLanguageToggle: () -> Unit
+) {
+    Column(...) {
+        // 1. User Identity & Quick Stats Card (Avatar, Name, ID, Rating, KYC Badge)
+        DriveCard { ... }
+
+        // 2. Service Selection (Bike Taxi, Auto, Cab, Delivery)
+        DriveCard { ... }
+
+        // 3. Vehicle Details & Document Verification
+        DriveCard { ... }
+
+        // 4. Language, Notifications & Preferences
+        DriveCard { ... }
+
+        // 5. Emergency SOS & Support Desk
+        DriveCard { ... }
+    }
+}`
+    },
     'PartnerProfile.kt': {
       path: 'app/src/main/java/com/drivepartner/app/data/model/PartnerProfile.kt',
       language: 'kotlin',
@@ -440,9 +505,13 @@ fun DrivePartnerTheme(
       content: `package com.drivepartner.app.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.drivepartner.app.data.model.PartnerProfile
+import com.drivepartner.app.data.model.PartnerStatus
+import com.drivepartner.app.data.model.ServiceType
 import com.drivepartner.app.ui.screens.earnings.EarningsScreen
 import com.drivepartner.app.ui.screens.home.HomeScreen
 import com.drivepartner.app.ui.screens.orders.OrdersScreen
@@ -454,17 +523,257 @@ fun DriveNavHost(
     navController: NavHostController,
     partnerStatus: PartnerStatus,
     partnerProfile: PartnerProfile?,
-    onStatusToggle: () -> Unit
+    onStatusToggle: () -> Unit,
+    onServiceTypeChange: (ServiceType) -> Unit,
+    onLanguageToggle: () -> Unit
 ) {
     NavHost(
         navController = navController,
         startDestination = DriveDestination.Home.route
     ) {
-        composable(DriveDestination.Home.route) { HomeScreen(...) }
+        composable(DriveDestination.Home.route) {
+            HomeScreen(
+                partnerStatus = partnerStatus,
+                partnerProfile = partnerProfile,
+                onStatusToggle = onStatusToggle,
+                onNavigateToOrders = {
+                    navController.navigate(DriveDestination.Orders.route) {
+                        popUpTo(navController.graph.findStartDestination().id) { saveState = true }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+                },
+                onNavigateToEarnings = {
+                    navController.navigate(DriveDestination.Earnings.route) {
+                        popUpTo(navController.graph.findStartDestination().id) { saveState = true }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+                },
+                onNavigateToRewards = {
+                    navController.navigate(DriveDestination.Rewards.route) {
+                        popUpTo(navController.graph.findStartDestination().id) { saveState = true }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+                },
+                onNavigateToProfile = {
+                    navController.navigate(DriveDestination.Profile.route) {
+                        popUpTo(navController.graph.findStartDestination().id) { saveState = true }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+                }
+            )
+        }
         composable(DriveDestination.Orders.route) { OrdersScreen(...) }
         composable(DriveDestination.Earnings.route) { EarningsScreen(...) }
         composable(DriveDestination.Rewards.route) { RewardsScreen(...) }
         composable(DriveDestination.Profile.route) { ProfileScreen(...) }
+    }
+}`
+    },
+    'HomeScreen.kt': {
+      path: 'app/src/main/java/com/drivepartner/app/ui/screens/home/HomeScreen.kt',
+      language: 'kotlin',
+      content: `package com.drivepartner.app.ui.screens.home
+
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.*
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import com.drivepartner.app.data.model.PartnerProfile
+import com.drivepartner.app.data.model.PartnerStatus
+
+@Composable
+fun HomeScreen(
+    partnerStatus: PartnerStatus,
+    partnerProfile: PartnerProfile?,
+    onStatusToggle: () -> Unit,
+    onNavigateToOrders: () -> Unit,
+    onNavigateToEarnings: () -> Unit,
+    onNavigateToRewards: () -> Unit,
+    onNavigateToProfile: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    // Partner Dashboard with Duty Status, Today's Summary & Navigation Cards
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState())
+            .padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
+        PartnerHeaderCard(partnerProfile = partnerProfile)
+        DutyStatusCard(partnerStatus = partnerStatus, onToggle = onStatusToggle)
+        TodaySummaryCard(partnerStatus = partnerStatus)
+        NavigationShortcutsSection(
+            onNavigateToOrders = onNavigateToOrders,
+            onNavigateToEarnings = onNavigateToEarnings,
+            onNavigateToRewards = onNavigateToRewards,
+            onNavigateToProfile = onNavigateToProfile
+        )
+        DispatchQueueCard(isOnline = partnerStatus.isOnline)
+    }
+}`
+    },
+    'TodaySummaryCard.kt': {
+      path: 'app/src/main/java/com/drivepartner/app/ui/screens/home/TodaySummaryCard.kt',
+      language: 'kotlin',
+      content: `package com.drivepartner.app.ui.screens.home
+
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import com.drivepartner.app.data.model.PartnerProfile
+import com.drivepartner.app.data.model.PartnerStatus
+import com.drivepartner.app.ui.theme.DriveCardShape
+import com.drivepartner.app.ui.theme.DriveYellowContainer
+
+@Composable
+fun TodaySummaryCard(
+    partnerStatus: PartnerStatus,
+    partnerProfile: PartnerProfile?,
+    modifier: Modifier = Modifier,
+    todayEarningFormatted: String = "₹0.00",
+    onlineHoursFormatted: String? = null,
+    onViewBreakdownClick: (() -> Unit)? = null
+) {
+    Card(
+        modifier = modifier.fillMaxWidth(),
+        shape = DriveCardShape
+    ) {
+        // Earning highlight strip in Drive Yellow Container
+        // 3-metric statistics row (Completed Trips, Online Time, Acceptance Rate)
+    }
+}`
+    },
+    'DispatchQueueCard.kt': {
+      path: 'app/src/main/java/com/drivepartner/app/ui/screens/home/DispatchQueueCard.kt',
+      language: 'kotlin',
+      content: `package com.drivepartner.app.ui.screens.home
+
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import com.drivepartner.app.data.model.ServiceType
+import com.drivepartner.app.ui.components.OrderRequestCard
+
+data class DispatchQueueOffer(
+    val id: String,
+    val serviceType: ServiceType,
+    val pickupAddress: String,
+    val pickupDistance: String,
+    val dropAddress: String,
+    val tripDistance: String,
+    val estimatedEarning: String,
+    val remainingSeconds: Int,
+    val maxSeconds: Int = 15,
+    val isAccepting: Boolean = false
+)
+
+@Composable
+fun DispatchQueueCard(
+    isOnline: Boolean,
+    modifier: Modifier = Modifier,
+    incomingOffers: List<DispatchQueueOffer> = emptyList(),
+    isConnectingOrSyncing: Boolean = false,
+    onAcceptOffer: (String) -> Unit = {},
+    onDeclineOffer: (String) -> Unit = {}
+) {
+    Card(
+        modifier = modifier.fillMaxWidth()
+    ) {
+        // Live Dispatch Queue Header
+        // Incoming OrderRequestCards list or authentic zero-baseline empty state
+    }
+}`
+    },
+    'PrimaryButton.kt': {
+      path: 'app/src/main/java/com/drivepartner/app/ui/components/PrimaryButton.kt',
+      language: 'kotlin',
+      content: `package com.drivepartner.app.ui.components
+
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
+import com.drivepartner.app.ui.theme.DriveBluePrimary
+import com.drivepartner.app.ui.theme.DriveButtonShape
+import com.drivepartner.app.ui.theme.DriveSurfaceWhite
+
+@Composable
+fun PrimaryButton(
+    text: String,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true,
+    isLoading: Boolean = false,
+    containerColor: Color = DriveBluePrimary,
+    contentColor: Color = DriveSurfaceWhite
+) {
+    Button(
+        onClick = onClick,
+        modifier = modifier.fillMaxWidth().height(52.dp),
+        enabled = enabled && !isLoading,
+        shape = DriveButtonShape,
+        colors = ButtonDefaults.buttonColors(
+            containerColor = containerColor,
+            contentColor = contentColor
+        )
+    ) {
+        Text(text = text)
+    }
+}`
+    },
+    'SecondaryButton.kt': {
+      path: 'app/src/main/java/com/drivepartner/app/ui/components/SecondaryButton.kt',
+      language: 'kotlin',
+      content: `package com.drivepartner.app.ui.components
+
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
+import com.drivepartner.app.ui.theme.DriveBluePrimary
+import com.drivepartner.app.ui.theme.DriveButtonShape
+import com.drivepartner.app.ui.theme.DriveSurfaceBorder
+import com.drivepartner.app.ui.theme.DriveSurfaceWhite
+
+@Composable
+fun SecondaryButton(
+    text: String,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true,
+    borderColor: Color = DriveSurfaceBorder,
+    contentColor: Color = DriveBluePrimary,
+    containerColor: Color = DriveSurfaceWhite
+) {
+    OutlinedButton(
+        onClick = onClick,
+        modifier = modifier.fillMaxWidth().height(52.dp),
+        enabled = enabled,
+        shape = DriveButtonShape,
+        border = BorderStroke(1.5.dp, borderColor),
+        colors = ButtonDefaults.outlinedButtonColors(
+            containerColor = containerColor,
+            contentColor = contentColor
+        )
+    ) {
+        Text(text = text)
     }
 }`
     },
@@ -872,8 +1181,8 @@ dependencies {
                               </h3>
                               <p className="text-xs text-slate-500">RJ-14-EA-2024 • ID: DP-7842</p>
                             </div>
-                            <div className="flex items-center gap-1 text-[11px] font-medium text-[#16A34A]">
-                              <ShieldCheck className="w-4 h-4 text-[#16A34A]" />
+                            <div className="flex items-center gap-1 text-[11px] font-medium text-[#16A34A] bg-[#DCFCE7] px-2 py-0.5 rounded-full">
+                              <ShieldCheck className="w-3.5 h-3.5 text-[#16A34A]" />
                               <span>Verified</span>
                             </div>
                           </div>
@@ -910,19 +1219,103 @@ dependencies {
                             </div>
                           </div>
 
-                          {/* Overview Slot (Empty state, no fake records) */}
+                          {/* Today's Summary Card */}
                           <div className="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm">
-                            <h3 className="font-semibold text-xs text-slate-700 mb-3">
+                            <h3 className="font-semibold text-xs text-slate-700 mb-2.5">
                               {t.todaySummary}
                             </h3>
-                            <div className="py-8 flex flex-col items-center justify-center text-center">
-                              <div className="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center mb-3">
-                                <Inbox className="w-6 h-6 text-[#0D2560]" />
+                            {/* Earnings Strip */}
+                            <div className="bg-[#FEF9C3] rounded-xl p-3 border border-[#FDE047] flex items-center justify-between mb-3">
+                              <div>
+                                <p className="text-[10px] font-bold text-[#854D0E] uppercase tracking-wider">
+                                  {t.todayEarning}
+                                </p>
+                                <p className="text-xl font-black text-[#854D0E] tracking-tight">₹0.00</p>
                               </div>
-                              <h5 className="font-semibold text-xs text-slate-800 mb-1">{t.noOrdersTitle}</h5>
+                              <span className="text-[10px] text-[#854D0E]/80 font-medium">Reset daily at 12:00 AM</span>
+                            </div>
+                            {/* Performance Grid */}
+                            <div className="grid grid-cols-3 gap-2">
+                              <div className="bg-slate-50 rounded-xl p-2.5 text-center border border-slate-100">
+                                <span className="text-[10px] text-slate-500 block">Online Time</span>
+                                <span className="text-sm font-bold text-slate-900">0.0h</span>
+                              </div>
+                              <div className="bg-slate-50 rounded-xl p-2.5 text-center border border-slate-100">
+                                <span className="text-[10px] text-slate-500 block">Trips Done</span>
+                                <span className="text-sm font-bold text-slate-900">0</span>
+                              </div>
+                              <div className="bg-slate-50 rounded-xl p-2.5 text-center border border-slate-100">
+                                <span className="text-[10px] text-slate-500 block">Acceptance</span>
+                                <span className="text-sm font-bold text-[#16A34A]">100%</span>
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Navigation Shortcuts Grid */}
+                          <div className="space-y-2">
+                            <span className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider block px-1">
+                              Quick Navigation
+                            </span>
+                            <div className="grid grid-cols-2 gap-2">
+                              <button
+                                onClick={() => setCurrentDestination('orders')}
+                                className="bg-white rounded-xl p-3 border border-slate-200 text-left hover:border-[#0D2560] transition shadow-xs flex flex-col justify-between"
+                              >
+                                <div className="w-8 h-8 rounded-lg bg-[#E0E7FF] flex items-center justify-center text-[#0D2560] mb-2">
+                                  <Clock className="w-4 h-4" />
+                                </div>
+                                <span className="text-xs font-bold text-slate-800">Active Orders</span>
+                                <span className="text-[10px] text-slate-400">View live dispatch</span>
+                              </button>
+
+                              <button
+                                onClick={() => setCurrentDestination('earnings')}
+                                className="bg-white rounded-xl p-3 border border-slate-200 text-left hover:border-[#0D2560] transition shadow-xs flex flex-col justify-between"
+                              >
+                                <div className="w-8 h-8 rounded-lg bg-[#FEF9C3] flex items-center justify-center text-[#854D0E] mb-2">
+                                  <Wallet className="w-4 h-4" />
+                                </div>
+                                <span className="text-xs font-bold text-slate-800">Earnings & Wallet</span>
+                                <span className="text-[10px] text-slate-400">Balance & payouts</span>
+                              </button>
+
+                              <button
+                                onClick={() => setCurrentDestination('rewards')}
+                                className="bg-white rounded-xl p-3 border border-slate-200 text-left hover:border-[#0D2560] transition shadow-xs flex flex-col justify-between"
+                              >
+                                <div className="w-8 h-8 rounded-lg bg-emerald-50 flex items-center justify-center text-[#16A34A] mb-2">
+                                  <Award className="w-4 h-4" />
+                                </div>
+                                <span className="text-xs font-bold text-slate-800">Rewards & Targets</span>
+                                <span className="text-[10px] text-slate-400">Incentives & tiers</span>
+                              </button>
+
+                              <button
+                                onClick={() => setCurrentDestination('profile')}
+                                className="bg-white rounded-xl p-3 border border-slate-200 text-left hover:border-[#0D2560] transition shadow-xs flex flex-col justify-between"
+                              >
+                                <div className="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center text-slate-700 mb-2">
+                                  <Car className="w-4 h-4" />
+                                </div>
+                                <span className="text-xs font-bold text-slate-800">Vehicle & Profile</span>
+                                <span className="text-[10px] text-slate-400">Docs & settings</span>
+                              </button>
+                            </div>
+                          </div>
+
+                          {/* Live Dispatch Queue Slot */}
+                          <div className="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm">
+                            <h3 className="font-semibold text-xs text-slate-700 mb-2">
+                              Dispatch Queue
+                            </h3>
+                            <div className="py-6 flex flex-col items-center justify-center text-center">
+                              <div className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center mb-2">
+                                <Inbox className="w-5 h-5 text-[#0D2560]" />
+                              </div>
+                              <h5 className="font-semibold text-xs text-slate-800 mb-0.5">{t.noOrdersTitle}</h5>
                               <p className="text-[11px] text-slate-500 max-w-[210px] leading-relaxed">
                                 {isOnline
-                                  ? 'Active orders will appear here as soon as a customer books.'
+                                  ? 'Active dispatch requests will appear here atomically.'
                                   : t.noOrdersDesc}
                               </p>
                             </div>

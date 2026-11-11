@@ -32,6 +32,18 @@
     <string name="home_duty_status">Duty Status</string>
     <string name="home_today_summary">Today\'s Overview</string>
     <string name="home_empty_message">No active ride or delivery request at this moment.</string>
+    <string name="home_nav_shortcuts">Quick Shortcuts</string>
+    <string name="home_online_hours">Online Time</string>
+    <string name="home_completed_trips">Trips Completed</string>
+    <string name="home_acceptance_rate">Acceptance Rate</string>
+    <string name="home_active_orders_card">Orders &amp; Trips</string>
+    <string name="home_active_orders_desc">View active bookings &amp; historical receipts</string>
+    <string name="home_earnings_card">Earnings &amp; Wallet</string>
+    <string name="home_earnings_desc">Track today\'s payout balance &amp; ledger</string>
+    <string name="home_rewards_card">Rewards &amp; Tier</string>
+    <string name="home_rewards_desc">Milestone badges &amp; fuel incentive perks</string>
+    <string name="home_profile_card">Profile &amp; Vehicle</string>
+    <string name="home_profile_desc">KYC documents, vehicle info &amp; settings</string>
 
     <!-- Orders Destination -->
     <string name="orders_title">Orders &amp; Trips</string>
@@ -58,11 +70,18 @@
 
     <!-- Profile Destination -->
     <string name="profile_title">Partner Profile</string>
+    <string name="profile_section_service">Service Selection</string>
+    <string name="profile_section_vehicle_docs">Vehicle &amp; Documents</string>
+    <string name="profile_section_preferences">Preferences &amp; Settings</string>
+    <string name="profile_section_support_safety">Safety &amp; Support</string>
     <string name="profile_vehicle_info">Vehicle Details</string>
     <string name="profile_documents">KYC &amp; Verification Documents</string>
     <string name="profile_support">Partner Support &amp; Help Desk</string>
     <string name="profile_settings">App Settings</string>
     <string name="profile_emergency_sos">Emergency SOS Assistance</string>
+    <string name="profile_notifications">Push Notifications &amp; Alerts</string>
+    <string name="profile_terms_privacy">Terms of Service &amp; Privacy</string>
+    <string name="profile_app_version">App Version 1.0.0 (Build 1)</string>
 
     <!-- Reusable UI Component States -->
     <string name="state_loading">Loading information…</string>
@@ -80,4 +99,19 @@
     <string name="action_view_details">View Details</string>
     <string name="action_switch_language">हिन्दी में बदलें</string>
     <string name="action_help">Help &amp; Support</string>
+
+    <!-- Design System Components -->
+    <string name="order_request_title">Incoming Booking Request</string>
+    <string name="order_request_accept">Accept Order</string>
+    <string name="order_request_decline">Decline</string>
+    <string name="order_request_pickup">Pickup</string>
+    <string name="order_request_drop">Drop</string>
+    <string name="order_request_est_fare">Estimated Earning</string>
+    <string name="order_request_expires_in">Expires in %1$ds</string>
+    <string name="transaction_credit_label">Trip Fare Credit</string>
+    <string name="transaction_payout_label">Payout to Bank</string>
+    <string name="reward_target_label">Target Milestone</string>
+    <string name="reward_progress_format">%1$d of %2$d completed</string>
+    <string name="duty_switch_online_desc">Online • Ready to accept rides</string>
+    <string name="duty_switch_offline_desc">Offline • Shift inactive</string>
 </resources>
