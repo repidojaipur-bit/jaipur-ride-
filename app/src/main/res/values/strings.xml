@@ -127,4 +127,20 @@
     <string name="trip_verify_pin_instruction">Ask the rider for their 4-digit start OTP to begin trip.</string>
     <string name="trip_sos_button">Emergency SOS</string>
     <string name="trip_call_customer">Call Customer</string>
+
+    <!-- Authentication & Login -->
+    <string name="auth_login_title">Partner Sign In</string>
+    <string name="auth_enter_phone_title">Enter Mobile Number</string>
+    <string name="auth_enter_phone_subtitle">We will send a 6-digit OTP code to verify your partner account.</string>
+    <string name="auth_phone_hint">Mobile Number (10 Digits)</string>
+    <string name="auth_get_otp">Get OTP Code</string>
+    <string name="auth_invalid_phone">Please enter a valid 10-digit mobile number</string>
+    <string name="auth_terms_disclaimer">By continuing, you agree to Drive Partner Terms of Service &amp; Privacy Policy.</string>
+    <string name="auth_verify_otp_title">Verify OTP Code</string>
+    <string name="auth_otp_sent_to">Enter the 6-digit verification code sent to %1$s</string>
+    <string name="auth_verify_proceed">Verify &amp; Proceed</string>
+    <string name="auth_resend_code">Resend OTP Code</string>
+    <string name="auth_resend_timer">Resend code in %1$ds</string>
+    <string name="auth_invalid_otp">Incorrect OTP. Default demo code is 123456.</string>
+    <string name="auth_edit_phone">Edit Number</string>
 </resources>

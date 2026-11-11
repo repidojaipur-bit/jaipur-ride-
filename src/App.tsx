@@ -841,6 +841,102 @@ class TripRepositoryImpl(
     }
 }`
     },
+    'AuthRepository.kt': {
+      path: 'app/src/main/java/com/drivepartner/app/data/repository/AuthRepository.kt',
+      language: 'kotlin',
+      content: `package com.drivepartner.app.data.repository
+
+import kotlinx.coroutines.flow.StateFlow
+
+sealed class AuthState {
+    data object Idle : AuthState()
+    data object OtpSent : AuthState()
+    data class Authenticated(val token: String, val phoneNumber: String) : AuthState()
+    data class Error(val message: String) : AuthState()
+}
+
+interface AuthRepository {
+    val authState: StateFlow<AuthState>
+    val currentPhoneNumber: StateFlow<String>
+    suspend fun requestOtp(phoneNumber: String): Boolean
+    suspend fun verifyOtp(phoneNumber: String, otp: String): Boolean
+    suspend fun logout()
+}`
+    },
+    'AuthViewModel.kt': {
+      path: 'app/src/main/java/com/drivepartner/app/ui/viewmodel/AuthViewModel.kt',
+      language: 'kotlin',
+      content: `package com.drivepartner.app.ui.viewmodel
+
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.drivepartner.app.data.repository.AuthRepository
+import com.drivepartner.app.data.repository.AuthRepositoryImpl
+import com.drivepartner.app.data.repository.AuthState
+import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
+
+data class AuthUiState(
+    val authState: AuthState = AuthState.Idle,
+    val phoneNumber: String = "",
+    val isLoading: Boolean = false,
+    val errorMessage: String? = null
+)
+
+class AuthViewModel(
+    private val authRepository: AuthRepository = AuthRepositoryImpl()
+) : ViewModel() {
+    val uiState: StateFlow<AuthUiState> = ...
+    fun requestOtp(phoneNumber: String) { ... }
+    fun verifyOtp(otp: String) { ... }
+    fun logout() { ... }
+}`
+    },
+    'LoginScreen.kt': {
+      path: 'app/src/main/java/com/drivepartner/app/ui/screens/auth/LoginScreen.kt',
+      language: 'kotlin',
+      content: `package com.drivepartner.app.ui.screens.auth
+
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+
+@Composable
+fun LoginScreen(
+    onRequestOtp: (String) -> Unit,
+    modifier: Modifier = Modifier,
+    isLoading: Boolean = false,
+    errorMessage: String? = null
+) {
+    // 10-digit Indian phone entry with +91 prefix, format validation, and AuthRepository invocation.
+}`
+    },
+    'OtpScreen.kt': {
+      path: 'app/src/main/java/com/drivepartner/app/ui/screens/auth/OtpScreen.kt',
+      language: 'kotlin',
+      content: `package com.drivepartner.app.ui.screens.auth
+
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+
+@Composable
+fun OtpScreen(
+    phoneNumber: String,
+    onVerifyOtp: (String) -> Unit,
+    onEditPhoneClick: () -> Unit,
+    onResendOtpClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    isLoading: Boolean = false,
+    errorMessage: String? = null
+) {
+    // 6-digit OTP verification input, masked phone display, 60s countdown timer, and AuthRepository verification.
+}`
+    },
     'PrimaryButton.kt': {
       path: 'app/src/main/java/com/drivepartner/app/ui/components/PrimaryButton.kt',
       language: 'kotlin',

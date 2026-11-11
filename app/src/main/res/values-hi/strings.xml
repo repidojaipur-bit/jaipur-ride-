@@ -127,4 +127,20 @@
     <string name="trip_verify_pin_instruction">यात्रा शुरू करने के लिए राइडर से 4-अंकीय स्टार्ट ओटीपी मांगें।</string>
     <string name="trip_sos_button">आपातकालीन एसओएस</string>
     <string name="trip_call_customer">ग्राहक को कॉल करें</string>
+
+    <!-- Authentication & Login -->
+    <string name="auth_login_title">पार्टनर साइन इन</string>
+    <string name="auth_enter_phone_title">मोबाइल नंबर दर्ज करें</string>
+    <string name="auth_enter_phone_subtitle">हम आपके पार्टनर खाते को सत्यापित करने के लिए 6-अंकीय ओटीपी कोड भेजेंगे।</string>
+    <string name="auth_phone_hint">मोबाइल नंबर (10 अंक)</string>
+    <string name="auth_get_otp">ओटीपी कोड प्राप्त करें</string>
+    <string name="auth_invalid_phone">कृपया एक वैध 10-अंकीय मोबाइल नंबर दर्ज करें</string>
+    <string name="auth_terms_disclaimer">आगे बढ़कर, आप ड्राइव पार्टनर की सेवा शर्तों और गोपनीयता नीति से सहमत होते हैं।</string>
+    <string name="auth_verify_otp_title">ओटीपी कोड सत्यापित करें</string>
+    <string name="auth_otp_sent_to">%1$s पर भेजा गया 6-अंकीय सत्यापन कोड दर्ज करें</string>
+    <string name="auth_verify_proceed">सत्यापित करें और आगे बढ़ें</string>
+    <string name="auth_resend_code">ओटीपी कोड पुनः भेजें</string>
+    <string name="auth_resend_timer">%1$d सेकंड में कोड पुनः भेजें</string>
+    <string name="auth_invalid_otp">गलत ओटीपी। डिफ़ॉल्ट कोड 123456 है।</string>
+    <string name="auth_edit_phone">नंबर संपादित करें</string>
 </resources>
