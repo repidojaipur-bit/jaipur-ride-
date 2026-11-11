@@ -14,6 +14,12 @@ object DriveSpacing {
     val xl = 24.dp
     val xxl = 32.dp
 
+    val space4 = xs
+    val space8 = sm
+    val space12 = md
+    val space16 = lg
+    val space24 = xl
+
     val screenPadding = 16.dp
     val cardPadding = 16.dp
     val cardGap = 12.dp

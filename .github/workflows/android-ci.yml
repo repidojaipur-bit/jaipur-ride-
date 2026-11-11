@@ -25,13 +25,37 @@ jobs:
           gradle-version: "8.11.1"
 
       - name: Compile Demo & Live Debug variants
-        run: gradle assembleDemoDebug assembleLiveDebug
+        shell: bash
+        run: |
+          set -o pipefail
+          gradle assembleDemoDebug assembleLiveDebug --console=plain 2>&1 | tee /tmp/gradle-debug.log || {
+            grep -E "^e: |FAILURE:|> Task .* FAILED|error:|Exception" /tmp/gradle-debug.log | head -n 10 | while IFS= read -r line; do echo "::error::$line"; done
+            exit 1
+          }
 
       - name: Verify Live Release R8 Compilation
-        run: gradle assembleLiveRelease
+        shell: bash
+        run: |
+          set -o pipefail
+          gradle assembleLiveRelease --console=plain 2>&1 | tee /tmp/gradle-release.log || {
+            grep -E "^e: |FAILURE:|> Task .* FAILED|error:|Exception" /tmp/gradle-release.log | head -n 10 | while IFS= read -r line; do echo "::error::$line"; done
+            exit 1
+          }
 
       - name: Run Android Lint
-        run: gradle lintDemoDebug lintLiveDebug
+        shell: bash
+        run: |
+          set -o pipefail
+          gradle lintDemoDebug lintLiveDebug --console=plain 2>&1 | tee /tmp/gradle-lint.log || {
+            grep -E "Error:|FAILURE:|> Task .* FAILED" /tmp/gradle-lint.log | head -n 10 | while IFS= read -r line; do echo "::error::$line"; done
+            exit 1
+          }
 
       - name: Run JVM Unit Tests
-        run: gradle testDemoDebugUnitTest testLiveDebugUnitTest
+        shell: bash
+        run: |
+          set -o pipefail
+          gradle testDemoDebugUnitTest testLiveDebugUnitTest --console=plain 2>&1 | tee /tmp/gradle-test.log || {
+            grep -E "FAILED|FAILURE:|Error|> Task .* FAILED" /tmp/gradle-test.log | head -n 10 | while IFS= read -r line; do echo "::error::$line"; done
+            exit 1
+          }
