@@ -113,5 +113,18 @@
     <string name="reward_target_label">Target Milestone</string>
     <string name="reward_progress_format">%1$d of %2$d completed</string>
     <string name="duty_switch_online_desc">Online • Ready to accept rides</string>
-    <string name="duty_switch_offline_desc">Offline • Shift inactive</string>
+    <!-- Active Trip Lifecycle -->
+    <string name="trip_stage_assigned">Assigned • En-Route to Pickup</string>
+    <string name="trip_stage_arrived">Arrived at Pickup Location</string>
+    <string name="trip_stage_in_progress">Trip In-Progress to Destination</string>
+    <string name="trip_stage_completed">Trip Completed</string>
+    <string name="trip_action_navigate_pickup">Navigate to Pickup</string>
+    <string name="trip_action_arrived_pickup">I Have Arrived</string>
+    <string name="trip_action_start_trip">Start Ride / Trip</string>
+    <string name="trip_action_navigate_drop">Navigate to Drop-Off</string>
+    <string name="trip_action_complete_trip">Complete Ride &amp; Collect Fare</string>
+    <string name="trip_enter_start_pin">Enter 4-Digit Rider PIN</string>
+    <string name="trip_verify_pin_instruction">Ask the rider for their 4-digit start OTP to begin trip.</string>
+    <string name="trip_sos_button">Emergency SOS</string>
+    <string name="trip_call_customer">Call Customer</string>
 </resources>

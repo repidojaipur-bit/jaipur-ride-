@@ -113,5 +113,18 @@
     <string name="reward_target_label">लक्ष्य माइलस्टोन</string>
     <string name="reward_progress_format">%1$d/%2$d पूर्ण</string>
     <string name="duty_switch_online_desc">ऑनलाइन • राइड्स स्वीकार करने के लिए तैयार</string>
-    <string name="duty_switch_offline_desc">ऑफ़लाइन • शिफ्ट निष्क्रिय</string>
+    <!-- Active Trip Lifecycle -->
+    <string name="trip_stage_assigned">असाइन किया गया • पिकअप पर जा रहे हैं</string>
+    <string name="trip_stage_arrived">पिकअप लोकेशन पर पहुंचे</string>
+    <string name="trip_stage_in_progress">यात्रा जारी है • गंतव्य की ओर</string>
+    <string name="trip_stage_completed">यात्रा पूर्ण</string>
+    <string name="trip_action_navigate_pickup">पिकअप नेविगेट करें</string>
+    <string name="trip_action_arrived_pickup">मैं पहुंच गया हूं</string>
+    <string name="trip_action_start_trip">यात्रा शुरू करें</string>
+    <string name="trip_action_navigate_drop">ड्रॉप-ऑफ नेविगेट करें</string>
+    <string name="trip_action_complete_trip">यात्रा पूर्ण करें और किराया प्राप्त करें</string>
+    <string name="trip_enter_start_pin">4-अंकीय राइडर पिन दर्ज करें</string>
+    <string name="trip_verify_pin_instruction">यात्रा शुरू करने के लिए राइडर से 4-अंकीय स्टार्ट ओटीपी मांगें।</string>
+    <string name="trip_sos_button">आपातकालीन एसओएस</string>
+    <string name="trip_call_customer">ग्राहक को कॉल करें</string>
 </resources>

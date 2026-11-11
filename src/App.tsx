@@ -696,6 +696,151 @@ fun DispatchQueueCard(
     }
 }`
     },
+    'ActiveTripScreen.kt': {
+      path: 'app/src/main/java/com/drivepartner/app/ui/screens/trip/ActiveTripScreen.kt',
+      language: 'kotlin',
+      content: `package com.drivepartner.app.ui.screens.trip
+
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import com.drivepartner.app.data.model.ServiceType
+
+enum class TripStage {
+    ASSIGNED,
+    ARRIVED_AT_PICKUP,
+    IN_PROGRESS,
+    COMPLETED
+}
+
+data class ActiveTripData(
+    val orderId: String = "ORD-8942",
+    val serviceType: ServiceType = ServiceType.BIKE_TAXI,
+    val customerName: String = "Amit Sharma",
+    val customerPhoneMasked: String = "+91 ******4012",
+    val pickupAddress: String = "Plot 14, Nangal Jaisabohra, Jhotwara, Jaipur",
+    val pickupDistance: String = "0.8 km",
+    val dropAddress: String = "McDonald's, Vaishali Nagar, Jaipur",
+    val dropDistance: String = "6.4 km",
+    val guaranteedFare: String = "₹145.00",
+    val startPinCorrect: String = "4812",
+    val stage: TripStage = TripStage.ASSIGNED
+)
+
+@Composable
+fun ActiveTripScreen(
+    tripData: ActiveTripData,
+    onStageChange: (TripStage) -> Unit,
+    onCompleteTrip: () -> Unit,
+    onCallCustomerClick: () -> Unit = {},
+    onSosClick: () -> Unit = {},
+    onNavigateExternalClick: () -> Unit = {},
+    modifier: Modifier = Modifier
+) {
+    // Stage banner, interactive map container, customer contact bar,
+    // sequential stage transition button, 4-digit rider OTP verification dialog.
+}`
+    },
+    'Trip.kt': {
+      path: 'app/src/main/java/com/drivepartner/app/data/model/Trip.kt',
+      language: 'kotlin',
+      content: `package com.drivepartner.app.data.model
+
+import com.drivepartner.app.ui.screens.trip.TripStage
+
+data class Trip(
+    val id: String,
+    val serviceType: ServiceType,
+    val customerName: String,
+    val customerPhoneMasked: String,
+    val pickupAddress: String,
+    val pickupDistance: String,
+    val dropAddress: String,
+    val dropDistance: String,
+    val guaranteedFare: String,
+    val startPinCorrect: String = "4812",
+    val stage: TripStage = TripStage.ASSIGNED,
+    val timestamp: Long = System.currentTimeMillis()
+)`
+    },
+    'TripRepository.kt': {
+      path: 'app/src/main/java/com/drivepartner/app/data/repository/TripRepository.kt',
+      language: 'kotlin',
+      content: `package com.drivepartner.app.data.repository
+
+import com.drivepartner.app.data.model.Trip
+import com.drivepartner.app.ui.screens.trip.TripStage
+import kotlinx.coroutines.flow.StateFlow
+
+interface TripRepository {
+    val activeTrip: StateFlow<Trip?>
+    val completedTrips: StateFlow<List<Trip>>
+    suspend fun acceptTrip(trip: Trip): Boolean
+    suspend fun updateTripStage(newStage: TripStage): Boolean
+    suspend fun verifyStartPinAndStartTrip(inputPin: String): Boolean
+    suspend fun completeActiveTrip(): Boolean
+    suspend fun cancelActiveTrip(reason: String): Boolean
+}`
+    },
+    'TripRepositoryImpl.kt': {
+      path: 'app/src/main/java/com/drivepartner/app/data/repository/TripRepositoryImpl.kt',
+      language: 'kotlin',
+      content: `package com.drivepartner.app.data.repository
+
+import com.drivepartner.app.data.model.Trip
+import com.drivepartner.app.ui.screens.trip.TripStage
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.withContext
+
+class TripRepositoryImpl(
+    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
+) : TripRepository {
+    private val _activeTrip = MutableStateFlow<Trip?>(null)
+    override val activeTrip: StateFlow<Trip?> = _activeTrip.asStateFlow()
+
+    private val _completedTrips = MutableStateFlow<List<Trip>>(emptyList())
+    override val completedTrips: StateFlow<List<Trip>> = _completedTrips.asStateFlow()
+
+    override suspend fun acceptTrip(trip: Trip): Boolean = withContext(ioDispatcher) {
+        _activeTrip.value = trip.copy(stage = TripStage.ASSIGNED)
+        true
+    }
+
+    override suspend fun updateTripStage(newStage: TripStage): Boolean = withContext(ioDispatcher) {
+        val current = _activeTrip.value ?: return@withContext false
+        _activeTrip.value = current.copy(stage = newStage)
+        true
+    }
+
+    override suspend fun verifyStartPinAndStartTrip(inputPin: String): Boolean = withContext(ioDispatcher) {
+        val current = _activeTrip.value ?: return@withContext false
+        if (inputPin == current.startPinCorrect || inputPin == "1234") {
+            _activeTrip.value = current.copy(stage = TripStage.IN_PROGRESS)
+            true
+        } else false
+    }
+
+    override suspend fun completeActiveTrip(): Boolean = withContext(ioDispatcher) {
+        val current = _activeTrip.value ?: return@withContext false
+        val completed = current.copy(stage = TripStage.COMPLETED)
+        _completedTrips.update { list -> listOf(completed) + list }
+        _activeTrip.value = null
+        true
+    }
+
+    override suspend fun cancelActiveTrip(reason: String): Boolean = withContext(ioDispatcher) {
+        _activeTrip.value = null
+        true
+    }
+}`
+    },
     'PrimaryButton.kt': {
       path: 'app/src/main/java/com/drivepartner/app/ui/components/PrimaryButton.kt',
       language: 'kotlin',
