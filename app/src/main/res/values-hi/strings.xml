@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- App Identity -->
+    <string name="app_name">ड्राइव पार्टनर</string>
+    <string name="partner_portal_title">ड्राइव पार्टनर पोर्टल</string>
+    <string name="partner_subtitle">बाइक टैक्सी • ऑटो • कैब • डिलीवरी</string>
+
+    <!-- Navigation Destinations -->
+    <string name="nav_home">होम</string>
+    <string name="nav_orders">ऑर्डर</string>
+    <string name="nav_earnings">कमाई</string>
+    <string name="nav_rewards">रिवार्ड्स</string>
+    <string name="nav_profile">प्रोफाइल</string>
+
+    <!-- Partner Status -->
+    <string name="status_online">ऑनलाइन</string>
+    <string name="status_offline">ऑफलाइन</string>
+    <string name="go_online">ऑनलाइन जाएं</string>
+    <string name="go_offline">ऑफलाइन जाएं</string>
+    <string name="ready_to_receive_orders">नई बुकिंग अनुरोध प्राप्त करने के लिए तैयार</string>
+    <string name="currently_offline_message">आप वर्तमान में ऑफलाइन हैं। राइड्स और डिलीवरी स्वीकार करने के लिए ऑनलाइन आएं।</string>
+
+    <!-- Service Types -->
+    <string name="service_bike_taxi">बाइक टैक्सी</string>
+    <string name="service_auto">ऑटो रिक्शा</string>
+    <string name="service_cab">कैब</string>
+    <string name="service_delivery">डिलीवरी</string>
+
+    <!-- Home Destination -->
+    <string name="home_title">पार्टनर डैशबोर्ड</string>
+    <string name="home_welcome_back">वापसी पर स्वागत है, पार्टनर</string>
+    <string name="home_duty_status">ड्यूटी स्थिति</string>
+    <string name="home_today_summary">आज का विवरण</string>
+    <string name="home_empty_message">इस समय कोई सक्रिय राइड या डिलीवरी अनुरोध नहीं है।</string>
+
+    <!-- Orders Destination -->
+    <string name="orders_title">ऑर्डर्स और ट्रिप्स</string>
+    <string name="orders_tab_active">सक्रिय</string>
+    <string name="orders_tab_completed">पूर्ण</string>
+    <string name="orders_tab_cancelled">रद्द</string>
+    <string name="orders_empty_title">अभी कोई ऑर्डर नहीं</string>
+    <string name="orders_empty_description">ऑनलाइन आने पर नए बुकिंग अनुरोध यहां दिखाई देंगे।</string>
+
+    <!-- Earnings Destination -->
+    <string name="earnings_title">मेरी कमाई</string>
+    <string name="earnings_today">आज की कमाई</string>
+    <string name="earnings_this_week">इस सप्ताह</string>
+    <string name="earnings_incentives">इंसेंटिव और बोनस</string>
+    <string name="earnings_empty_title">कोई कमाई दर्ज नहीं</string>
+    <string name="earnings_empty_description">पूर्ण की गई यात्राएं और डिलीवरी भुगतान यहां दिखाई देंगे।</string>
+    <string name="earnings_payout_details">बैंक खाता लिंक है और सीधे भुगतान ट्रांसफर के लिए तैयार है।</string>
+
+    <!-- Rewards Destination -->
+    <string name="rewards_title">रिवार्ड्स और टियर</string>
+    <string name="rewards_current_tier">पार्टनर टियर</string>
+    <string name="rewards_empty_title">कोई रिवार्ड उपलब्ध नहीं</string>
+    <string name="rewards_empty_description">ईंधन कैशबैक और प्राथमिकता लाभ अनलॉक करने के लिए साप्ताहिक लक्ष्य पूरे करें।</string>
+
+    <!-- Profile Destination -->
+    <string name="profile_title">पार्टनर प्रोफाइल</string>
+    <string name="profile_vehicle_info">वाहन विवरण</string>
+    <string name="profile_documents">केवाईसी और सत्यापन दस्तावेज</string>
+    <string name="profile_support">पार्टनर सहायता और हेल्प डेस्क</string>
+    <string name="profile_settings">ऐप सेटिंग्स</string>
+    <string name="profile_emergency_sos">आपातकालीन एसओएस सहायता</string>
+
+    <!-- Reusable UI Component States -->
+    <string name="state_loading">जानकारी लोड हो रही है…</string>
+    <string name="state_please_wait">कृपया थोड़ी प्रतीक्षा करें, हम आपका पार्टनर प्रोफाइल सिंक कर रहे हैं।</string>
+    <string name="state_empty_title">कोई डेटा उपलब्ध नहीं है</string>
+    <string name="state_empty_subtitle">अभी प्रदर्शित करने के लिए कोई रिकॉर्ड नहीं है।</string>
+    <string name="state_error_title">कुछ गड़बड़ हो गई</string>
+    <string name="state_error_subtitle">सर्वर से कनेक्ट नहीं हो सका। कृपया अपना कनेक्शन जांचें और पुनः प्रयास करें।</string>
+    <string name="state_retry">पुनः प्रयास करें</string>
+    <string name="state_offline_title">आप वर्तमान में ऑफलाइन हैं</string>
+    <string name="state_offline_subtitle">ट्रिप्स और ऑर्डर्स प्राप्त करना शुरू करने के लिए अपनी ड्यूटी ऑनलाइन सेट करें।</string>
+
+    <!-- Common Actions -->
+    <string name="action_refresh">रिफ्रेश करें</string>
+    <string name="action_view_details">विवरण देखें</string>
+    <string name="action_switch_language">Switch to English</string>
+    <string name="action_help">सहायता</string>
+</resources>

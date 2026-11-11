@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.DrivePartner" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:statusBarColor">@color/drive_blue_primary</item>
+        <item name="android:navigationBarColor">@color/drive_surface_white</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowLightNavigationBar">true</item>
+    </style>
+</resources>

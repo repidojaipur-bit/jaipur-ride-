@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- App Identity -->
+    <string name="app_name">Drive Partner</string>
+    <string name="partner_portal_title">Drive Partner Portal</string>
+    <string name="partner_subtitle">Bike Taxi • Auto • Cab • Delivery</string>
+
+    <!-- Navigation Destinations -->
+    <string name="nav_home">Home</string>
+    <string name="nav_orders">Orders</string>
+    <string name="nav_earnings">Earnings</string>
+    <string name="nav_rewards">Rewards</string>
+    <string name="nav_profile">Profile</string>
+
+    <!-- Partner Status -->
+    <string name="status_online">Online</string>
+    <string name="status_offline">Offline</string>
+    <string name="go_online">Go Online</string>
+    <string name="go_offline">Go Offline</string>
+    <string name="ready_to_receive_orders">Ready to receive incoming booking requests</string>
+    <string name="currently_offline_message">You are currently offline. Turn on your status to accept rides and deliveries.</string>
+
+    <!-- Service Types -->
+    <string name="service_bike_taxi">Bike Taxi</string>
+    <string name="service_auto">Auto Rickshaw</string>
+    <string name="service_cab">Cab</string>
+    <string name="service_delivery">Delivery</string>
+
+    <!-- Home Destination -->
+    <string name="home_title">Partner Dashboard</string>
+    <string name="home_welcome_back">Welcome back, Partner</string>
+    <string name="home_duty_status">Duty Status</string>
+    <string name="home_today_summary">Today\'s Overview</string>
+    <string name="home_empty_message">No active ride or delivery request at this moment.</string>
+
+    <!-- Orders Destination -->
+    <string name="orders_title">Orders &amp; Trips</string>
+    <string name="orders_tab_active">Active</string>
+    <string name="orders_tab_completed">Completed</string>
+    <string name="orders_tab_cancelled">Cancelled</string>
+    <string name="orders_empty_title">No Orders Yet</string>
+    <string name="orders_empty_description">New booking requests will appear here once you go online.</string>
+
+    <!-- Earnings Destination -->
+    <string name="earnings_title">My Earnings</string>
+    <string name="earnings_today">Today\'s Earning</string>
+    <string name="earnings_this_week">This Week</string>
+    <string name="earnings_incentives">Incentives &amp; Bonus</string>
+    <string name="earnings_empty_title">No Earnings Recorded</string>
+    <string name="earnings_empty_description">Completed trips and delivery payouts will be visible here.</string>
+    <string name="earnings_payout_details">Bank account linked &amp; ready for direct payout transfer.</string>
+
+    <!-- Rewards Destination -->
+    <string name="rewards_title">Rewards &amp; Tier</string>
+    <string name="rewards_current_tier">Partner Tier</string>
+    <string name="rewards_empty_title">No Rewards Available</string>
+    <string name="rewards_empty_description">Complete weekly goal milestones to unlock fuel cashback and priority perks.</string>
+
+    <!-- Profile Destination -->
+    <string name="profile_title">Partner Profile</string>
+    <string name="profile_vehicle_info">Vehicle Details</string>
+    <string name="profile_documents">KYC &amp; Verification Documents</string>
+    <string name="profile_support">Partner Support &amp; Help Desk</string>
+    <string name="profile_settings">App Settings</string>
+    <string name="profile_emergency_sos">Emergency SOS Assistance</string>
+
+    <!-- Reusable UI Component States -->
+    <string name="state_loading">Loading information…</string>
+    <string name="state_please_wait">Please wait a moment while we sync your partner profile.</string>
+    <string name="state_empty_title">No Data Available</string>
+    <string name="state_empty_subtitle">There are no records to display right now.</string>
+    <string name="state_error_title">Something went wrong</string>
+    <string name="state_error_subtitle">Could not connect to service. Please check your connection and try again.</string>
+    <string name="state_retry">Try Again</string>
+    <string name="state_offline_title">You\'re Currently Offline</string>
+    <string name="state_offline_subtitle">Toggle your duty status to Online to start receiving trips and orders.</string>
+
+    <!-- Common Actions -->
+    <string name="action_refresh">Refresh</string>
+    <string name="action_view_details">View Details</string>
+    <string name="action_switch_language">हिन्दी में बदलें</string>
+    <string name="action_help">Help &amp; Support</string>
+</resources>

@@ -1,0 +1,6 @@
+{
+  "name": "Drive Partner",
+  "description": "Original Driver Partner application for Bike Taxi, Auto Rickshaw, Cab and Delivery Partner services built with native Android, Jetpack Compose and Material 3.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

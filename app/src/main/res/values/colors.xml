@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Brand Primary: Deep Blue -->
+    <color name="drive_blue_primary">#0D2560</color>
+    <color name="drive_blue_dark">#08173D</color>
+    <color name="drive_blue_light">#1E3A8A</color>
+    <color name="drive_blue_container">#E0E7FF</color>
+    <color name="drive_on_blue_container">#0A1A44</color>
+
+    <!-- Online & Success: Green -->
+    <color name="drive_green_online">#16A34A</color>
+    <color name="drive_green_container">#DCFCE7</color>
+    <color name="drive_on_green_container">#14532D</color>
+
+    <!-- Earnings Highlight: Yellow/Gold -->
+    <color name="drive_yellow_earning">#CA8A04</color>
+    <color name="drive_yellow_container">#FEF08A</color>
+    <color name="drive_on_yellow_container">#713F12</color>
+
+    <!-- Neutral Surfaces -->
+    <color name="drive_surface_white">#FFFFFF</color>
+    <color name="drive_surface_light_grey">#F3F4F6</color>
+    <color name="drive_surface_border">#E5E7EB</color>
+    <color name="drive_text_primary">#111827</color>
+    <color name="drive_text_secondary">#4B5563</color>
+    <color name="drive_text_muted">#9CA3AF</color>
+
+    <!-- Status & Alerts -->
+    <color name="drive_error">#DC2626</color>
+    <color name="drive_error_container">#FEE2E2</color>
+    <color name="drive_offline_grey">#6B7280</color>
+</resources>
