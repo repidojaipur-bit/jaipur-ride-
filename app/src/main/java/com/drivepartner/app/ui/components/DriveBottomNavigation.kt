@@ -11,11 +11,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.drivepartner.app.ui.theme.DriveColors
 import com.drivepartner.app.navigation.DriveDestination
-import com.drivepartner.app.ui.theme.DriveBlueContainer
-import com.drivepartner.app.ui.theme.DriveBluePrimary
-import com.drivepartner.app.ui.theme.DriveSurfaceWhite
-import com.drivepartner.app.ui.theme.DriveTextMuted
 
 @Composable
 fun DriveBottomNavigation(
@@ -25,7 +22,7 @@ fun DriveBottomNavigation(
 ) {
     NavigationBar(
         modifier = modifier,
-        containerColor = DriveSurfaceWhite,
+        containerColor = DriveColors.current.surface,
         tonalElevation = 8.dp
     ) {
         DriveDestination.bottomBarItems.forEach { destination ->
@@ -36,8 +33,8 @@ fun DriveBottomNavigation(
                 selected = isSelected,
                 onClick = { onNavigate(destination) },
                 icon = {
-                    Icon(
-                        imageVector = destination.icon,
+                    DriveIcon(
+                        icon = destination.icon,
                         contentDescription = label
                     )
                 },
@@ -51,11 +48,11 @@ fun DriveBottomNavigation(
                 },
                 alwaysShowLabel = true,
                 colors = NavigationBarItemDefaults.colors(
-                    selectedIconColor = DriveBluePrimary,
-                    selectedTextColor = DriveBluePrimary,
-                    indicatorColor = DriveBlueContainer,
-                    unselectedIconColor = DriveTextMuted,
-                    unselectedTextColor = DriveTextMuted
+                    selectedIconColor = DriveColors.current.brand,
+                    selectedTextColor = DriveColors.current.brand,
+                    indicatorColor = DriveColors.current.brandContainer,
+                    unselectedIconColor = DriveColors.current.textTertiary,
+                    unselectedTextColor = DriveColors.current.textTertiary
                 )
             )
         }

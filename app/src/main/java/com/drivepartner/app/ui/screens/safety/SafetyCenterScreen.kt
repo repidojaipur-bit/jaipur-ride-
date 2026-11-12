@@ -45,6 +45,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
+import com.drivepartner.app.ui.theme.DriveColors
 import com.drivepartner.app.R
 import com.drivepartner.app.core.config.DataOrigin
 import com.drivepartner.app.data.model.InsuranceStatus
@@ -56,19 +57,8 @@ import com.drivepartner.app.ui.components.DriveDangerButton
 import com.drivepartner.app.ui.components.DriveOutlinedButton
 import com.drivepartner.app.ui.components.DrivePrimaryButton
 import com.drivepartner.app.ui.screens.rewards.RetentionOutcomeBanner
-import com.drivepartner.app.ui.theme.DriveBluePrimary
 import com.drivepartner.app.ui.theme.DriveChipShape
-import com.drivepartner.app.ui.theme.DriveError
-import com.drivepartner.app.ui.theme.DriveErrorContainer
-import com.drivepartner.app.ui.theme.DriveGreenContainer
-import com.drivepartner.app.ui.theme.DriveOnErrorContainer
-import com.drivepartner.app.ui.theme.DriveOnGreenContainer
-import com.drivepartner.app.ui.theme.DriveOnYellowContainer
 import com.drivepartner.app.ui.theme.DriveSpacing
-import com.drivepartner.app.ui.theme.DriveSurfaceSubtle
-import com.drivepartner.app.ui.theme.DriveTextSecondary
-import com.drivepartner.app.ui.theme.DriveWarningAmber
-import com.drivepartner.app.ui.theme.DriveYellowContainer
 import com.drivepartner.app.ui.viewmodel.SafetyUiState
 import com.drivepartner.app.ui.viewmodel.SafetyViewModel
 
@@ -130,7 +120,7 @@ fun SafetyCenterScreen(
                 ) {
                     Text(
                         text = stringResource(R.string.safety_sos_confirm_send),
-                        color = DriveError,
+                        color = DriveColors.current.danger,
                         fontWeight = FontWeight.Bold
                     )
                 }
@@ -157,7 +147,7 @@ fun SafetyCenterScreen(
     Box(
         modifier = modifier
             .fillMaxSize()
-            .background(DriveSurfaceSubtle)
+            .background(DriveColors.current.backgroundSubtle)
     ) {
         Column(
             modifier = Modifier
@@ -190,7 +180,7 @@ fun SafetyCenterScreen(
                     Icon(
                         imageVector = Icons.Outlined.Contacts,
                         contentDescription = null,
-                        tint = DriveBluePrimary,
+                        tint = DriveColors.current.brand,
                         modifier = Modifier.size(DriveSpacing.iconMedium)
                     )
                     Spacer(modifier = Modifier.width(DriveSpacing.sm))
@@ -209,7 +199,7 @@ fun SafetyCenterScreen(
                     Text(
                         text = stringResource(R.string.safety_contacts_empty),
                         style = MaterialTheme.typography.bodySmall,
-                        color = DriveTextSecondary
+                        color = DriveColors.current.textSecondary
                     )
                 } else {
                     uiState.emergencyContacts.forEach { contact ->
@@ -228,7 +218,7 @@ fun SafetyCenterScreen(
                                 Text(
                                     text = contact.relationship,
                                     style = MaterialTheme.typography.labelSmall,
-                                    color = DriveTextSecondary
+                                    color = DriveColors.current.textSecondary
                                 )
                             }
                             Text(
@@ -248,7 +238,7 @@ fun SafetyCenterScreen(
                     Icon(
                         imageVector = Icons.Outlined.ReportProblem,
                         contentDescription = null,
-                        tint = DriveBluePrimary,
+                        tint = DriveColors.current.brand,
                         modifier = Modifier.size(DriveSpacing.iconMedium)
                     )
                     Spacer(modifier = Modifier.width(DriveSpacing.sm))
@@ -295,13 +285,13 @@ fun SafetyCenterScreen(
             // Isolated DEMO Safety Sandbox (NEVER visible in LIVE builds)
             if (uiState.dataOrigin == DataOrigin.DEMO) {
                 DriveCard(
-                    backgroundColor = DriveYellowContainer,
-                    borderColor = DriveWarningAmber.copy(alpha = 0.5f)
+                    backgroundColor = DriveColors.current.warningContainer,
+                    borderColor = DriveColors.current.warning.copy(alpha = 0.5f)
                 ) {
                     Text(
                         text = stringResource(R.string.demo_safety_sandbox_title),
                         style = MaterialTheme.typography.titleSmall,
-                        color = DriveOnYellowContainer,
+                        color = DriveColors.current.onWarningContainer,
                         fontWeight = FontWeight.Bold
                     )
                     Spacer(modifier = Modifier.height(DriveSpacing.sm))
@@ -312,7 +302,7 @@ fun SafetyCenterScreen(
                         Text(
                             text = stringResource(R.string.demo_safety_sos_responder_toggle),
                             style = MaterialTheme.typography.bodySmall,
-                            color = DriveOnYellowContainer,
+                            color = DriveColors.current.onWarningContainer,
                             modifier = Modifier.weight(1f)
                         )
                         Switch(
@@ -327,7 +317,7 @@ fun SafetyCenterScreen(
                         Text(
                             text = stringResource(R.string.demo_safety_insurance_toggle),
                             style = MaterialTheme.typography.bodySmall,
-                            color = DriveOnYellowContainer,
+                            color = DriveColors.current.onWarningContainer,
                             modifier = Modifier.weight(1f)
                         )
                         Switch(
@@ -350,13 +340,13 @@ private fun SosWorkflowCard(
 ) {
     val currentStatus = latestSos?.status ?: SosStatus.UNCONFIRMED
     val (bg, fg) = when (currentStatus) {
-        SosStatus.ACKNOWLEDGED -> DriveGreenContainer to DriveOnGreenContainer
-        SosStatus.FAILED -> DriveErrorContainer to DriveOnErrorContainer
-        SosStatus.SENDING -> DriveYellowContainer to DriveOnYellowContainer
-        SosStatus.UNCONFIRMED -> DriveSurfaceSubtle to DriveTextSecondary
+        SosStatus.ACKNOWLEDGED -> DriveColors.current.successContainer to DriveColors.current.onSuccessContainer
+        SosStatus.FAILED -> DriveColors.current.dangerContainer to DriveColors.current.onDangerContainer
+        SosStatus.SENDING -> DriveColors.current.warningContainer to DriveColors.current.onWarningContainer
+        SosStatus.UNCONFIRMED -> DriveColors.current.backgroundSubtle to DriveColors.current.textSecondary
     }
 
-    DriveCard(borderColor = DriveError.copy(alpha = 0.4f)) {
+    DriveCard(borderColor = DriveColors.current.danger.copy(alpha = 0.4f)) {
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -366,7 +356,7 @@ private fun SosWorkflowCard(
                 Icon(
                     imageVector = Icons.Outlined.Emergency,
                     contentDescription = null,
-                    tint = DriveError,
+                    tint = DriveColors.current.danger,
                     modifier = Modifier.size(DriveSpacing.iconMedium)
                 )
                 Spacer(modifier = Modifier.width(DriveSpacing.sm))
@@ -391,7 +381,7 @@ private fun SosWorkflowCard(
         Text(
             text = stringResource(R.string.safety_sos_no_fake_ack_note),
             style = MaterialTheme.typography.labelSmall,
-            color = DriveTextSecondary
+            color = DriveColors.current.textSecondary
         )
 
         if (latestSos != null) {
@@ -399,7 +389,7 @@ private fun SosWorkflowCard(
             Text(
                 text = latestSos.message,
                 style = MaterialTheme.typography.bodySmall,
-                color = if (latestSos.isConfirmedAcknowledged) DriveOnGreenContainer else DriveError,
+                color = if (latestSos.isConfirmedAcknowledged) DriveColors.current.onSuccessContainer else DriveColors.current.danger,
                 fontWeight = FontWeight.SemiBold
             )
             if (latestSos.isConfirmedAcknowledged) {
@@ -411,7 +401,7 @@ private fun SosWorkflowCard(
                         latestSos.acknowledgedAtUtc.orEmpty()
                     ),
                     style = MaterialTheme.typography.labelSmall,
-                    color = DriveOnGreenContainer
+                    color = DriveColors.current.onSuccessContainer
                 )
             }
         }
@@ -439,7 +429,7 @@ private fun InsuranceInfoCard(insurance: InsuranceStatus?) {
             Icon(
                 imageVector = Icons.Outlined.HealthAndSafety,
                 contentDescription = null,
-                tint = DriveBluePrimary,
+                tint = DriveColors.current.brand,
                 modifier = Modifier.size(DriveSpacing.iconMedium)
             )
             Spacer(modifier = Modifier.width(DriveSpacing.sm))
@@ -459,19 +449,19 @@ private fun InsuranceInfoCard(insurance: InsuranceStatus?) {
             Text(
                 text = stringResource(R.string.safety_insurance_policy_ref, insurance.policyReference.orEmpty()),
                 style = MaterialTheme.typography.bodySmall,
-                color = DriveTextSecondary
+                color = DriveColors.current.textSecondary
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
                 text = insurance.approvedDisclaimerText.orEmpty(),
                 style = MaterialTheme.typography.labelSmall,
-                color = DriveTextSecondary
+                color = DriveColors.current.textSecondary
             )
         } else {
             Text(
                 text = stringResource(R.string.safety_insurance_unverified),
                 style = MaterialTheme.typography.bodySmall,
-                color = DriveTextSecondary
+                color = DriveColors.current.textSecondary
             )
         }
     }

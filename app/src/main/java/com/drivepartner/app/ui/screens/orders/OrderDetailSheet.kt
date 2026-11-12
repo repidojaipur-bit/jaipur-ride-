@@ -20,15 +20,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.drivepartner.app.ui.theme.DriveColors
 import com.drivepartner.app.R
 import com.drivepartner.app.core.config.DataOrigin
 import com.drivepartner.app.data.model.OrderDetail
 import com.drivepartner.app.ui.theme.DriveChipShape
-import com.drivepartner.app.ui.theme.DriveOnYellowContainer
 import com.drivepartner.app.ui.theme.DriveSpacing
-import com.drivepartner.app.ui.theme.DriveSurfaceSubtle
-import com.drivepartner.app.ui.theme.DriveTextSecondary
-import com.drivepartner.app.ui.theme.DriveYellowContainer
 
 @Composable
 fun OrderDetailDialog(
@@ -50,12 +47,12 @@ fun OrderDetailDialog(
                 if (detail.dataOrigin == DataOrigin.DEMO) {
                     Surface(
                         shape = DriveChipShape,
-                        color = DriveYellowContainer
+                        color = DriveColors.current.warningContainer
                     ) {
                         Text(
                             text = "DEMO",
                             style = MaterialTheme.typography.labelSmall,
-                            color = DriveOnYellowContainer,
+                            color = DriveColors.current.onWarningContainer,
                             fontWeight = FontWeight.Bold,
                             modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
                         )
@@ -73,12 +70,12 @@ fun OrderDetailDialog(
                 Text(
                     text = stringResource(R.string.order_detail_order_id, detail.orderId),
                     style = MaterialTheme.typography.bodySmall,
-                    color = DriveTextSecondary
+                    color = DriveColors.current.textSecondary
                 )
                 Text(
                     text = stringResource(R.string.order_detail_trip_id, detail.tripId),
                     style = MaterialTheme.typography.bodySmall,
-                    color = DriveTextSecondary
+                    color = DriveColors.current.textSecondary
                 )
                 Text(
                     text = "${detail.pickupSummary} -> ${detail.dropSummary}",
@@ -92,7 +89,7 @@ fun OrderDetailDialog(
                         formatMinutes(detail.durationSeconds)
                     ),
                     style = MaterialTheme.typography.bodySmall,
-                    color = DriveTextSecondary
+                    color = DriveColors.current.textSecondary
                 )
 
                 detail.cancellationReasonCode?.let { reason ->
@@ -112,7 +109,7 @@ fun OrderDetailDialog(
                 )
                 Surface(
                     shape = DriveChipShape,
-                    color = DriveSurfaceSubtle
+                    color = DriveColors.current.backgroundSubtle
                 ) {
                     Column(
                         modifier = Modifier
@@ -140,20 +137,20 @@ fun OrderDetailDialog(
                             Text(
                                 text = stringResource(R.string.order_detail_source_ref_id, srcRef),
                                 style = MaterialTheme.typography.labelSmall,
-                                color = DriveTextSecondary
+                                color = DriveColors.current.textSecondary
                             )
                         }
                         detail.earningStatementId?.let { stmtId ->
                             Text(
                                 text = stringResource(R.string.order_detail_statement_id, stmtId),
                                 style = MaterialTheme.typography.labelSmall,
-                                color = DriveTextSecondary
+                                color = DriveColors.current.textSecondary
                             )
                         }
                         Text(
                             text = stringResource(R.string.trip_no_local_earnings_note),
                             style = MaterialTheme.typography.labelSmall,
-                            color = DriveTextSecondary
+                            color = DriveColors.current.textSecondary
                         )
                     }
                 }

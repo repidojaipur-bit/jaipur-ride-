@@ -23,17 +23,15 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.drivepartner.app.ui.theme.DriveBluePrimary
+import com.drivepartner.app.ui.theme.DriveColors
 import com.drivepartner.app.ui.theme.DriveButtonShape
-import com.drivepartner.app.ui.theme.DriveSurfaceBorder
-import com.drivepartner.app.ui.theme.DriveSurfaceWhite
 
 /**
  * SecondaryButton - Material 3 OutlinedButton for Drive Partner.
  *
  * Implements:
- * - Light grey border (DriveSurfaceBorder).
- * - Deep blue text (DriveBluePrimary).
+ * - Light grey border (DriveColors.current.border).
+ * - Deep blue text (DriveColors.current.brand).
  * - Rounded corners (DriveButtonShape, 12dp) consistent with PrimaryButton.
  * - Accessible 52dp touch target height.
  * - Content padding matching PrimaryButton (horizontal = 16.dp, vertical = 12.dp).
@@ -46,9 +44,9 @@ fun SecondaryButton(
     enabled: Boolean = true,
     isLoading: Boolean = false,
     leadingIcon: ImageVector? = null,
-    borderColor: Color = DriveSurfaceBorder,
-    contentColor: Color = DriveBluePrimary,
-    containerColor: Color = DriveSurfaceWhite,
+    borderColor: Color = DriveColors.current.border,
+    contentColor: Color = DriveColors.current.brand,
+    containerColor: Color = DriveColors.current.surface,
     shape: Shape = DriveButtonShape,
     contentPadding: PaddingValues = PaddingValues(horizontal = 16.dp, vertical = 12.dp)
 ) {
@@ -105,9 +103,9 @@ fun SecondaryButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    borderColor: Color = DriveSurfaceBorder,
-    contentColor: Color = DriveBluePrimary,
-    containerColor: Color = DriveSurfaceWhite,
+    borderColor: Color = DriveColors.current.border,
+    contentColor: Color = DriveColors.current.brand,
+    containerColor: Color = DriveColors.current.surface,
     shape: Shape = DriveButtonShape,
     contentPadding: PaddingValues = PaddingValues(horizontal = 16.dp, vertical = 12.dp),
     content: @Composable RowScope.() -> Unit

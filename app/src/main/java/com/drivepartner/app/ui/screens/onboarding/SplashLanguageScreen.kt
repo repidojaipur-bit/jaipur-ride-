@@ -37,11 +37,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.drivepartner.app.ui.theme.DriveColors
 import com.drivepartner.app.R
 import com.drivepartner.app.core.config.DataOrigin
 import com.drivepartner.app.data.local.AppLanguage
 import com.drivepartner.app.ui.components.EnvironmentBanner
-import com.drivepartner.app.ui.theme.DriveBluePrimary
 import com.drivepartner.app.ui.theme.DriveCardShape
 import com.drivepartner.app.ui.theme.DriveSpacing
 
@@ -83,7 +83,7 @@ fun SplashLanguageScreen(
                 modifier = Modifier
                     .size(88.dp)
                     .clip(CircleShape)
-                    .background(DriveBluePrimary),
+                    .background(DriveColors.current.brand),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(

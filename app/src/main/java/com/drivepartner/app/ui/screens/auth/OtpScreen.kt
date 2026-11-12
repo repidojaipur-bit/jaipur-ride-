@@ -43,20 +43,11 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.drivepartner.app.ui.theme.DriveColors
 import com.drivepartner.app.R
 import com.drivepartner.app.ui.components.PrimaryButton
 import com.drivepartner.app.ui.components.SecondaryButton
-import com.drivepartner.app.ui.theme.DriveBlueContainer
-import com.drivepartner.app.ui.theme.DriveBluePrimary
 import com.drivepartner.app.ui.theme.DriveCardShape
-import com.drivepartner.app.ui.theme.DriveError
-import com.drivepartner.app.ui.theme.DriveGreenOnline
-import com.drivepartner.app.ui.theme.DriveSurfaceBorder
-import com.drivepartner.app.ui.theme.DriveSurfaceLightGrey
-import com.drivepartner.app.ui.theme.DriveSurfaceWhite
-import com.drivepartner.app.ui.theme.DriveTextMuted
-import com.drivepartner.app.ui.theme.DriveTextPrimary
-import com.drivepartner.app.ui.theme.DriveTextSecondary
 import kotlinx.coroutines.delay
 
 /**
@@ -97,7 +88,7 @@ fun OtpScreen(
 
     Surface(
         modifier = modifier.fillMaxSize(),
-        color = DriveSurfaceWhite
+        color = DriveColors.current.onBrand
     ) {
         Column(
             modifier = Modifier
@@ -117,13 +108,13 @@ fun OtpScreen(
                     modifier = Modifier
                         .size(72.dp)
                         .clip(CircleShape)
-                        .background(DriveBlueContainer),
+                        .background(DriveColors.current.brandContainer),
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(
                         imageVector = Icons.Filled.Lock,
                         contentDescription = null,
-                        tint = DriveBluePrimary,
+                        tint = DriveColors.current.brand,
                         modifier = Modifier.size(36.dp)
                     )
                 }
@@ -134,7 +125,7 @@ fun OtpScreen(
                     text = stringResource(R.string.auth_verify_otp_title),
                     fontSize = 22.sp,
                     fontWeight = FontWeight.Bold,
-                    color = DriveTextPrimary
+                    color = DriveColors.current.textPrimary
                 )
 
                 // Phone number header with edit link
@@ -145,7 +136,7 @@ fun OtpScreen(
                     Text(
                         text = "Sent to $phoneNumber",
                         fontSize = 13.sp,
-                        color = DriveTextSecondary,
+                        color = DriveColors.current.textSecondary,
                         fontWeight = FontWeight.Medium
                     )
                     Spacer(modifier = Modifier.width(8.dp))
@@ -159,7 +150,7 @@ fun OtpScreen(
                         Icon(
                             imageVector = Icons.Filled.Edit,
                             contentDescription = stringResource(R.string.auth_edit_phone),
-                            tint = DriveBluePrimary,
+                            tint = DriveColors.current.brand,
                             modifier = Modifier.size(14.dp)
                         )
                         Spacer(modifier = Modifier.width(4.dp))
@@ -167,7 +158,7 @@ fun OtpScreen(
                             text = stringResource(R.string.auth_edit_phone),
                             fontSize = 11.sp,
                             fontWeight = FontWeight.Bold,
-                            color = DriveBluePrimary
+                            color = DriveColors.current.brand
                         )
                     }
                 }
@@ -178,8 +169,8 @@ fun OtpScreen(
                 Card(
                     modifier = Modifier.fillMaxWidth(),
                     shape = DriveCardShape,
-                    colors = CardDefaults.cardColors(containerColor = DriveSurfaceWhite),
-                    border = androidx.compose.foundation.BorderStroke(1.dp, DriveSurfaceBorder),
+                    colors = CardDefaults.cardColors(containerColor = DriveColors.current.surface),
+                    border = androidx.compose.foundation.BorderStroke(1.dp, DriveColors.current.border),
                     elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
                 ) {
                     Column(
@@ -192,7 +183,7 @@ fun OtpScreen(
                             text = "Enter 6-Digit Code",
                             fontSize = 15.sp,
                             fontWeight = FontWeight.Bold,
-                            color = DriveTextPrimary
+                            color = DriveColors.current.textPrimary
                         )
 
                         Spacer(modifier = Modifier.height(16.dp))
@@ -214,7 +205,7 @@ fun OtpScreen(
                                     text = "123456",
                                     letterSpacing = 8.sp,
                                     fontSize = 20.sp,
-                                    color = DriveTextMuted,
+                                    color = DriveColors.current.textTertiary,
                                     textAlign = TextAlign.Center,
                                     modifier = Modifier.fillMaxWidth()
                                 )
@@ -222,9 +213,9 @@ fun OtpScreen(
                             modifier = Modifier.fillMaxWidth(),
                             shape = RoundedCornerShape(12.dp),
                             colors = OutlinedTextFieldDefaults.colors(
-                                focusedBorderColor = DriveBluePrimary,
-                                unfocusedBorderColor = DriveSurfaceBorder,
-                                errorBorderColor = DriveError
+                                focusedBorderColor = DriveColors.current.brand,
+                                unfocusedBorderColor = DriveColors.current.border,
+                                errorBorderColor = DriveColors.current.danger
                             )
                         )
 
@@ -233,7 +224,7 @@ fun OtpScreen(
                             Text(
                                 text = activeError,
                                 fontSize = 11.sp,
-                                color = DriveError,
+                                color = DriveColors.current.danger,
                                 textAlign = TextAlign.Center,
                                 modifier = Modifier.padding(top = 8.dp)
                             )
@@ -241,7 +232,7 @@ fun OtpScreen(
                             Text(
                                 text = "Demo Code: 123456",
                                 fontSize = 11.sp,
-                                color = DriveGreenOnline,
+                                color = DriveColors.current.success,
                                 fontWeight = FontWeight.SemiBold,
                                 modifier = Modifier.padding(top = 8.dp)
                             )
@@ -270,7 +261,7 @@ fun OtpScreen(
                             Text(
                                 text = stringResource(R.string.auth_resend_timer, countdownSeconds),
                                 fontSize = 12.sp,
-                                color = DriveTextMuted,
+                                color = DriveColors.current.textTertiary,
                                 fontWeight = FontWeight.Medium
                             )
                         } else {
@@ -278,7 +269,7 @@ fun OtpScreen(
                                 text = stringResource(R.string.auth_resend_code),
                                 fontSize = 13.sp,
                                 fontWeight = FontWeight.Bold,
-                                color = DriveBluePrimary,
+                                color = DriveColors.current.brand,
                                 modifier = Modifier
                                     .clip(RoundedCornerShape(6.dp))
                                     .clickable {

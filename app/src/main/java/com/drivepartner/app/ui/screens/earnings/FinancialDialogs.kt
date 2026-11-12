@@ -32,6 +32,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import com.drivepartner.app.ui.theme.DriveColors
 import com.drivepartner.app.R
 import com.drivepartner.app.core.config.DataOrigin
 import com.drivepartner.app.core.money.MoneyPaise
@@ -42,12 +43,7 @@ import com.drivepartner.app.data.model.PayoutAccount
 import com.drivepartner.app.data.model.WalletSummary
 import com.drivepartner.app.data.model.labelRes
 import com.drivepartner.app.ui.theme.DriveChipShape
-import com.drivepartner.app.ui.theme.DriveError
-import com.drivepartner.app.ui.theme.DriveOnYellowContainer
 import com.drivepartner.app.ui.theme.DriveSpacing
-import com.drivepartner.app.ui.theme.DriveSurfaceSubtle
-import com.drivepartner.app.ui.theme.DriveTextSecondary
-import com.drivepartner.app.ui.theme.DriveYellowContainer
 
 @Composable
 fun TransactionDetailDialog(
@@ -71,11 +67,11 @@ fun TransactionDetailDialog(
                     fontWeight = FontWeight.Bold
                 )
                 if (entry.dataOrigin == DataOrigin.DEMO) {
-                    Surface(shape = DriveChipShape, color = DriveYellowContainer) {
+                    Surface(shape = DriveChipShape, color = DriveColors.current.warningContainer) {
                         Text(
                             text = "DEMO",
                             style = MaterialTheme.typography.labelSmall,
-                            color = DriveOnYellowContainer,
+                            color = DriveColors.current.onWarningContainer,
                             fontWeight = FontWeight.Bold,
                             modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
                         )
@@ -102,7 +98,7 @@ fun TransactionDetailDialog(
                 Text(
                     text = stringResource(R.string.transaction_detail_entry_id, entry.entryId),
                     style = MaterialTheme.typography.labelSmall,
-                    color = DriveTextSecondary
+                    color = DriveColors.current.textSecondary
                 )
                 Text(
                     text = stringResource(
@@ -111,7 +107,7 @@ fun TransactionDetailDialog(
                         entry.sourceId
                     ),
                     style = MaterialTheme.typography.labelSmall,
-                    color = DriveTextSecondary
+                    color = DriveColors.current.textSecondary
                 )
                 Text(
                     text = stringResource(
@@ -127,7 +123,7 @@ fun TransactionDetailDialog(
                         entry.balanceAfter.formatDisplay()
                     ),
                     style = MaterialTheme.typography.bodySmall,
-                    color = DriveTextSecondary
+                    color = DriveColors.current.textSecondary
                 )
 
                 if (entry.statementId != null) {
@@ -144,10 +140,10 @@ fun TransactionDetailDialog(
                         Text(
                             text = statementError,
                             style = MaterialTheme.typography.bodySmall,
-                            color = DriveError
+                            color = DriveColors.current.danger
                         )
                     } else if (statement != null) {
-                        Surface(shape = DriveChipShape, color = DriveSurfaceSubtle) {
+                        Surface(shape = DriveChipShape, color = DriveColors.current.backgroundSubtle) {
                             Column(
                                 modifier = Modifier
                                     .fillMaxWidth()
@@ -160,7 +156,7 @@ fun TransactionDetailDialog(
                                         statement.fareConfigVersion
                                     ),
                                     style = MaterialTheme.typography.labelSmall,
-                                    color = DriveTextSecondary
+                                    color = DriveColors.current.textSecondary
                                 )
                                 Text(
                                     text = stringResource(
@@ -168,7 +164,7 @@ fun TransactionDetailDialog(
                                         statement.quoteSnapshotId
                                     ),
                                     style = MaterialTheme.typography.labelSmall,
-                                    color = DriveTextSecondary
+                                    color = DriveColors.current.textSecondary
                                 )
                                 Spacer(modifier = Modifier.height(2.dp))
                                 Text(
@@ -205,7 +201,7 @@ fun TransactionDetailDialog(
                                         statement.platformFee.formatDisplay()
                                     ),
                                     style = MaterialTheme.typography.bodySmall,
-                                    color = DriveTextSecondary
+                                    color = DriveColors.current.textSecondary
                                 )
                                 Text(
                                     text = stringResource(
@@ -213,7 +209,7 @@ fun TransactionDetailDialog(
                                         statement.tax.formatDisplay()
                                     ),
                                     style = MaterialTheme.typography.bodySmall,
-                                    color = DriveTextSecondary
+                                    color = DriveColors.current.textSecondary
                                 )
                                 HorizontalDivider()
                                 Text(
@@ -233,7 +229,7 @@ fun TransactionDetailDialog(
                 Text(
                     text = stringResource(R.string.transaction_detail_immutable_note),
                     style = MaterialTheme.typography.labelSmall,
-                    color = DriveTextSecondary
+                    color = DriveColors.current.textSecondary
                 )
             }
         },
@@ -293,7 +289,7 @@ fun WithdrawPayoutDialog(
                             Text(
                                 text = "${account.maskedAccountNumber} • ${account.ifscCode}",
                                 style = MaterialTheme.typography.labelSmall,
-                                color = DriveTextSecondary
+                                color = DriveColors.current.textSecondary
                             )
                         }
                     }
@@ -314,7 +310,7 @@ fun WithdrawPayoutDialog(
                     Text(
                         text = stringResource(R.string.payout_validation_invalid_amount),
                         style = MaterialTheme.typography.labelSmall,
-                        color = DriveError
+                        color = DriveColors.current.danger
                     )
                 } else if (parsedPaise != null && !isAmountValid) {
                     Text(
@@ -324,7 +320,7 @@ fun WithdrawPayoutDialog(
                             MoneyPaise(maxAllowedMinor, wallet.available.currency).formatDisplay()
                         ),
                         style = MaterialTheme.typography.labelSmall,
-                        color = DriveError
+                        color = DriveColors.current.danger
                     )
                 }
             }

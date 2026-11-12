@@ -23,13 +23,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.drivepartner.app.ui.theme.DriveColors
 import com.drivepartner.app.R
 import com.drivepartner.app.ui.theme.DriveButtonShape
-import com.drivepartner.app.ui.theme.DriveGreenOnline
-import com.drivepartner.app.ui.theme.DriveOfflineGrey
-import com.drivepartner.app.ui.theme.DriveSurfaceLightGrey
-import com.drivepartner.app.ui.theme.DriveSurfaceWhite
-import com.drivepartner.app.ui.theme.DriveTextSecondary
 
 @Composable
 fun DriveOfflineView(
@@ -41,7 +37,7 @@ fun DriveOfflineView(
     Box(
         modifier = modifier
             .fillMaxSize()
-            .background(DriveSurfaceWhite)
+            .background(DriveColors.current.surface)
             .padding(32.dp),
         contentAlignment = Alignment.Center
     ) {
@@ -52,13 +48,13 @@ fun DriveOfflineView(
             Box(
                 modifier = Modifier
                     .size(88.dp)
-                    .background(DriveSurfaceLightGrey, CircleShape),
+                    .background(DriveColors.current.backgroundSubtle, CircleShape),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
                     imageVector = Icons.Outlined.PowerSettingsNew,
                     contentDescription = null,
-                    tint = DriveOfflineGrey,
+                    tint = DriveColors.current.neutral,
                     modifier = Modifier.size(46.dp)
                 )
             }
@@ -72,14 +68,14 @@ fun DriveOfflineView(
             Text(
                 text = subtitle,
                 style = MaterialTheme.typography.bodyMedium,
-                color = DriveTextSecondary,
+                color = DriveColors.current.textSecondary,
                 textAlign = TextAlign.Center
             )
             Spacer(modifier = Modifier.height(28.dp))
             Button(
                 onClick = onGoOnlineClick,
                 shape = DriveButtonShape,
-                colors = ButtonDefaults.buttonColors(containerColor = DriveGreenOnline)
+                colors = ButtonDefaults.buttonColors(containerColor = DriveColors.current.success)
             ) {
                 Icon(
                     imageVector = Icons.Outlined.PowerSettingsNew,

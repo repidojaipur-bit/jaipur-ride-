@@ -17,6 +17,9 @@
     <color name="drive_yellow_container">#FEF3DC</color>
     <color name="drive_on_yellow_container">#7A4F04</color>
 
+    <!-- Window background: the pre-Compose canvas shown during cold start -->
+    <color name="drive_window_background">#F5F7FA</color>
+
     <!-- Neutral Surfaces & Text -->
     <color name="drive_surface_white">#FFFFFF</color>
     <color name="drive_surface_light_grey">#F5F7FA</color>
@@ -24,6 +27,9 @@
     <color name="drive_text_primary">#17202A</color>
     <color name="drive_text_secondary">#697586</color>
     <color name="drive_text_muted">#94A3B8</color>
+
+    <!-- Night brand ramp referenced by values-night/themes.xml -->
+    <color name="drive_brand_night">#5CA8E6</color>
 
     <!-- Status & Alerts -->
     <color name="drive_error">#DC3545</color>

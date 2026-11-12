@@ -34,18 +34,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.drivepartner.app.ui.theme.DriveColors
 import com.drivepartner.app.data.model.ServiceType
-import com.drivepartner.app.ui.theme.DriveBluePrimary
 import com.drivepartner.app.ui.theme.DriveCardShape
-import com.drivepartner.app.ui.theme.DriveGreenOnline
-import com.drivepartner.app.ui.theme.DriveOfflineGrey
-import com.drivepartner.app.ui.theme.DriveSurfaceBorder
-import com.drivepartner.app.ui.theme.DriveSurfaceLightGrey
-import com.drivepartner.app.ui.theme.DriveSurfaceWhite
-import com.drivepartner.app.ui.theme.DriveTextMuted
-import com.drivepartner.app.ui.theme.DriveTextPrimary
-import com.drivepartner.app.ui.theme.DriveTextSecondary
-import com.drivepartner.app.ui.theme.DriveYellowEarning
 
 /**
  * OrderRequestCard - Driver-focused dispatch offer card.
@@ -77,8 +68,8 @@ fun OrderRequestCard(
     Card(
         modifier = modifier.fillMaxWidth(),
         shape = DriveCardShape,
-        colors = CardDefaults.cardColors(containerColor = DriveSurfaceWhite),
-        border = androidx.compose.foundation.BorderStroke(1.5.dp, DriveSurfaceBorder),
+        colors = CardDefaults.cardColors(containerColor = DriveColors.current.surface),
+        border = androidx.compose.foundation.BorderStroke(1.5.dp, DriveColors.current.border),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
         Column(
@@ -96,7 +87,7 @@ fun OrderRequestCard(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier
                         .clip(RoundedCornerShape(8.dp))
-                        .background(DriveSurfaceLightGrey)
+                        .background(DriveColors.current.backgroundSubtle)
                         .padding(horizontal = 8.dp, vertical = 4.dp)
                 ) {
                     val (icon, title) = when (serviceType) {
@@ -108,7 +99,7 @@ fun OrderRequestCard(
                     Icon(
                         imageVector = icon,
                         contentDescription = null,
-                        tint = DriveBluePrimary,
+                        tint = DriveColors.current.brand,
                         modifier = Modifier.size(16.dp)
                     )
                     Spacer(modifier = Modifier.width(6.dp))
@@ -116,7 +107,7 @@ fun OrderRequestCard(
                         text = title,
                         fontSize = 11.sp,
                         fontWeight = FontWeight.Bold,
-                        color = DriveBluePrimary
+                        color = DriveColors.current.brand
                     )
                 }
 
@@ -127,7 +118,7 @@ fun OrderRequestCard(
                     Icon(
                         imageVector = Icons.Filled.Timer,
                         contentDescription = null,
-                        tint = if (remainingSeconds <= 5) Color(0xFFDC2626) else DriveTextSecondary,
+                        tint = if (remainingSeconds <= 5) DriveColors.current.danger else DriveColors.current.textSecondary,
                         modifier = Modifier.size(14.dp)
                     )
                     Spacer(modifier = Modifier.width(4.dp))
@@ -135,7 +126,7 @@ fun OrderRequestCard(
                         text = "${remainingSeconds}s",
                         fontSize = 13.sp,
                         fontWeight = FontWeight.Bold,
-                        color = if (remainingSeconds <= 5) Color(0xFFDC2626) else DriveTextPrimary
+                        color = if (remainingSeconds <= 5) DriveColors.current.danger else DriveColors.current.textPrimary
                     )
                 }
             }
@@ -148,8 +139,8 @@ fun OrderRequestCard(
                     .fillMaxWidth()
                     .height(4.dp)
                     .clip(RoundedCornerShape(2.dp)),
-                color = if (remainingSeconds <= 5) Color(0xFFDC2626) else DriveGreenOnline,
-                trackColor = DriveSurfaceLightGrey
+                color = if (remainingSeconds <= 5) DriveColors.current.danger else DriveColors.current.success,
+                trackColor = DriveColors.current.backgroundSubtle
             )
 
             // Fare Highlight Strip
@@ -158,7 +149,7 @@ fun OrderRequestCard(
                 modifier = Modifier
                     .fillMaxWidth()
                     .clip(RoundedCornerShape(12.dp))
-                    .background(DriveSurfaceLightGrey)
+                    .background(DriveColors.current.backgroundSubtle)
                     .padding(horizontal = 14.dp, vertical = 10.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
@@ -168,14 +159,14 @@ fun OrderRequestCard(
                         text = "GUARANTEED FARE",
                         fontSize = 10.sp,
                         fontWeight = FontWeight.Bold,
-                        color = DriveTextSecondary,
+                        color = DriveColors.current.textSecondary,
                         letterSpacing = 0.5.sp
                     )
                     Text(
                         text = estimatedEarning,
                         fontSize = 22.sp,
                         fontWeight = FontWeight.Black,
-                        color = DriveGreenOnline
+                        color = DriveColors.current.success
                     )
                 }
                 Column(horizontalAlignment = Alignment.End) {
@@ -183,14 +174,14 @@ fun OrderRequestCard(
                         text = "TOTAL DISTANCE",
                         fontSize = 10.sp,
                         fontWeight = FontWeight.Bold,
-                        color = DriveTextSecondary,
+                        color = DriveColors.current.textSecondary,
                         letterSpacing = 0.5.sp
                     )
                     Text(
                         text = tripDistance,
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Bold,
-                        color = DriveTextPrimary
+                        color = DriveColors.current.textPrimary
                     )
                 }
             }
@@ -205,7 +196,7 @@ fun OrderRequestCard(
                             .padding(top = 4.dp)
                             .size(10.dp)
                             .clip(CircleShape)
-                            .background(DriveGreenOnline)
+                            .background(DriveColors.current.success)
                     )
                     Spacer(modifier = Modifier.width(10.dp))
                     Column(modifier = Modifier.weight(1f)) {
@@ -213,13 +204,13 @@ fun OrderRequestCard(
                             text = "Pickup ($pickupDistance away)",
                             fontSize = 11.sp,
                             fontWeight = FontWeight.SemiBold,
-                            color = DriveGreenOnline
+                            color = DriveColors.current.success
                         )
                         Text(
                             text = pickupAddress,
                             fontSize = 13.sp,
                             fontWeight = FontWeight.Medium,
-                            color = DriveTextPrimary,
+                            color = DriveColors.current.textPrimary,
                             maxLines = 2
                         )
                     }
@@ -231,7 +222,7 @@ fun OrderRequestCard(
                         .padding(start = 4.5.dp, top = 2.dp, bottom = 2.dp)
                         .width(1.5.dp)
                         .height(16.dp)
-                        .background(DriveSurfaceBorder)
+                        .background(DriveColors.current.border)
                 )
 
                 // Drop
@@ -241,7 +232,7 @@ fun OrderRequestCard(
                             .padding(top = 4.dp)
                             .size(10.dp)
                             .clip(CircleShape)
-                            .background(Color(0xFFDC2626))
+                            .background(DriveColors.current.danger)
                     )
                     Spacer(modifier = Modifier.width(10.dp))
                     Column(modifier = Modifier.weight(1f)) {
@@ -249,13 +240,13 @@ fun OrderRequestCard(
                             text = "Drop-off",
                             fontSize = 11.sp,
                             fontWeight = FontWeight.SemiBold,
-                            color = Color(0xFFDC2626)
+                            color = DriveColors.current.danger
                         )
                         Text(
                             text = dropAddress,
                             fontSize = 13.sp,
                             fontWeight = FontWeight.Medium,
-                            color = DriveTextPrimary,
+                            color = DriveColors.current.textPrimary,
                             maxLines = 2
                         )
                     }
@@ -272,13 +263,13 @@ fun OrderRequestCard(
                     text = "Decline",
                     onClick = onDecline,
                     modifier = Modifier.weight(1f),
-                    contentColor = DriveOfflineGrey
+                    contentColor = DriveColors.current.neutral
                 )
                 PrimaryButton(
                     text = "Accept Ride",
                     onClick = onAccept,
                     modifier = Modifier.weight(2f),
-                    containerColor = DriveGreenOnline
+                    containerColor = DriveColors.current.success
                 )
             }
         }

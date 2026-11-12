@@ -35,6 +35,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
+import com.drivepartner.app.ui.theme.DriveColors
 import com.drivepartner.app.R
 import com.drivepartner.app.core.config.DataOrigin
 import com.drivepartner.app.data.model.SupportMessage
@@ -46,19 +47,8 @@ import com.drivepartner.app.ui.components.DriveOutlinedButton
 import com.drivepartner.app.ui.components.DrivePrimaryButton
 import com.drivepartner.app.ui.components.state.DriveEmptyView
 import com.drivepartner.app.ui.screens.rewards.RetentionOutcomeBanner
-import com.drivepartner.app.ui.theme.DriveBlueContainer
 import com.drivepartner.app.ui.theme.DriveChipShape
-import com.drivepartner.app.ui.theme.DriveError
-import com.drivepartner.app.ui.theme.DriveErrorContainer
-import com.drivepartner.app.ui.theme.DriveGreenContainer
-import com.drivepartner.app.ui.theme.DriveOnBlueContainer
-import com.drivepartner.app.ui.theme.DriveOnErrorContainer
-import com.drivepartner.app.ui.theme.DriveOnGreenContainer
 import com.drivepartner.app.ui.theme.DriveSpacing
-import com.drivepartner.app.ui.theme.DriveSurfaceSubtle
-import com.drivepartner.app.ui.theme.DriveTextSecondary
-import com.drivepartner.app.ui.theme.DriveYellowContainer
-import com.drivepartner.app.ui.theme.DriveOnYellowContainer
 import com.drivepartner.app.ui.viewmodel.SupportUiState
 import com.drivepartner.app.ui.viewmodel.SupportViewModel
 
@@ -123,7 +113,7 @@ fun SupportScreen(
     Box(
         modifier = modifier
             .fillMaxSize()
-            .background(DriveSurfaceSubtle)
+            .background(DriveColors.current.backgroundSubtle)
     ) {
         Column(
             modifier = Modifier
@@ -134,13 +124,13 @@ fun SupportScreen(
         ) {
             if (uiState.dataOrigin == DataOrigin.LIVE && !uiState.boundaryMessage.isNullOrBlank()) {
                 DriveCard(
-                    backgroundColor = DriveErrorContainer,
-                    borderColor = DriveError.copy(alpha = 0.35f)
+                    backgroundColor = DriveColors.current.dangerContainer,
+                    borderColor = DriveColors.current.danger.copy(alpha = 0.35f)
                 ) {
                     Text(
                         text = uiState.boundaryMessage,
                         style = MaterialTheme.typography.bodySmall,
-                        color = DriveOnErrorContainer,
+                        color = DriveColors.current.onDangerContainer,
                         fontWeight = FontWeight.Medium
                     )
                 }
@@ -160,7 +150,7 @@ fun SupportScreen(
                 Text(
                     text = stringResource(R.string.support_thread_privacy_note),
                     style = MaterialTheme.typography.labelSmall,
-                    color = DriveTextSecondary
+                    color = DriveColors.current.textSecondary
                 )
                 Spacer(modifier = Modifier.height(DriveSpacing.md))
                 DrivePrimaryButton(onClick = { showCreateDialog = true }) {
@@ -180,11 +170,11 @@ fun SupportScreen(
                     Column(verticalArrangement = Arrangement.spacedBy(DriveSpacing.sm)) {
                         uiState.tickets.forEach { ticket ->
                             val (bg, fg) = when (ticket.status) {
-                                SupportTicketStatus.OPEN -> DriveBlueContainer to DriveOnBlueContainer
+                                SupportTicketStatus.OPEN -> DriveColors.current.brandContainer to DriveColors.current.onBrandContainer
                                 SupportTicketStatus.IN_PROGRESS,
-                                SupportTicketStatus.WAITING_FOR_DRIVER -> DriveYellowContainer to DriveOnYellowContainer
+                                SupportTicketStatus.WAITING_FOR_DRIVER -> DriveColors.current.warningContainer to DriveColors.current.onWarningContainer
                                 SupportTicketStatus.RESOLVED,
-                                SupportTicketStatus.CLOSED -> DriveGreenContainer to DriveOnGreenContainer
+                                SupportTicketStatus.CLOSED -> DriveColors.current.successContainer to DriveColors.current.onSuccessContainer
                             }
                             Column(
                                 modifier = Modifier
@@ -216,7 +206,7 @@ fun SupportScreen(
                                 Text(
                                     text = "${ticket.category} • ${ticket.updatedAtUtc}",
                                     style = MaterialTheme.typography.labelSmall,
-                                    color = DriveTextSecondary
+                                    color = DriveColors.current.textSecondary
                                 )
                             }
                             HorizontalDivider()
@@ -286,7 +276,7 @@ private fun CreateTicketDialog(
                     Text(
                         text = stringResource(R.string.support_ticket_attached_count, attachmentKeys.size),
                         style = MaterialTheme.typography.labelSmall,
-                        color = DriveTextSecondary
+                        color = DriveColors.current.textSecondary
                     )
                 }
             }
@@ -341,11 +331,11 @@ private fun SupportThreadDialog(
                 Text(
                     text = stringResource(R.string.support_thread_privacy_note),
                     style = MaterialTheme.typography.labelSmall,
-                    color = DriveTextSecondary
+                    color = DriveColors.current.textSecondary
                 )
                 HorizontalDivider()
                 messages.forEach { msg ->
-                    Surface(shape = DriveChipShape, color = DriveSurfaceSubtle) {
+                    Surface(shape = DriveChipShape, color = DriveColors.current.backgroundSubtle) {
                         Column(
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -354,7 +344,7 @@ private fun SupportThreadDialog(
                             Text(
                                 text = "${msg.senderRole} • ${msg.sentAtUtc}",
                                 style = MaterialTheme.typography.labelSmall,
-                                color = DriveTextSecondary
+                                color = DriveColors.current.textSecondary
                             )
                             Text(
                                 text = msg.body,

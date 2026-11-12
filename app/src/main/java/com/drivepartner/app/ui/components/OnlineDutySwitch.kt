@@ -31,18 +31,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.drivepartner.app.ui.theme.DriveColors
 import com.drivepartner.app.R
 import com.drivepartner.app.ui.theme.DriveCardShape
-import com.drivepartner.app.ui.theme.DriveGreenContainer
-import com.drivepartner.app.ui.theme.DriveGreenOnline
-import com.drivepartner.app.ui.theme.DriveOfflineContainer
-import com.drivepartner.app.ui.theme.DriveOfflineGrey
-import com.drivepartner.app.ui.theme.DriveOnGreenContainer
-import com.drivepartner.app.ui.theme.DriveSurfaceBorder
-import com.drivepartner.app.ui.theme.DriveSurfaceWhite
-import com.drivepartner.app.ui.theme.DriveTextMuted
-import com.drivepartner.app.ui.theme.DriveTextPrimary
-import com.drivepartner.app.ui.theme.DriveTextSecondary
 
 /**
  * OnlineDutySwitch - Driver-focused duty availability control.
@@ -60,8 +51,8 @@ fun OnlineDutySwitch(
     modifier: Modifier = Modifier,
     enabled: Boolean = true
 ) {
-    val containerColor = if (isOnline) DriveGreenContainer else DriveSurfaceWhite
-    val borderColor = if (isOnline) DriveGreenOnline.copy(alpha = 0.4f) else DriveSurfaceBorder
+    val containerColor = if (isOnline) DriveColors.current.successContainer else DriveColors.current.surface
+    val borderColor = if (isOnline) DriveColors.current.success.copy(alpha = 0.4f) else DriveColors.current.border
 
     Card(
         modifier = modifier.fillMaxWidth(),
@@ -83,7 +74,7 @@ fun OnlineDutySwitch(
                         modifier = Modifier
                             .size(10.dp)
                             .clip(CircleShape)
-                            .background(if (isOnline) DriveGreenOnline else DriveOfflineGrey)
+                            .background(if (isOnline) DriveColors.current.success else DriveColors.current.neutral)
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
@@ -94,7 +85,7 @@ fun OnlineDutySwitch(
                         },
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold,
-                        color = if (isOnline) DriveOnGreenContainer else DriveTextPrimary
+                        color = if (isOnline) DriveColors.current.onSuccessContainer else DriveColors.current.textPrimary
                     )
                 }
                 Spacer(modifier = Modifier.size(4.dp))
@@ -105,7 +96,7 @@ fun OnlineDutySwitch(
                         stringResource(R.string.duty_switch_offline_desc)
                     },
                     fontSize = 12.sp,
-                    color = if (isOnline) DriveOnGreenContainer.copy(alpha = 0.85f) else DriveTextSecondary,
+                    color = if (isOnline) DriveColors.current.onSuccessContainer.copy(alpha = 0.85f) else DriveColors.current.textSecondary,
                     lineHeight = 16.sp
                 )
             }
@@ -117,8 +108,8 @@ fun OnlineDutySwitch(
                 enabled = enabled,
                 shape = RoundedCornerShape(12.dp),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = if (isOnline) DriveOfflineGrey else DriveGreenOnline,
-                    contentColor = DriveSurfaceWhite
+                    containerColor = if (isOnline) DriveColors.current.neutral else DriveColors.current.success,
+                    contentColor = DriveColors.current.onBrand
                 ),
                 contentPadding = androidx.compose.foundation.layout.PaddingValues(horizontal = 16.dp, vertical = 10.dp)
             ) {

@@ -18,10 +18,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.drivepartner.app.ui.theme.DriveColors
 import com.drivepartner.app.R
-import com.drivepartner.app.ui.theme.DriveBluePrimary
-import com.drivepartner.app.ui.theme.DriveSurfaceWhite
-import com.drivepartner.app.ui.theme.DriveTextSecondary
 
 @Composable
 fun DriveLoadingView(
@@ -32,7 +30,7 @@ fun DriveLoadingView(
     Box(
         modifier = modifier
             .fillMaxSize()
-            .background(DriveSurfaceWhite)
+            .background(DriveColors.current.surface)
             .padding(24.dp),
         contentAlignment = Alignment.Center
     ) {
@@ -42,7 +40,7 @@ fun DriveLoadingView(
         ) {
             CircularProgressIndicator(
                 modifier = Modifier.size(48.dp),
-                color = DriveBluePrimary,
+                color = DriveColors.current.brand,
                 strokeWidth = 4.dp
             )
             Spacer(modifier = Modifier.height(20.dp))
@@ -55,7 +53,7 @@ fun DriveLoadingView(
             Text(
                 text = subMessage,
                 style = MaterialTheme.typography.bodySmall,
-                color = DriveTextSecondary,
+                color = DriveColors.current.textSecondary,
                 textAlign = TextAlign.Center
             )
         }

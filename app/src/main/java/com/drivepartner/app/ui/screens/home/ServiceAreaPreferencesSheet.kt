@@ -35,19 +35,15 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.drivepartner.app.ui.theme.DriveColors
 import com.drivepartner.app.R
 import com.drivepartner.app.data.model.DriverPreferences
 import com.drivepartner.app.data.model.ServiceType
 import com.drivepartner.app.data.model.ServiceZone
 import com.drivepartner.app.ui.components.DriveOutlinedButton
 import com.drivepartner.app.ui.components.DrivePrimaryButton
-import com.drivepartner.app.ui.theme.DriveBluePrimary
-import com.drivepartner.app.ui.theme.DriveGreenOnline
 import com.drivepartner.app.ui.theme.DriveSheetShape
 import com.drivepartner.app.ui.theme.DriveSpacing
-import com.drivepartner.app.ui.theme.DriveSurfaceBorder
-import com.drivepartner.app.ui.theme.DriveSurfaceWhite
-import com.drivepartner.app.ui.theme.DriveTextSecondary
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -73,7 +69,7 @@ fun ServiceAreaPreferencesSheet(
         onDismissRequest = onDismiss,
         sheetState = sheetState,
         shape = DriveSheetShape,
-        containerColor = DriveSurfaceWhite
+        containerColor = DriveColors.current.surface
     ) {
         Column(
             modifier = Modifier
@@ -104,7 +100,7 @@ fun ServiceAreaPreferencesSheet(
                     RadioButton(
                         selected = selectedService == service,
                         onClick = { selectedService = service },
-                        colors = RadioButtonDefaults.colors(selectedColor = DriveBluePrimary)
+                        colors = RadioButtonDefaults.colors(selectedColor = DriveColors.current.brand)
                     )
                     Spacer(modifier = Modifier.width(DriveSpacing.sm))
                     Text(
@@ -114,7 +110,7 @@ fun ServiceAreaPreferencesSheet(
                 }
             }
 
-            HorizontalDivider(color = DriveSurfaceBorder)
+            HorizontalDivider(color = DriveColors.current.border)
 
             Text(
                 text = stringResource(R.string.prefs_zones_section),
@@ -126,7 +122,7 @@ fun ServiceAreaPreferencesSheet(
                 Text(
                     text = stringResource(R.string.map_no_zones_configured),
                     style = MaterialTheme.typography.bodySmall,
-                    color = DriveTextSecondary
+                    color = DriveColors.current.textSecondary
                 )
             } else {
                 availableZones.forEach { zone ->
@@ -156,7 +152,7 @@ fun ServiceAreaPreferencesSheet(
                                 }
                             },
                             enabled = zone.isEnabled,
-                            colors = CheckboxDefaults.colors(checkedColor = DriveBluePrimary)
+                            colors = CheckboxDefaults.colors(checkedColor = DriveColors.current.brand)
                         )
                         Spacer(modifier = Modifier.width(DriveSpacing.sm))
                         Text(
@@ -167,7 +163,7 @@ fun ServiceAreaPreferencesSheet(
                 }
             }
 
-            HorizontalDivider(color = DriveSurfaceBorder)
+            HorizontalDivider(color = DriveColors.current.border)
 
             Row(
                 modifier = Modifier
@@ -186,7 +182,7 @@ fun ServiceAreaPreferencesSheet(
                     Text(
                         text = stringResource(R.string.prefs_autoboost_desc),
                         style = MaterialTheme.typography.bodySmall,
-                        color = DriveTextSecondary
+                        color = DriveColors.current.textSecondary
                     )
                 }
                 Spacer(modifier = Modifier.width(DriveSpacing.md))
@@ -194,8 +190,8 @@ fun ServiceAreaPreferencesSheet(
                     checked = autoBoostEnabled,
                     onCheckedChange = { autoBoostEnabled = it },
                     colors = SwitchDefaults.colors(
-                        checkedThumbColor = DriveSurfaceWhite,
-                        checkedTrackColor = DriveGreenOnline
+                        checkedThumbColor = DriveColors.current.surface,
+                        checkedTrackColor = DriveColors.current.success
                     )
                 )
             }

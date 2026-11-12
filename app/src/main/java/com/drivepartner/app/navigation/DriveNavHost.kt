@@ -18,6 +18,7 @@ import com.drivepartner.app.data.model.PartnerProfile
 import com.drivepartner.app.data.model.PartnerStatus
 import com.drivepartner.app.data.model.ServiceType
 import com.drivepartner.app.data.model.ThemePreference
+import com.drivepartner.app.ui.screens.designsystem.DesignSystemGalleryScreen
 import com.drivepartner.app.ui.screens.earnings.EarningsRoute
 import com.drivepartner.app.ui.screens.home.HomeRoute
 import com.drivepartner.app.ui.screens.notifications.NotificationsRoute
@@ -199,6 +200,9 @@ fun DriveNavHost(
                 viewModel = safetyViewModel,
                 activeTripId = ordersUiState.activeTrip?.tripId
             )
+        }
+        composable(DriveDestination.DesignSystem.route) {
+            DesignSystemGalleryScreen()
         }
         composable(DriveDestination.Settings.route) {
             SettingsLegalScreen(

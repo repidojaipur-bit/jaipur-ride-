@@ -706,4 +706,35 @@
     <string name="auth_invalid_otp">Incorrect OTP. Default demo code is 123456.</string>
     <string name="auth_edit_phone">Edit Number</string>
     <string name="duty_switch_offline_desc">Offline • Turn on duty status to receive rides</string>
+
+    <!-- Design System gallery (demo builds) -->
+    <string name="nav_design_system">Design System</string>
+    <string name="ds_subtitle">Original tokens, type, icons and components</string>
+    <string name="ds_preview_dark">Preview dark theme</string>
+    <string name="ds_section_colors">Colour tokens</string>
+    <string name="ds_section_type">Typography</string>
+    <string name="ds_section_shape">Shape &amp; spacing</string>
+    <string name="ds_section_elevation">Elevation</string>
+    <string name="ds_section_motion">Motion</string>
+    <string name="ds_section_icons">Original icons</string>
+    <string name="ds_section_illustrations">Vector illustrations</string>
+    <string name="ds_section_components">Components</string>
+    <string name="ds_section_states">Screen states</string>
+    <string name="ds_section_responsive">Responsive layout</string>
+    <string name="ds_section_accessibility">Accessibility</string>
+    <string name="ds_contrast_on_surface">%1$.2f:1 on surface</string>
+    <string name="ds_window_metrics">Window %1$s • %2$d × %3$d dp • gutter %4$d dp</string>
+    <string name="ds_motion_play">Play transition</string>
+    <string name="ds_reduced_motion_on">System animations are off: durations collapse to 0 ms</string>
+    <string name="ds_reduced_motion_off">Durations follow the system animation scale</string>
+    <string name="ds_sample_hindi">नमस्ते ड्राइव पार्टनर</string>
+    <string name="ds_type_sample">Pickup at Malviya Nagar</string>
+    <string name="ds_a11y_touch">Touch targets ≥ %1$d dp, primary actions %2$d dp</string>
+    <string name="ds_a11y_contrast">Text tokens meet WCAG AA on their canvas; status is never colour alone</string>
+    <string name="ds_button_accept">Accept trip</string>
+    <string name="ds_button_decline">Decline</string>
+    <string name="ds_state_loading">Loading</string>
+    <string name="ds_state_empty">Empty</string>
+    <string name="ds_state_error">Error</string>
+    <string name="ds_state_offline">Offline</string>
 </resources>

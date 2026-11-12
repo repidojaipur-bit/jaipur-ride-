@@ -55,9 +55,13 @@ import com.drivepartner.app.ui.screens.onboarding.RegistrationWizardScreen
 import com.drivepartner.app.ui.screens.onboarding.SplashLanguageScreen
 import com.drivepartner.app.ui.screens.onboarding.VerificationStatusScreen
 import com.drivepartner.app.ui.screens.support.SupportRoute
-import com.drivepartner.app.ui.theme.DriveOnYellowContainer
+import com.drivepartner.app.ui.theme.DriveColors
+import com.drivepartner.app.ui.theme.DriveStatusBarIcons
+import com.drivepartner.app.ui.theme.DriveSystemBarScrims.current.onWarningContainer
 import com.drivepartner.app.ui.theme.DrivePartnerTheme
-import com.drivepartner.app.ui.theme.DriveYellowContainer
+import com.drivepartner.app.ui.theme.DriveColors
+import com.drivepartner.app.ui.theme.DriveStatusBarIcons
+import com.drivepartner.app.ui.theme.DriveSystemBarScrims.current.warningContainer
 import com.drivepartner.app.ui.viewmodel.MainViewModel
 import com.drivepartner.app.ui.viewmodel.OnboardingAuthViewModel
 import com.drivepartner.app.ui.viewmodel.SupportViewModel
@@ -84,8 +88,11 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // Edge-to-edge with transparent scrims: Compose owns icon contrast (DriveSystemBarAppearance
+        // and DriveStatusBarIcons), and API 24-26 degrade gracefully to the platform translucency.
         enableEdgeToEdge(
-            statusBarStyle = SystemBarStyle.dark(0xFF1769AA.toInt())
+            statusBarStyle = SystemBarStyle.dark(DriveSystemBarScrims.transparent),
+            navigationBarStyle = SystemBarStyle.dark(DriveSystemBarScrims.transparent)
         )
         val initialDeepLink = intent?.getStringExtra(DrivePartnerNotificationBridge.EXTRA_DEEP_LINK_ROUTE)
 
@@ -126,6 +133,8 @@ fun DrivePartnerMainContent(
     val hasActiveTrip = activeTrip != null
 
     if (!onboardingState.isAuthenticatedAndActive) {
+        // Onboarding canvases are light: request dark status bar icons so they stay legible.
+        DriveStatusBarIcons(darkIcons = !DriveColors.current.isDark)
         var showingOnboardingSupport by remember { mutableStateOf(false) }
 
         if (showingOnboardingSupport) {
@@ -336,11 +345,11 @@ fun DrivePartnerMainContent(
                             text = stringResource(R.string.demo_mode_banner),
                             style = MaterialTheme.typography.labelSmall,
                             fontWeight = FontWeight.Bold,
-                            color = DriveOnYellowContainer,
+                            color = DriveColors.current.onWarningContainer,
                             textAlign = TextAlign.Center,
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .background(DriveYellowContainer)
+                                .background(DriveColors.current.warningContainer)
                                 .padding(horizontal = 12.dp, vertical = 4.dp)
                         )
                     }

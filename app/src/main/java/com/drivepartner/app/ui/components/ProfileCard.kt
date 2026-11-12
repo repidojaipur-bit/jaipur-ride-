@@ -30,17 +30,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.drivepartner.app.ui.theme.DriveColors
 import com.drivepartner.app.data.model.ServiceType
-import com.drivepartner.app.ui.theme.DriveBlueContainer
-import com.drivepartner.app.ui.theme.DriveBluePrimary
 import com.drivepartner.app.ui.theme.DriveCardShape
-import com.drivepartner.app.ui.theme.DriveSurfaceBorder
-import com.drivepartner.app.ui.theme.DriveSurfaceWhite
-import com.drivepartner.app.ui.theme.DriveTextMuted
-import com.drivepartner.app.ui.theme.DriveTextPrimary
-import com.drivepartner.app.ui.theme.DriveTextSecondary
-import com.drivepartner.app.ui.theme.DriveYellowEarning
-import com.drivepartner.app.ui.theme.DriveYellowGold
 
 /**
  * ProfileCard - Displays partner identity and vehicle specs.
@@ -75,8 +67,8 @@ fun ProfileCard(
     Card(
         modifier = cardModifier,
         shape = DriveCardShape,
-        colors = CardDefaults.cardColors(containerColor = DriveSurfaceWhite),
-        border = androidx.compose.foundation.BorderStroke(1.dp, DriveSurfaceBorder),
+        colors = CardDefaults.cardColors(containerColor = DriveColors.current.surface),
+        border = androidx.compose.foundation.BorderStroke(1.dp, DriveColors.current.border),
         elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
     ) {
         Row(
@@ -97,13 +89,13 @@ fun ProfileCard(
                 modifier = Modifier
                     .size(52.dp)
                     .clip(CircleShape)
-                    .background(DriveBlueContainer),
+                    .background(DriveColors.current.brandContainer),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
                     imageVector = categoryIcon,
                     contentDescription = null,
-                    tint = DriveBluePrimary,
+                    tint = DriveColors.current.brand,
                     modifier = Modifier.size(28.dp)
                 )
             }
@@ -119,14 +111,14 @@ fun ProfileCard(
                         text = name,
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Bold,
-                        color = DriveTextPrimary
+                        color = DriveColors.current.textPrimary
                     )
                 }
 
                 Text(
                     text = "$vehicleNumber • ID: $partnerId",
                     fontSize = 12.sp,
-                    color = DriveTextSecondary,
+                    color = DriveColors.current.textSecondary,
                     fontWeight = FontWeight.Medium
                 )
 
@@ -138,7 +130,7 @@ fun ProfileCard(
                     Icon(
                         imageVector = Icons.Filled.Star,
                         contentDescription = "Rating",
-                        tint = DriveYellowGold,
+                        tint = DriveColors.current.warning,
                         modifier = Modifier.size(14.dp)
                     )
                     Spacer(modifier = Modifier.width(3.dp))
@@ -146,13 +138,13 @@ fun ProfileCard(
                         text = String.format("%.2f", rating),
                         fontSize = 12.sp,
                         fontWeight = FontWeight.Bold,
-                        color = DriveTextPrimary
+                        color = DriveColors.current.textPrimary
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
                         text = "• ${stringResource(serviceType.titleRes)}",
                         fontSize = 11.sp,
-                        color = DriveTextMuted
+                        color = DriveColors.current.textTertiary
                     )
                 }
             }

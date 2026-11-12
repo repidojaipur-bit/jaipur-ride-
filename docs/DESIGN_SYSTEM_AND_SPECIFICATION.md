@@ -1,230 +1,180 @@
-# Drive Partner — UI/UX Design System & Screen Specifications
+# Drive Partner — Original UI Design System (v2)
 
-**Document ID:** DP-DESIGN-SPEC-001  
-**Version:** 1.0.0  
-**Design Constitution:** Original Professional Driver Experience  
-**Target Platform:** Native Android (Jetpack Compose + Material 3)  
-**Package:** `com.drivepartner.app.ui`  
-
----
-
-## 1. Executive Design Philosophy
-
-The **Drive Partner** design system is engineered specifically for mobility and delivery drivers operating in demanding real-world conditions: high ambient outdoor sunlight, vibrating bike/auto phone mounts, one-handed operation while stopped at intersections, and fast-paced decision making during 15-second dispatch offers.
-
-### 1.1 Strict Brand Independence (Anti-Copy Discipline)
-- **Zero Competitor Imitation**: Drive Partner maintains its own independent visual brand. It strictly avoids Rapido's bright yellow canvas, Uber's stark black monochrome, or Ola's green circle motifs.
-- **Color Identity**:
-  - **Main Canvas**: Pure White (`#FFFFFF`) for crisp daylight legibility.
-  - **Secondary Surfaces**: Light Grey (`#F3F4F6` / `#F9FAFB`) for visual segmentation.
-  - **Primary Action Color**: Deep Blue (`#0D2560`) conveying institutional trust, security, and stability.
-  - **Duty & Success Indicators**: Green (`#16A34A` / `#DCFCE7`) used **exclusively** for Online availability and confirmed successful operations.
-  - **Earnings & Rewards Accent**: Warm Gold / Drive Yellow (`#CA8A04` / `#FEF08A` container) for monetary totals and milestone targets.
-- **Status Accessibility**: Status is **never communicated by color alone**. Every status chip, badge, or banner combines semantic text, explicit icon, and semantic tint.
+**Document ID:** DP-DESIGN-SPEC-002
+**Version:** 2.0.0
+**Status:** Implemented (Android source of truth + live preview)
+**Package:** `com.drivepartner.app.ui`
+**Preview:** `npm run dev` (this repository root) — the living design-system site
+**Companion docs:** `docs/design/ICON_INVENTORY.md`, `docs/Design.md`, `tools/design_system/drive_icons.py`
 
 ---
 
-## 2. Visual Tokens & Theme Foundation
+## 1. Design intent
 
-### 2.1 Color Palette Tokens
+A premium, clean, modern driver application for partners who read a phone in direct sunlight, on a
+vibrating handlebar mount, one-handed, in 15-second decision windows. The system is **original**:
+palette, icon geometry, illustrations and map cartography are authored for this product. No
+competitor branding, screenshots, stock photography or third-party icon font is used anywhere.
 
-```kotlin
-// Primary Brand: Deep Blue (Professional, Trustworthy)
-val DriveBluePrimary = Color(0xFF0D2560)
-val DriveBlueDark = Color(0xFF08173D)
-val DriveBlueLight = Color(0xFF1E3A8A)
-val DriveBlueContainer = Color(0xFFE0E7FF)
-val DriveOnBlueContainer = Color(0xFF0A1A44)
+Platform targets:
 
-// Online & Success: Green (Restricted to Online duty & completed status)
-val DriveGreenOnline = Color(0xFF16A34A)
-val DriveGreenDark = Color(0xFF15803D)
-val DriveGreenContainer = Color(0xFFDCFCE7)
-val DriveOnGreenContainer = Color(0xFF14532D)
+- Native Android, Jetpack Compose + Material 3, single-activity architecture.
+- `minSdk 24` (Android 7.0) — vectors, per-app locales and edge-to-edge degrade gracefully below API 28.
+- `targetSdk 35` — edge-to-edge is explicit, insets consumed in Compose.
+- English + हिंदी (Devanagari-capable system font stack; no bundled font asset required).
+- Light theme, dark theme and SYSTEM follow, all driven by semantic tokens.
 
-// Earnings & Financial Highlights: Warm Gold / Yellow
-val DriveYellowEarning = Color(0xFFCA8A04)
-val DriveYellowGold = Color(0xFFEAB308)
-val DriveYellowContainer = Color(0xFFFEF08A)
-val DriveOnYellowContainer = Color(0xFF713F12)
+## 2. Colour tokens
 
-// Neutrals & Surfaces (White background, light grey secondary surfaces)
-val DriveSurfaceWhite = Color(0xFFFFFFFF)
-val DriveSurfaceLightGrey = Color(0xFFF3F4F6)
-val DriveSurfaceCard = Color(0xFFFFFFFF)
-val DriveSurfaceVariant = Color(0xFFF9FAFB)
-val DriveSurfaceBorder = Color(0xFFE5E7EB)
+Source of truth: `ui/theme/Color.kt` (raw values) → `ui/theme/DriveColorTokens.kt` (semantic layer).
+Components must consume `DriveColors.current.*`, never raw values or hardcoded hex.
 
-// Typography & Contrast
-val DriveTextPrimary = Color(0xFF111827)    // WCAG AAA Contrast on White
-val DriveTextSecondary = Color(0xFF4B5563)  // WCAG AA Contrast
-val DriveTextMuted = Color(0xFF9CA3AF)
+| Semantic role | Light | Dark | Purpose |
+|---|---|---|---|
+| `background` | `#FFFFFF` | `#0E141B` | Primary canvas |
+| `backgroundSubtle` | `#F5F7FA` | `#0A0F14` | Secondary canvas behind card stacks |
+| `surface` | `#FFFFFF` | `#16202B` | Cards, sheets, dialogs |
+| `surfaceSunken` | `#F5F7FA` | `#101820` | Input wells, empty plates |
+| `surfaceTonal` | `#F0F3F8` | `#1F2B38` | Pressed rows, segmented controls |
+| `brand` | `#1769AA` | `#5CA8E6` | Primary actions, selected navigation |
+| `onBrand` | `#FFFFFF` | `#04121E` | Content on brand (5.77:1 light) |
+| `border` | `#E7EAF0` | `#2D3C4E` | Hairline card borders, dividers |
+| `borderStrong` | `#7C8798` | `#5E7186` | Outlines that carry meaning alone (≥3:1) |
+| `textPrimary` | `#17202A` | `#F1F5F9` | 16.45:1 / 15.03:1 — AAA |
+| `textSecondary` | `#697586` | `#A8B6C6` | AA on its canvas |
+| `textTertiary` | `#656F80` | `#8895A8` | Meta text, unselected controls (AA) |
+| `success` / `successStrong` | `#16A36A` / `#12875A` | `#3ECF8E` | Online & confirmed only; `*Strong` for text/filled buttons |
+| `warning` / `warningStrong` | `#F5A623` / `#8A5A06` | `#FBC65F` | Countdowns, payout highlights; amber is never body text on light |
+| `danger` | `#DC3545` | `#FF7C89` | SOS, errors, destructive (4.53:1 with white) |
+| `neutral` | `#697586` | `#93A0B2` | Offline / inactive |
 
-// Status & Error
-val DriveError = Color(0xFFDC2626)
-val DriveErrorContainer = Color(0xFFFEE2E2)
-val DriveOnErrorContainer = Color(0xFF7F1D1D)
-val DriveOfflineGrey = Color(0xFF6B7280)
-val DriveOfflineContainer = Color(0xFFF3F4F6)
-```
+Container pairs (`brandContainer/onBrandContainer`, `successContainer/onSuccessContainer`, …) are
+published for every semantic family and verified ≥ 4.5:1 by `DesignTokensTest`.
 
-### 2.2 Typography Scale
-Typography uses modern Android system sans-serif with verified Devanagari fallback support for full Hindi localization:
+**Rule:** status is never colour alone — text + icon + tint, always.
 
-| Role | Size | Weight | Line Height | Usage |
-|---|---|---|---|---|
-| **Display Large** | 30sp | Black (900) | 36sp | Hero earnings totals (e.g., `₹1,450.00`) |
-| **Headline Medium** | 22sp | Bold (700) | 28sp | Screen headers, Dispatch fare banner |
-| **Title Medium** | 16sp | Bold (700) | 22sp | Card titles, Partner name, Dialog titles |
-| **Body Large** | 15sp | Medium (500) | 20sp | Primary button labels, Form inputs |
-| **Body Medium** | 13sp | Regular (400) | 18sp | Address descriptions, Instructions, Ledger |
-| **Label Small** | 11sp | SemiBold (600) | 14sp | Badges, Chips, Timers, Bottom tab labels |
+## 3. Typography
 
-### 2.3 Shapes & Radius
-- **Cards**: `RoundedCornerShape(16.dp)` — Clean, rounded modern aesthetic without clipping content.
-- **Buttons**: `RoundedCornerShape(12.dp)` — Comfortable rounded rectangles.
-- **Pills / Status Chips**: `RoundedCornerShape(20.dp)` — High-recognition semantic badges.
-- **Bottom Sheets**: `RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp)`.
+`ui/theme/Type.kt`. Roles: display → label (Material scale) plus product roles in `DriveTextRoles`
+(`moneyHero`, `moneyLarge`, `moneyMedium`, `countdown`, `overline`, `address`, `caption`).
 
-### 2.4 Spacing & Touch Targets
-- **Base Grid**: 4dp multiples (`4dp`, `8dp`, `12dp`, `16dp`, `20dp`, `24dp`, `32dp`).
-- **Standard Inset**: `16dp` horizontal content padding.
-- **Touch Target Accessibility**: Minimum interactive height of **52dp** for all primary and secondary buttons (comfortably exceeds the Android 48dp accessibility guideline).
+- Sizes in `sp`; the system font scale is respected end-to-end (no raw px, no clamping).
+- **No colour is baked into a style** — text inherits `LocalContentColor`, which is what makes one
+  `Text(style = …)` correct in both themes.
+- Family: platform sans stack; Android ships Noto Sans Devanagari, so Hindi shaping works on API 24.
+- Devanagari line heights use `LineHeightStyle.Alignment.Proportional` to share an optical baseline
+  with Latin text.
+- Monetary totals are always semibold/black with an explicit currency and period label.
 
----
+## 4. Shape, spacing, elevation
 
-## 3. Reusable Component Inventory
+`ui/theme/Shape.kt`, `Spacing.kt`, `Elevation.kt`.
 
-The following 13 production-grade Compose components have been implemented in `com.drivepartner.app.ui.components`:
+- Card radii live in a **14–20 dp band** (control 12, cardSmall 14, card 16, cardLarge/sheet 20);
+  pills are fully round; the band is asserted by unit test.
+- 4 dp base grid: 2/4/8/12/16/20/24/32/48. Page inset 16 dp on phones, 24/32 dp on larger windows.
+- Elevation is subtle by design: L0 flat → L1 card → L2 hero → L3 bars → L4 sheets → L5 dispatch
+  overlay. Dark mode collapses elevation (shadows are invisible on dark canvases) and the hairline
+  border carries separation instead.
+- Shadow colour is ink-tinted (`ambientColor`/`spotColor` tokens); below API 28 the platform shadow
+  is used unchanged.
 
-1. **`PrimaryButton`** (`PrimaryButton.kt`):
-   - 52dp height, Deep Blue container (`DriveBluePrimary`), white text.
-   - Built-in loading spinner state preventing duplicate taps.
-   - Optional leading icon with semantic alignment.
-2. **`SecondaryButton`** (`SecondaryButton.kt`):
-   - 52dp height, neutral border (`DriveSurfaceBorder`), dark text.
-   - Outlined aesthetic for secondary actions (e.g. "Decline", "Cancel").
-3. **`StatusChip`** (`StatusChip.kt`):
-   - 20dp pill with icon + text label.
-   - Overloads for `PartnerStatusChip` (Online / Offline) and `VerificationStatusChip` (Verified, Under Review, Action Required, Suspended).
-4. **`EarningsCard`** (`EarningsCard.kt`):
-   - High-emphasis Drive Yellow Container (`#FEF08A`) with bold INR currency display.
-   - Subtext for period context (e.g. "Reset daily at 12:00 AM").
-5. **`OrderRequestCard`** (`OrderRequestCard.kt`):
-   - Service category badge (Bike Taxi, Auto, Cab, Delivery).
-   - Animated synchronized countdown progress bar (15s to 0s).
-   - Clear pickup & drop route summary with connecting line and distances.
-   - Guaranteed driver earning highlight in INR.
-   - Dual actions: High-emphasis Green Accept and clean Decline button.
-6. **`DriveNavigationBar`** (`NavigationBar.kt`):
-   - Material 3 NavigationBar with 5 primary destinations (Home, Orders, Earnings, Rewards, Profile).
-   - Active tab indicator in Deep Blue Container.
-   - Full bilingual StringRes labels.
-7. **`OnlineDutySwitch`** (`OnlineDutySwitch.kt`):
-   - Driver-focused availability toggle card.
-   - Dynamic container color (Green when Online, Neutral White when Offline).
-   - Instant toggle button with power icon.
-8. **`ProfileCard`** (`ProfileCard.kt`):
-   - Category icon badge, partner name, ID, vehicle registration number plate.
-   - Star rating badge and verified green status chip.
-9. **`RewardCard`** (`RewardCard.kt`):
-   - Milestone trophy icon, progress bar (% completed), guaranteed bonus amount.
-   - Claim action when qualified.
-10. **`TransactionCard`** (`TransactionCard.kt`):
-    - Real ledger transaction row: Credit (+₹ in green) vs Debit (-₹ in gray).
-    - Date/time, reference ID, and formatted currency amount.
-11. **`LoadingIndicator`** (`LoadingIndicator.kt`):
-    - Deep Blue circular progress spinner with localized loading string.
-12. **`EmptyState`** (`EmptyState.kt`):
-    - Truthful empty state view adhering to zero-fake-data discipline.
-    - Soft grey circular icon badge, title, subtitle, and optional CTA button.
-13. **`ErrorState`** (`ErrorState.kt`):
-    - Error red alert container, descriptive message, and "Try Again" retry button.
+## 5. Motion
 
----
+`ui/theme/Motion.kt`: 90/140/220/300/420 ms tokens with `FastOutSlowIn` defaults and `EaseOut` for
+entering surfaces. `rememberReducedMotionEnabled()` reads the system animator scale and collapses
+every duration to 0 ms. Countdowns are **never** eased: they re-read authoritative server remaining
+time on a 250 ms tick. Earnings are never animated as if accruing live.
 
-## 4. Screen-Level Design Specifications
+## 6. Responsive layout
 
-### S-01: Splash Screen
-- **Background**: Pure White (`#FFFFFF`).
-- **Brand Mark**: Deep Blue shield vector with stylized forward arrow.
-- **Typography**: "Drive Partner" (24sp Bold Deep Blue), "Driver & Delivery Partner Platform" (13sp Muted).
-- **Progress**: Linear progress indicator at bottom (`4dp` height).
+`ui/theme/Responsive.kt`: window size classes at 600/840 dp width and 480/900 dp height (Material
+breakpoints, implemented locally for API 24). The class publishes gutter, card gap, grid columns
+(2/3/4), metric columns, map height and maximum reading measure. `DriveAdaptivePane` centres and
+caps content on medium/expanded windows. Font-scale buckets (1.2×, 1.45×) let rows collapse into
+stacks instead of truncating addresses.
 
-### S-02: Language Selection
-- **Header**: "Choose Language / भाषा चुनें".
-- **Cards**: Two selectable 16dp rounded cards:
-  - English (Subtitle: "Default language for notifications & navigation").
-  - हिंदी (Subtitle: "नेविगेशन और सूचनाओं के लिए हिंदी").
-- **Bottom Action**: Fixed 52dp `PrimaryButton` ("Continue / आगे बढ़ें").
+## 7. Accessibility
 
-### S-03 & S-04: Phone Login & OTP Verification
-- **Input Field**: OutlinedTextField with `+91` fixed country prefix, phone icon, and 16dp rounded corner shape.
-- **OTP Screen**: 6 distinct rounded digit boxes (`48dp` x `56dp`) with active Deep Blue border focus.
-- **Countdown**: 60s timer in bold text, transitioning to active "Resend OTP" text link upon expiry.
+`ui/theme/Accessibility.kt`:
 
-### S-05 to S-08: Onboarding & Verification
-- **Progress Stepper**: Compact 3-step indicator (`Personal` ➔ `Vehicle` ➔ `Documents`).
-- **Document Row**: White card with document name, expiry date, status badge, and "Upload / Replace" CTA.
-- **Verification Status**: Centered status card with Deep Blue clock icon for Under Review, Amber alert for Action Required, and Red shield for Blocked.
+- Touch targets ≥ 48 dp; primary actions 52 dp (`driveMinTouchTarget`).
+- WCAG maths ships in the product: `contrastRatio`, `meetsWcagAa`, `meetsUiComponentContrast`, and
+  the Design System gallery displays live ratios for every swatch.
+- Semantics helpers: `driveHeading`, `driveLiveRegion` (countdowns, duty transitions),
+  `driveStateDescription`, `driveMergedGroup` (a card reads as one TalkBack node), `driveDecorative`
+  (illustrations stay out of the accessibility tree).
+- Contrast floors: AA (4.5:1) for body text, 3:1 for meaningful non-text UI; `textDisabled` is
+  explicitly non-informative.
+- Screen readers get text alternatives for pickup/drop and route details; the map never is the only
+  representation of a route.
 
-### S-09: Home Dashboard
-- **Top Bar**: Deep Blue container with menu drawer, service zone chip ("Jaipur Central"), and notification bell.
-- **Duty Card**: `OnlineDutySwitch` showing live state.
-- **Today Overview**: `EarningsCard` highlighting ₹0.00 baseline with 3-column performance metrics.
-- **Shortcuts Grid**: 2x2 grid of 16dp rounded cards for Orders, Earnings, Rewards, and Profile.
-- **Dispatch Queue**: `EmptyState` card with zero-fake-data assurance.
+## 8. Iconography
 
-### S-10: Service Area & Preferences
-- **Map Surface**: Subdued neutral map style with semi-transparent Deep Blue operational zone boundary.
-- **Preference Controls**: Return-home destination selector and Auto Boost toggle card.
+**Original set: 64 glyphs.** Source of truth `tools/design_system/drive_icons.py` (24 dp optical
+grid, 1.8 dp round stroke/round join). The generator emits:
 
-### S-12: Order History
-- **Tabs**: Active, Completed, Cancelled.
-- **Order Card**: White card with date, order ID, service category icon, pickup/drop summary, and final driver earning in bold green.
+- `app/src/main/res/drawable/ic_drv_*.xml` — Android VectorDrawables (stroke based, tintable),
+- `app/src/main/java/com/drivepartner/app/ui/icons/DriveIcons.kt` — typed registry,
+- `public/design/icons.json` — preview mirror,
+- `docs/design/ICON_INVENTORY.md` — reviewer inventory.
 
-### S-13 to S-15: Earnings, Wallet & Payout
-- **Earnings Period Switcher**: Segmented button (`Today` / `This Week` / `This Month`).
-- **Wallet Hero**: Large Available Balance card (`28sp Black`) with "Withdraw Now" action.
-- **Withdrawal Modal**: Form with pre-set quick chips (`₹500`, `₹1000`, `₹2000`, `All`), masked bank account preview, and idempotent confirmation button.
+Render only through `DriveIcon` / `DriveIconWell` so size, tint and content descriptions stay
+consistent. Icon-only controls require a `contentDescription`; decorative icons pass `null`.
+Primary navigation, drawer, duty control, chips, empty/error states and the gallery all use this
+set. Legacy Material glyph usages in older feature screens are being migrated incrementally —
+inventory counts are tracked in `08_TRACKER.md`.
 
-### S-16 & S-17: Rewards & Referrals
-- **Reward Cards**: List of active target cards with `LinearProgressIndicator` and expiry countdowns.
-- **Referral Hero**: Referral code card with 1-tap Copy and WhatsApp share button.
+## 9. Illustrations
 
-### S-19: Incoming Offer Overlay
-- **Modal Style**: Edge-to-edge high-contrast dispatch sheet.
-- **Offer Content**: `OrderRequestCard` with 15-second radial timer, route summary, and guaranteed fare.
+`ui/illustrations/DriveIllustrations.kt`: empty orders, offline duty, verification pending, wallet,
+recoverable error, safety — plus the `DriveBrandMark` shield/chevron logo. All are drawn as Compose
+`Canvas` code on a centred 100-unit grid, so they scale losslessly and recolor per theme. No
+bitmaps, no screenshots as backgrounds, no stock art (Design.md Section 8).
 
-### S-20: Active Trip
-- **Map View**: Full-screen live navigation map with polyline and driver pin.
-- **Trip Stage Action**: Single persistent 56dp action button at bottom (`Navigate` ➔ `Arrived` ➔ `Start Trip` ➔ `Complete Trip`).
-- **Customer Bar**: Masked call icon and in-app chat button.
-- **Emergency**: Persistent red SOS button in top-right corner.
+## 10. Components
 
-### S-21: Trip Completion & Fare Receipt
-- **Header**: Green checkmark with "Trip Completed Successfully".
-- **Payment Callout**: High-contrast amber card ("COLLECT CASH: ₹145.00") or green card ("PAID ONLINE — DO NOT COLLECT CASH").
-- **Rating**: 5 interactive stars for passenger feedback.
+Reusable layer in `ui/components/`: `DriveCard` (+ `DriveHeroCard`, `DriveSunkenCard`),
+`DrivePrimaryButton` / `DriveSuccessButton` / `DriveOutlinedButton` / `DriveDangerButton`,
+`StatusChip` (+ partner/verification variants), `OnlineDutySwitch`, `EarningsCard`,
+`OrderRequestCard`, `DriveTopBar` / `DriveSecondaryTopBar`, `DriveBottomNavigation`,
+`DriveDrawerSheet`, `EmptyState`, `ErrorState`, `LoadingIndicator`, state views
+(`DriveEmptyView`, `DriveErrorView`, `DriveOfflineView`, `DrivePermissionView`, `DriveUiStateHost`),
+`DriveIcon`, `DriveIconWell`, `EnvironmentBanner`.
 
-### S-22: Safety Center & SOS
-- **SOS Button**: High-visibility circular red button with 3-second hold countdown to prevent false alarms.
-- **Quick Dial**: Direct "Call Police (112)" one-tap button.
-- **Insurance Card**: Policy number and on-duty accidental coverage summary.
+Button contract: full-width by default, ≥52 dp primary / ≥48 dp secondary, pressed and disabled
+colours from tokens, accessible container/content pairs (white on `#1769AA` 5.77:1, white on
+`#12875A` 4.53:1, white on `#DC3545` 4.53:1).
 
-### S-23 & S-24: Profile, Settings & Help Support
-- **Profile Header**: `ProfileCard` with service category, vehicle number, and rating.
-- **Settings List**: Grouped white card rows with standard Material icons and right chevrons.
-- **Support Screen**: Search bar, quick dispute categories, and ticket history with status chips.
+App bar contract: brand blue with light ink in daylight; a raised dark surface with light ink in
+dark mode (a bright bar glares in a night cabin). Status bar icon contrast is owned by Compose
+(`DriveSystemBarAppearance`, `DriveStatusBarIcons`); light canvases such as onboarding opt into dark
+icons explicitly.
 
----
+## 11. Screen states
 
-## 5. Localization & Cultural Adaptation
+Every network-backed screen ships: initial loading, loaded, empty (truthful, zero fake data),
+validation, server/network error with safe retry, offline/stale with timestamp, and
+permission-denied. The gallery's *Screen states* section renders each from live tokens.
 
-- **Languages Supported**: English and हिंदी (Hindi).
-- **String Externalization**: 100% of visible strings are stored in `res/values/strings.xml` and `res/values-hi/strings.xml`.
-- **Currency Standard**: Indian Rupee (`₹`) formatted with standard Indian grouping (e.g. `₹1,50,000.00`).
-- **Date / Time Formatting**: 12-hour format with AM/PM (e.g. `04:30 PM`, `11 Nov 2026`).
-- **Font Support**: Android system sans-serif with complete Devanagari Unicode support ensuring no clipped characters or irregular line breaks.
+## 12. Design System gallery (in-app)
 
-This document serves as the formal design system and screen-level UI specification for all current and future development in the Drive Partner Android application.
+`ui/screens/designsystem/DesignSystemGalleryScreen.kt`, route `design_system`, offered from the
+drawer in **demo builds only**. It renders colours (with live WCAG ratios), type, shape, spacing,
+elevation, motion (with a playable transition), the full icon set, illustrations, components,
+states, responsive metrics and the accessibility contract — and can preview the dark theme
+independently of the app theme.
+
+## 13. Brand configuration
+
+All brand decisions live in the theme layer and generated assets; feature code contains no hex
+literals (asserted by code review tooling and by the absence of `Color(0x…)` outside `ui/theme`).
+A future brand refresh changes `Color.kt` + `DriveColorTokens.kt` + the icon generator, and nothing
+else.
+
+## 14. Verification
+
+- `gradle testDemoDebugUnitTest` → `DesignTokensTest` (contrast, radii band, touch targets, motion,
+  breakpoints, icon registry uniqueness).
+- `python3 tools/design_system/drive_icons.py` regenerates icons deterministically.
+- Live preview (`npm run dev`) renders the same tokens for human review, light/dark and EN/HI.

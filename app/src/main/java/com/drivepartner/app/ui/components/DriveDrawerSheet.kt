@@ -24,21 +24,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.drivepartner.app.ui.theme.DriveColors
 import com.drivepartner.app.R
 import com.drivepartner.app.core.config.DataOrigin
 import com.drivepartner.app.data.model.PartnerProfile
 import com.drivepartner.app.navigation.DriveDestination
-import com.drivepartner.app.ui.theme.DriveBlueContainer
-import com.drivepartner.app.ui.theme.DriveBluePrimary
 import com.drivepartner.app.ui.theme.DriveChipShape
-import com.drivepartner.app.ui.theme.DriveError
-import com.drivepartner.app.ui.theme.DriveOnYellowContainer
 import com.drivepartner.app.ui.theme.DriveSpacing
-import com.drivepartner.app.ui.theme.DriveSurfaceBorder
-import com.drivepartner.app.ui.theme.DriveSurfaceWhite
-import com.drivepartner.app.ui.theme.DriveTextPrimary
-import com.drivepartner.app.ui.theme.DriveTextSecondary
-import com.drivepartner.app.ui.theme.DriveYellowContainer
 
 @Composable
 fun DriveDrawerSheet(
@@ -50,24 +42,27 @@ fun DriveDrawerSheet(
 ) {
     ModalDrawerSheet(
         modifier = modifier.width(300.dp),
-        drawerContainerColor = DriveSurfaceWhite
+        drawerContainerColor = DriveColors.current.surface
     ) {
+        val colors = DriveColors.current
+        val headerBackground = if (colors.isDark) colors.surfaceRaised else colors.brand
+        val headerText = if (colors.isDark) colors.textPrimary else colors.onBrand
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(DriveBluePrimary)
+                .background(headerBackground)
                 .padding(horizontal = DriveSpacing.lg, vertical = DriveSpacing.xl)
         ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
                     text = stringResource(R.string.app_name),
                     style = MaterialTheme.typography.headlineMedium,
-                    color = DriveSurfaceWhite,
+                    color = headerText,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.weight(1f)
                 )
                 Surface(
-                    color = DriveYellowContainer,
+                    color = DriveColors.current.warningContainer,
                     shape = DriveChipShape
                 ) {
                     Text(
@@ -79,7 +74,7 @@ fun DriveDrawerSheet(
                             }
                         ),
                         style = MaterialTheme.typography.labelSmall,
-                        color = DriveOnYellowContainer,
+                        color = DriveColors.current.onWarningContainer,
                         modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
                     )
                 }
@@ -88,12 +83,12 @@ fun DriveDrawerSheet(
             Text(
                 text = partnerProfile?.name ?: stringResource(R.string.profile_not_signed_in),
                 style = MaterialTheme.typography.bodyMedium,
-                color = DriveSurfaceWhite.copy(alpha = 0.9f)
+                color = headerText.copy(alpha = 0.9f)
             )
             Text(
                 text = stringResource(R.string.drawer_header_subtitle),
                 style = MaterialTheme.typography.bodySmall,
-                color = DriveSurfaceWhite.copy(alpha = 0.75f)
+                color = headerText.copy(alpha = 0.72f)
             )
         }
 
@@ -112,10 +107,10 @@ fun DriveDrawerSheet(
 
             HorizontalDivider(
                 modifier = Modifier.padding(vertical = DriveSpacing.sm, horizontal = DriveSpacing.lg),
-                color = DriveSurfaceBorder
+                color = DriveColors.current.border
             )
 
-            DriveDestination.drawerSecondaryItems.forEach { destination ->
+            drawerDestinations(dataOrigin).forEach { destination ->
                 val isSos = destination == DriveDestination.EmergencySos
                 DrawerNavItem(
                     destination = destination,
@@ -127,6 +122,14 @@ fun DriveDrawerSheet(
         }
     }
 }
+
+/**
+ * Drawer entries. The Design System gallery is a build/QA tool, so it is only offered in demo
+ * builds where labelled demo data already exists; live builds keep the operational set.
+ */
+private fun drawerDestinations(dataOrigin: DataOrigin): List<DriveDestination> =
+    DriveDestination.drawerSecondaryItems +
+        if (dataOrigin == DataOrigin.DEMO) listOf(DriveDestination.DesignSystem) else emptyList()
 
 @Composable
 private fun DrawerNavItem(
@@ -141,25 +144,25 @@ private fun DrawerNavItem(
             Text(
                 text = label,
                 style = MaterialTheme.typography.titleSmall,
-                color = if (isDanger) DriveError else DriveTextPrimary
+                color = if (isDanger) DriveColors.current.danger else DriveColors.current.textPrimary
             )
         },
         selected = selected,
         onClick = onClick,
         icon = {
-            Icon(
-                imageVector = destination.icon,
+            DriveIcon(
+                icon = destination.icon,
                 contentDescription = null,
                 tint = when {
-                    isDanger -> DriveError
-                    selected -> DriveBluePrimary
-                    else -> DriveTextSecondary
+                    isDanger -> DriveColors.current.danger
+                    selected -> DriveColors.current.brand
+                    else -> DriveColors.current.textSecondary
                 }
             )
         },
         colors = NavigationDrawerItemDefaults.colors(
-            selectedContainerColor = DriveBlueContainer,
-            unselectedContainerColor = DriveSurfaceWhite
+            selectedContainerColor = DriveColors.current.brandContainer,
+            unselectedContainerColor = DriveColors.current.surface
         ),
         modifier = Modifier.padding(horizontal = DriveSpacing.md, vertical = 2.dp)
     )

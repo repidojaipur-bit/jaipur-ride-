@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.ErrorOutline
 import androidx.compose.material.icons.outlined.Refresh
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -21,21 +20,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.drivepartner.app.ui.theme.DriveColors
 import com.drivepartner.app.R
+import com.drivepartner.app.ui.icons.DriveIcons
+import com.drivepartner.app.ui.icons.DriveIconSpec
 import com.drivepartner.app.ui.theme.DriveCardShape
-import com.drivepartner.app.ui.theme.DriveError
-import com.drivepartner.app.ui.theme.DriveErrorContainer
-import com.drivepartner.app.ui.theme.DriveOnErrorContainer
-import com.drivepartner.app.ui.theme.DriveSurfaceBorder
-import com.drivepartner.app.ui.theme.DriveSurfaceWhite
-import com.drivepartner.app.ui.theme.DriveTextMuted
-import com.drivepartner.app.ui.theme.DriveTextPrimary
 
 /**
  * ErrorState - Error and recovery view component.
@@ -51,14 +45,14 @@ fun ErrorState(
     message: String,
     onRetryClick: () -> Unit,
     modifier: Modifier = Modifier,
-    icon: ImageVector = Icons.Outlined.ErrorOutline,
+    icon: DriveIconSpec = DriveIcons.AlertTriangle,
     retryLabel: String? = null
 ) {
     Card(
         modifier = modifier.fillMaxWidth(),
         shape = DriveCardShape,
-        colors = CardDefaults.cardColors(containerColor = DriveSurfaceWhite),
-        border = androidx.compose.foundation.BorderStroke(1.dp, DriveSurfaceBorder),
+        colors = CardDefaults.cardColors(containerColor = DriveColors.current.surface),
+        border = androidx.compose.foundation.BorderStroke(1.dp, DriveColors.current.border),
         elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
     ) {
         Column(
@@ -72,14 +66,14 @@ fun ErrorState(
                 modifier = Modifier
                     .size(56.dp)
                     .clip(CircleShape)
-                    .background(DriveErrorContainer),
+                    .background(DriveColors.current.dangerContainer),
                 contentAlignment = Alignment.Center
             ) {
-                Icon(
-                    imageVector = icon,
+                DriveIcon(
+                    icon = icon,
                     contentDescription = null,
-                    tint = DriveError,
-                    modifier = Modifier.size(28.dp)
+                    tint = DriveColors.current.danger,
+                    size = 28.dp
                 )
             }
 
@@ -89,7 +83,7 @@ fun ErrorState(
                 text = title,
                 fontSize = 15.sp,
                 fontWeight = FontWeight.Bold,
-                color = DriveTextPrimary,
+                color = DriveColors.current.textPrimary,
                 textAlign = TextAlign.Center
             )
 
@@ -98,7 +92,7 @@ fun ErrorState(
             Text(
                 text = message,
                 fontSize = 12.sp,
-                color = DriveTextMuted,
+                color = DriveColors.current.textTertiary,
                 textAlign = TextAlign.Center,
                 lineHeight = 16.sp
             )
@@ -110,7 +104,7 @@ fun ErrorState(
                 onClick = onRetryClick,
                 leadingIcon = Icons.Outlined.Refresh,
                 modifier = Modifier.fillMaxWidth(0.7f),
-                containerColor = DriveError
+                containerColor = DriveColors.current.danger
             )
         }
     }

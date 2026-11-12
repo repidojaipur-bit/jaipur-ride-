@@ -22,15 +22,14 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.drivepartner.app.ui.theme.DriveBluePrimary
+import com.drivepartner.app.ui.theme.DriveColors
 import com.drivepartner.app.ui.theme.DriveButtonShape
-import com.drivepartner.app.ui.theme.DriveSurfaceWhite
 
 /**
  * PrimaryButton - Material 3 primary action button for Drive Partner.
  *
  * Implements:
- * - Deep blue primary brand color (DriveBluePrimary).
+ * - Deep blue primary brand color (DriveColors.current.brand).
  * - Rounded corners (DriveButtonShape, 12dp).
  * - Accessible 52dp touch target height.
  * - Consistent horizontal and vertical content padding.
@@ -44,8 +43,8 @@ fun PrimaryButton(
     enabled: Boolean = true,
     isLoading: Boolean = false,
     leadingIcon: ImageVector? = null,
-    containerColor: Color = DriveBluePrimary,
-    contentColor: Color = DriveSurfaceWhite,
+    containerColor: Color = DriveColors.current.brand,
+    contentColor: Color = DriveColors.current.surface,
     shape: Shape = DriveButtonShape,
     contentPadding: PaddingValues = PaddingValues(horizontal = 16.dp, vertical = 12.dp)
 ) {
@@ -105,8 +104,8 @@ fun PrimaryButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    containerColor: Color = DriveBluePrimary,
-    contentColor: Color = DriveSurfaceWhite,
+    containerColor: Color = DriveColors.current.brand,
+    contentColor: Color = DriveColors.current.surface,
     shape: Shape = DriveButtonShape,
     contentPadding: PaddingValues = PaddingValues(horizontal = 16.dp, vertical = 12.dp),
     content: @Composable RowScope.() -> Unit

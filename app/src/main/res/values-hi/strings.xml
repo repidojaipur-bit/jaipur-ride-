@@ -706,4 +706,35 @@
     <string name="auth_invalid_otp">गलत ओटीपी। डिफ़ॉल्ट कोड 123456 है।</string>
     <string name="auth_edit_phone">नंबर संपादित करें</string>
     <string name="duty_switch_offline_desc">ऑफलाइन • राइड्स प्राप्त करने के लिए ड्यूटी चालू करें</string>
+
+    <!-- Design System gallery (demo builds) -->
+    <string name="nav_design_system">डिज़ाइन सिस्टम</string>
+    <string name="ds_subtitle">मौलिक टोकन, टाइप, आइकन और घटक</string>
+    <string name="ds_preview_dark">डार्क थीम प्रीव्यू</string>
+    <string name="ds_section_colors">रंग टोकन</string>
+    <string name="ds_section_type">टाइपोग्राफी</string>
+    <string name="ds_section_shape">आकार और स्पेसिंग</string>
+    <string name="ds_section_elevation">एलिवेशन</string>
+    <string name="ds_section_motion">मोशन</string>
+    <string name="ds_section_icons">मौलिक आइकन</string>
+    <string name="ds_section_illustrations">वेक्टर चित्रण</string>
+    <string name="ds_section_components">घटक</string>
+    <string name="ds_section_states">स्क्रीन स्थितियाँ</string>
+    <string name="ds_section_responsive">रेस्पॉन्सिव लेआउट</string>
+    <string name="ds_section_accessibility">सुगम्यता</string>
+    <string name="ds_contrast_on_surface">सतह पर %1$.2f:1</string>
+    <string name="ds_window_metrics">विंडो %1$s • %2$d × %3$d dp • गटर %4$d dp</string>
+    <string name="ds_motion_play">ट्रांज़िशन चलाएं</string>
+    <string name="ds_reduced_motion_on">सिस्टम एनिमेशन बंद: अवधि 0 ms</string>
+    <string name="ds_reduced_motion_off">अवधि सिस्टम एनिमेशन स्केल का पालन करती है</string>
+    <string name="ds_sample_hindi">नमस्ते ड्राइव पार्टनर</string>
+    <string name="ds_type_sample">मालवीय नगर में पिकअप</string>
+    <string name="ds_a11y_touch">टच टारगेट ≥ %1$d dp, प्राथमिक क्रियाएं %2$d dp</string>
+    <string name="ds_a11y_contrast">टेक्स्ट टोकन अपने कैनवास पर WCAG AA पूरा करते हैं; स्थिति कभी केवल रंग नहीं</string>
+    <string name="ds_button_accept">ट्रिप स्वीकारें</string>
+    <string name="ds_button_decline">अस्वीकारें</string>
+    <string name="ds_state_loading">लोड हो रहा है</string>
+    <string name="ds_state_empty">खाली</string>
+    <string name="ds_state_error">त्रुटि</string>
+    <string name="ds_state_offline">ऑफलाइन</string>
 </resources>
