@@ -1,5 +1,6 @@
 package com.drivepartner.app.data.repository
 
+import com.drivepartner.app.core.config.AppMode
 import com.drivepartner.app.core.config.DataOrigin
 import com.drivepartner.app.core.network.ApiResult
 import com.drivepartner.app.core.network.PagedResponse
@@ -75,7 +76,10 @@ class LiveFinancialRepository(
 ) : FinancialRepository {
 
     init {
-        require(liveDataSource.origin == DataOrigin.LIVE) {
+        require(
+            liveDataSource.origin == DataOrigin.LIVE &&
+                liveDataSource.environmentConfig.appMode == AppMode.LIVE
+        ) {
             "LiveFinancialRepository must never accept non-LIVE data sources."
         }
     }

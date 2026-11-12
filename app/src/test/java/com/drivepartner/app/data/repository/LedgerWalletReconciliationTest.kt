@@ -183,8 +183,19 @@ class LedgerWalletReconciliationTest {
 
     @Test(expected = IllegalArgumentException::class)
     fun liveFinancialRepository_throwsWhenGivenDemoDataSource() {
-        val demoSource = DemoDataSource(AppEnvironmentConfig.demoOnly())
-        LiveFinancialRepository(demoSource)
+        val demoConfig = AppEnvironmentConfig.demoOnly()
+        val apiClient = LiveBackendApiClient(UnconfiguredApiTransport(demoConfig))
+        val demoConfiguredLiveSource = LiveApiDataSource(
+            environmentConfig = demoConfig,
+            healthApi = apiClient,
+            authOnboardingApi = apiClient,
+            dutyLocationApi = apiClient,
+            dispatchApi = apiClient,
+            tripsOrdersApi = apiClient,
+            financialApi = apiClient,
+            retentionSafetyApi = apiClient
+        )
+        LiveFinancialRepository(demoConfiguredLiveSource)
     }
 
     @Test
