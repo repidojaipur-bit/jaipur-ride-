@@ -7,8 +7,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
-import androidx.compose.runtime.produceState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
@@ -348,7 +348,8 @@ fun DocumentsKycScreen(
 @Composable
 private fun rememberDocumentBitmap(uri: Uri): State<android.graphics.Bitmap?> {
     val context = LocalContext.current
-    return produceState<android.graphics.Bitmap?>(initialValue = null, key1 = uri) {
+    val bitmapState = remember(uri) { mutableStateOf<android.graphics.Bitmap?>(null) }
+    LaunchedEffect(uri) {
         val decoded = kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.IO) {
             runCatching {
                 context.contentResolver.openInputStream(uri)?.use { stream ->
@@ -356,8 +357,9 @@ private fun rememberDocumentBitmap(uri: Uri): State<android.graphics.Bitmap?> {
                 }
             }.getOrNull()
         }
-        value = decoded
+        bitmapState.value = decoded
     }
+    return bitmapState
 }
 
 private fun captureFileSize(context: android.content.Context, uri: Uri): Long =
