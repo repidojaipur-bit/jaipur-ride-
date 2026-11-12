@@ -349,13 +349,14 @@ fun DocumentsKycScreen(
 private fun rememberDocumentBitmap(uri: Uri): State<android.graphics.Bitmap?> {
     val context = LocalContext.current
     return produceState<android.graphics.Bitmap?>(initialValue = null, key1 = uri) {
-        value = kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.IO) {
+        val decoded = kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.IO) {
             runCatching {
                 context.contentResolver.openInputStream(uri)?.use { stream ->
                     android.graphics.BitmapFactory.decodeStream(stream)
                 }
             }.getOrNull()
         }
+        value = decoded
     }
 }
 
