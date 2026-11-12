@@ -216,9 +216,17 @@ class TripLifecycleAndIsolationTest {
 
     @Test
     fun liveTripHistoryRepository_isStrictlyIsolatedAndFailsCleanlyWithoutBackend() = runTest {
-        val liveConfig = AppEnvironmentConfig.liveUnconfigured()
+        val liveConfig = AppEnvironmentConfig.unconfiguredLive()
+        val apiClient = LiveBackendApiClient(UnconfiguredApiTransport(liveConfig))
         val liveDataSource = LiveApiDataSource(
-            LiveBackendApiClient(liveConfig, UnconfiguredApiTransport())
+            environmentConfig = liveConfig,
+            healthApi = apiClient,
+            authOnboardingApi = apiClient,
+            dutyLocationApi = apiClient,
+            dispatchApi = apiClient,
+            tripsOrdersApi = apiClient,
+            financialApi = apiClient,
+            retentionSafetyApi = apiClient
         )
         val liveRepo = LiveTripHistoryRepository(liveDataSource)
 

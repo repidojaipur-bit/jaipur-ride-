@@ -189,7 +189,7 @@ class LedgerWalletReconciliationTest {
 
     @Test
     fun liveFinancialRepository_whenUnconfigured_returnsBackendNotDeployedAndEmptyLedger() = runTest {
-        val liveConfig = AppEnvironmentConfig.liveUnconfigured()
+        val liveConfig = AppEnvironmentConfig.unconfiguredLive()
         val apiClient = LiveBackendApiClient(UnconfiguredApiTransport(liveConfig))
         val liveDataSource = LiveApiDataSource(
             environmentConfig = liveConfig,

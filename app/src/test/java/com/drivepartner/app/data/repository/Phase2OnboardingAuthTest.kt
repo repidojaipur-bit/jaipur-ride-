@@ -14,6 +14,7 @@ import com.drivepartner.app.data.datasource.demo.DemoDataSource
 import com.drivepartner.app.data.datasource.live.LiveApiDataSource
 import com.drivepartner.app.data.local.InMemoryDemoAuthPersistence
 import com.drivepartner.app.data.model.OnboardingValidators
+import com.drivepartner.app.data.remote.LiveBackendApiClient
 import com.drivepartner.app.data.remote.dto.AuthErrorCodes
 import com.drivepartner.app.data.remote.dto.ConfirmDocumentUploadRequest
 import com.drivepartner.app.data.remote.dto.DocumentUploadIntentRequest
@@ -214,8 +215,19 @@ class Phase2OnboardingAuthTest {
         val livePhoneAuth = LivePhoneAuthBoundary(environmentConfig = liveConfig)
         assertEquals(PhoneAuthProviderMode.SUPABASE_UNCONFIGURED, livePhoneAuth.providerMode)
 
+        val apiClient = LiveBackendApiClient(UnconfiguredApiTransport(liveConfig))
+        val liveDataSource = LiveApiDataSource(
+            environmentConfig = liveConfig,
+            healthApi = apiClient,
+            authOnboardingApi = apiClient,
+            dutyLocationApi = apiClient,
+            dispatchApi = apiClient,
+            tripsOrdersApi = apiClient,
+            financialApi = apiClient,
+            retentionSafetyApi = apiClient
+        )
         val liveRepo = LiveAuthOnboardingRepository(
-            liveDataSource = LiveApiDataSource(liveConfig, UnconfiguredApiTransport(liveConfig)),
+            liveDataSource = liveDataSource,
             phoneAuthBoundary = livePhoneAuth,
             tokenProvider = tokenProvider
         )
