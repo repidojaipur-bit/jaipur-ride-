@@ -1,0 +1,30 @@
+name: Supabase Schema CI
+
+on:
+  push:
+    branches: [ main, "arena/**" ]
+    paths:
+      - "supabase/**"
+      - ".github/workflows/supabase-ci.yml"
+  pull_request:
+    paths:
+      - "supabase/**"
+      - ".github/workflows/supabase-ci.yml"
+
+jobs:
+  schema-verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Install embedded PostgreSQL (PGlite)
+        run: npm install --no-save --no-audit --no-fund @electric-sql/pglite
+
+      - name: Apply migration twice + verify RLS, RPCs and grants
+        run: node supabase/tests/schema.test.mjs
