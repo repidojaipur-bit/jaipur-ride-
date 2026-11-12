@@ -16,6 +16,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.outlined.BookmarkBorder
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Translate
 import androidx.compose.material3.Badge
@@ -43,33 +44,9 @@ import com.drivepartner.app.data.model.DutyControlState
 import com.drivepartner.app.data.model.PartnerStatus
 import com.drivepartner.app.data.model.ServiceType
 import com.drivepartner.app.ui.theme.DriveColors
-import com.drivepartner.app.ui.theme.DriveElevation.current.brand
 import com.drivepartner.app.ui.theme.DriveChipShape
-import com.drivepartner.app.ui.theme.DriveColors
-import com.drivepartner.app.ui.theme.DriveElevation.current.danger
-import com.drivepartner.app.ui.theme.DriveColors
-import com.drivepartner.app.ui.theme.DriveElevation.current.dangerContainer
-import com.drivepartner.app.ui.theme.DriveColors
-import com.drivepartner.app.ui.theme.DriveElevation.current.successContainer
-import com.drivepartner.app.ui.theme.DriveColors
-import com.drivepartner.app.ui.theme.DriveElevation.current.success
-import com.drivepartner.app.ui.theme.DriveColors
-import com.drivepartner.app.ui.theme.DriveElevation.current.neutralContainer
-import com.drivepartner.app.ui.theme.DriveColors
-import com.drivepartner.app.ui.theme.DriveElevation.current.neutral
-import com.drivepartner.app.ui.theme.DriveColors
-import com.drivepartner.app.ui.theme.DriveElevation.current.onDangerContainer
-import com.drivepartner.app.ui.theme.DriveColors
-import com.drivepartner.app.ui.theme.DriveElevation.current.onSuccessContainer
-import com.drivepartner.app.ui.theme.DriveColors
-import com.drivepartner.app.ui.theme.DriveElevation.current.onWarningContainer
 import com.drivepartner.app.ui.theme.DriveSpacing
-import com.drivepartner.app.ui.theme.DriveColors
-import com.drivepartner.app.ui.theme.DriveElevation.current.surface
-import com.drivepartner.app.ui.theme.DriveColors
-import com.drivepartner.app.ui.theme.DriveElevation.current.warning
-import com.drivepartner.app.ui.theme.DriveColors
-import com.drivepartner.app.ui.theme.DriveElevation.current.warningContainer
+import com.drivepartner.app.ui.theme.DriveElevation
 
 
 /**
@@ -92,10 +69,11 @@ fun DriveTopBar(
     status: PartnerStatus,
     serviceType: ServiceType,
     dutyControlState: DutyControlState = if (status.isOnline) DutyControlState.ONLINE else DutyControlState.OFFLINE,
-    hasNotifications: Boolean = false,
+    unreadNotificationCount: Int = 0,
     onMenuClick: () -> Unit = {},
     onStatusToggle: () -> Unit,
     onLanguageToggle: () -> Unit,
+    onSavedLocationsClick: () -> Unit = {},
     onNotificationClick: () -> Unit
 ) {
     val (barColor, onBar, onBarMuted) = appBarPalette()
@@ -154,18 +132,42 @@ fun DriveTopBar(
                         tint = onBar
                     )
                 }
-
+                IconButton(onClick = onSavedLocationsClick) {
+                    Icon(
+                        imageVector = Icons.Outlined.BookmarkBorder,
+                        contentDescription = stringResource(R.string.cd_saved_locations),
+                        tint = onBar
+                    )
+                }
                 IconButton(onClick = onNotificationClick) {
                     BadgedBox(
                         badge = {
-                            if (hasNotifications) {
-                                Badge(containerColor = DriveColors.current.success)
+                            if (unreadNotificationCount > 0) {
+                                Badge(containerColor = DriveColors.current.success) {
+                                    Text(
+                                        text = if (unreadNotificationCount > 99) {
+                                            "99+"
+                                        } else {
+                                            unreadNotificationCount.toString()
+                                        },
+                                        color = DriveColors.current.onSuccess,
+                                        style = MaterialTheme.typography.labelSmall,
+                                        fontWeight = FontWeight.Bold
+                                    )
+                                }
                             }
                         }
                     ) {
                         Icon(
                             imageVector = Icons.Default.Notifications,
-                            contentDescription = stringResource(R.string.cd_notifications),
+                            contentDescription = if (unreadNotificationCount > 0) {
+                                stringResource(
+                                    R.string.cd_notifications_with_count,
+                                    unreadNotificationCount
+                                )
+                            } else {
+                                stringResource(R.string.cd_notifications_none)
+                            },
                             tint = onBar
                         )
                     }

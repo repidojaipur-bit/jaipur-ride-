@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Capture targets for KYC camera shots. External cache needs no storage permission and is
+     private to this app, so captures never land in shared storage. -->
+<paths>
+    <external-cache-path
+        name="kyc_captures"
+        path="captures/" />
+</paths>

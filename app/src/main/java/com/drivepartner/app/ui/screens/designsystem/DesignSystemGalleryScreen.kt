@@ -59,7 +59,6 @@ import com.drivepartner.app.ui.illustrations.DriveOfflineIllustration
 import com.drivepartner.app.ui.illustrations.DriveSafetyIllustration
 import com.drivepartner.app.ui.illustrations.DriveVerificationIllustration
 import com.drivepartner.app.ui.illustrations.DriveWalletIllustration
-import com.drivepartner.app.ui.illustrations.DriveWalletIllustration
 import com.drivepartner.app.ui.theme.DriveAccessibility
 import com.drivepartner.app.ui.theme.DriveCanvas
 import com.drivepartner.app.ui.theme.DriveCanvasStyle

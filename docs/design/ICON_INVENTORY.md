@@ -1,6 +1,6 @@
 # Drive Partner — Original Icon Inventory
 
-64 hand-authored glyphs on a 24 dp optical grid, 1.8 dp round stroke, round joins. Source of truth: `tools/design_system/drive_icons.py`.
+69 hand-authored glyphs on a 24 dp optical grid, 1.8 dp round stroke, round joins. Source of truth: `tools/design_system/drive_icons.py`.
 
 Generated into `app/src/main/res/drawable/ic_drv_*.xml` (Android VectorDrawable) and `public/design/icons.json` (preview mirror). Icons are monochrome stroke artwork: tint comes from the semantic colour tokens, so every icon is correct in light and dark mode.
 
@@ -30,12 +30,16 @@ Generated into `app/src/main/res/drawable/ic_drv_*.xml` (Android VectorDrawable)
 | Document | `file_doc` | `@drawable/ic_drv_file_doc` | Document |
 | Document | `lock` | `@drawable/ic_drv_lock` | Secured |
 | Document | `shield_alert` | `@drawable/ic_drv_shield_alert` | Blocked |
+| Map | `bookmark` | `@drawable/ic_drv_bookmark` | Saved location |
 | Map | `crosshair` | `@drawable/ic_drv_crosshair` | Current location |
 | Map | `flag` | `@drawable/ic_drv_flag` | Destination |
 | Map | `globe` | `@drawable/ic_drv_globe` | Service area |
+| Map | `layers` | `@drawable/ic_drv_layers` | Map layers |
 | Map | `map_pin` | `@drawable/ic_drv_map_pin` | Location |
 | Map | `navigation` | `@drawable/ic_drv_navigation` | Navigate |
 | Map | `route` | `@drawable/ic_drv_route` | Trip route |
+| Map | `zoom_in` | `@drawable/ic_drv_zoom_in` | Zoom in |
+| Map | `zoom_out` | `@drawable/ic_drv_zoom_out` | Zoom out |
 | Money | `bank` | `@drawable/ic_drv_bank` | Bank account |
 | Money | `calendar` | `@drawable/ic_drv_calendar` | Period |
 | Money | `chart` | `@drawable/ic_drv_chart` | Trend |
@@ -67,6 +71,7 @@ Generated into `app/src/main/res/drawable/ic_drv_*.xml` (Android VectorDrawable)
 | Status | `power` | `@drawable/ic_drv_power` | Duty power |
 | Status | `shield_check` | `@drawable/ic_drv_shield_check` | Safety verified |
 | Status | `star` | `@drawable/ic_drv_star` | Rating |
+| Status | `target` | `@drawable/ic_drv_target` | Daily target |
 | Status | `timer` | `@drawable/ic_drv_timer` | Countdown |
 | Status | `user_check` | `@drawable/ic_drv_user_check` | Partner verified |
 | Status | `wifi_off` | `@drawable/ic_drv_wifi_off` | Connection lost |

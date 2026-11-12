@@ -5,7 +5,7 @@
     "strokeLineCap": "round",
     "strokeLineJoin": "round",
     "prefix": "ic_drv_",
-    "count": 64,
+    "count": 69,
     "license": "Original Drive Partner iconography \u2014 not a third-party icon font."
   },
   "icons": {
@@ -347,6 +347,20 @@
       ],
       "fills": []
     },
+    "target": {
+      "resource": "ic_drv_target",
+      "group": "Status",
+      "label": "Daily target",
+      "viewport": 24,
+      "strokeWidth": 1.8,
+      "strokes": [
+        "M3.8 12 A8.2 8.2 0 1 1 20.2 12 A8.2 8.2 0 1 1 3.8 12 Z",
+        "M7.6 12 A4.4 4.4 0 1 1 16.4 12 A4.4 4.4 0 1 1 7.6 12 Z"
+      ],
+      "fills": [
+        "M10.7 12 A1.3 1.3 0 1 1 13.3 12 A1.3 1.3 0 1 1 10.7 12 Z"
+      ]
+    },
     "id_badge": {
       "resource": "ic_drv_id_badge",
       "group": "Status",
@@ -448,6 +462,57 @@
       "strokes": [
         "M5.6 21 V3.8",
         "M5.6 4.6 H18.4 L15.6 8.6 L18.4 12.6 H5.6"
+      ],
+      "fills": []
+    },
+    "zoom_in": {
+      "resource": "ic_drv_zoom_in",
+      "group": "Map",
+      "label": "Zoom in",
+      "viewport": 24,
+      "strokeWidth": 1.8,
+      "strokes": [
+        "M4.0 10.6 A6.6 6.6 0 1 1 17.2 10.6 A6.6 6.6 0 1 1 4.0 10.6 Z",
+        "M15.6 15.6 L20.6 20.6",
+        "M10.6 7.9 V13.3",
+        "M7.9 10.6 H13.3"
+      ],
+      "fills": []
+    },
+    "zoom_out": {
+      "resource": "ic_drv_zoom_out",
+      "group": "Map",
+      "label": "Zoom out",
+      "viewport": 24,
+      "strokeWidth": 1.8,
+      "strokes": [
+        "M4.0 10.6 A6.6 6.6 0 1 1 17.2 10.6 A6.6 6.6 0 1 1 4.0 10.6 Z",
+        "M15.6 15.6 L20.6 20.6",
+        "M7.9 10.6 H13.3"
+      ],
+      "fills": []
+    },
+    "layers": {
+      "resource": "ic_drv_layers",
+      "group": "Map",
+      "label": "Map layers",
+      "viewport": 24,
+      "strokeWidth": 1.8,
+      "strokes": [
+        "M12 3.4 L20.6 7.9 L12 12.4 L3.4 7.9 Z",
+        "M3.4 12.3 L12 16.8 L20.6 12.3",
+        "M3.4 16.5 L12 21 L20.6 16.5"
+      ],
+      "fills": []
+    },
+    "bookmark": {
+      "resource": "ic_drv_bookmark",
+      "group": "Map",
+      "label": "Saved location",
+      "viewport": 24,
+      "strokeWidth": 1.8,
+      "strokes": [
+        "M6.6 3.9 H17.4 Q18.3 3.9 18.3 4.8 V20.5 L12 16.3 L5.7 20.5 V4.8 Q5.7 3.9 6.6 3.9 Z"
       ],
       "fills": []
     },

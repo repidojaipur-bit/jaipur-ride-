@@ -50,6 +50,7 @@ object DriveIcons {
     val WifiOff = DriveIconSpec(R.drawable.ic_drv_wifi_off, "wifi_off", "Status", "Connection lost")
     val Star = DriveIconSpec(R.drawable.ic_drv_star, "star", "Status", "Rating")
     val UserCheck = DriveIconSpec(R.drawable.ic_drv_user_check, "user_check", "Status", "Partner verified")
+    val Target = DriveIconSpec(R.drawable.ic_drv_target, "target", "Status", "Daily target")
     val IdBadge = DriveIconSpec(R.drawable.ic_drv_id_badge, "id_badge", "Status", "Partner ID")
     val Inbox = DriveIconSpec(R.drawable.ic_drv_inbox, "inbox", "Status", "Nothing to show")
     val MapPin = DriveIconSpec(R.drawable.ic_drv_map_pin, "map_pin", "Map", "Location")
@@ -58,6 +59,10 @@ object DriveIcons {
     val Route = DriveIconSpec(R.drawable.ic_drv_route, "route", "Map", "Trip route")
     val Globe = DriveIconSpec(R.drawable.ic_drv_globe, "globe", "Map", "Service area")
     val Flag = DriveIconSpec(R.drawable.ic_drv_flag, "flag", "Map", "Destination")
+    val ZoomIn = DriveIconSpec(R.drawable.ic_drv_zoom_in, "zoom_in", "Map", "Zoom in")
+    val ZoomOut = DriveIconSpec(R.drawable.ic_drv_zoom_out, "zoom_out", "Map", "Zoom out")
+    val Layers = DriveIconSpec(R.drawable.ic_drv_layers, "layers", "Map", "Map layers")
+    val Bookmark = DriveIconSpec(R.drawable.ic_drv_bookmark, "bookmark", "Map", "Saved location")
     val Check = DriveIconSpec(R.drawable.ic_drv_check, "check", "Action", "Accept")
     val Close = DriveIconSpec(R.drawable.ic_drv_close, "close", "Action", "Decline")
     val ChevronRight = DriveIconSpec(R.drawable.ic_drv_chevron_right, "chevron_right", "Action", "Open")
@@ -117,6 +122,7 @@ object DriveIcons {
         WifiOff,
         Star,
         UserCheck,
+        Target,
         IdBadge,
         Inbox,
         MapPin,
@@ -125,6 +131,10 @@ object DriveIcons {
         Route,
         Globe,
         Flag,
+        ZoomIn,
+        ZoomOut,
+        Layers,
+        Bookmark,
         Check,
         Close,
         ChevronRight,

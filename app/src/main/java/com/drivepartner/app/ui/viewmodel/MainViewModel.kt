@@ -50,6 +50,7 @@ class MainViewModel(
     private val _fallbackLanguage = MutableStateFlow(AppLanguage.ENGLISH)
     private val _fallbackTheme = MutableStateFlow(ThemePreference.LIGHT)
     private val _notificationBadge = MutableStateFlow(false)
+    private val _unreadNotificationCount = MutableStateFlow(0)
     private val _dutyNoticeOverride = MutableStateFlow<String?>(null)
     private val _isDutyTransitionPending = MutableStateFlow(false)
 
@@ -57,6 +58,7 @@ class MainViewModel(
         if (retentionSafetyRepository != null) {
             viewModelScope.launch {
                 retentionSafetyRepository.unreadNotificationCount.collect { count ->
+                    _unreadNotificationCount.value = count
                     _notificationBadge.value = count > 0
                 }
             }
@@ -93,6 +95,9 @@ class MainViewModel(
     ) { destination, uiState, language, hasNotification, dutyNotice ->
         UiControlsSnapshot(destination, uiState, language, hasNotification, dutyNotice)
     }
+
+    /** Live unread notification count behind the top-bar badge (spec section 4). */
+    val unreadNotificationCount: StateFlow<Int> = _unreadNotificationCount.asStateFlow()
 
     val mainUiState: StateFlow<MainUiState> = combine(
         repositoryFlows,

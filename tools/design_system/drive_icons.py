@@ -164,6 +164,9 @@ ICONS: dict[str, tuple[str, str, list[str], list[str]]] = {
         "Status", "Partner verified",
         [circle(10.2, 8.2, 3.6), "M3.6 19.8 C3.6 16.3 6.6 14.3 10.2 14.3 C11.4 14.3 12.5 14.5 13.4 14.9",
          "M15.2 18.2 L17.2 20.2 L21 16.2"], []),
+    "target": (
+        "Status", "Daily target",
+        [circle(12, 12, 8.2), circle(12, 12, 4.4)], [circle(12, 12, 1.3)]),
     "id_badge": (
         "Status", "Partner ID",
         [rounded_rect(3.2, 5, 17.6, 14.6, 2.2), circle(9, 11, 2.2),
@@ -198,6 +201,24 @@ ICONS: dict[str, tuple[str, str, list[str], list[str]]] = {
     "flag": (
         "Map", "Destination",
         ["M5.6 21 V3.8", "M5.6 4.6 H18.4 L15.6 8.6 L18.4 12.6 H5.6"], []),
+    "zoom_in": (
+        "Map", "Zoom in",
+        [circle(10.6, 10.6, 6.6),
+         "M15.6 15.6 L20.6 20.6",
+         "M10.6 7.9 V13.3", "M7.9 10.6 H13.3"], []),
+    "zoom_out": (
+        "Map", "Zoom out",
+        [circle(10.6, 10.6, 6.6),
+         "M15.6 15.6 L20.6 20.6",
+         "M7.9 10.6 H13.3"], []),
+    "layers": (
+        "Map", "Map layers",
+        ["M12 3.4 L20.6 7.9 L12 12.4 L3.4 7.9 Z",
+         "M3.4 12.3 L12 16.8 L20.6 12.3",
+         "M3.4 16.5 L12 21 L20.6 16.5"], []),
+    "bookmark": (
+        "Map", "Saved location",
+        ["M6.6 3.9 H17.4 Q18.3 3.9 18.3 4.8 V20.5 L12 16.3 L5.7 20.5 V4.8 Q5.7 3.9 6.6 3.9 Z"], []),
 
     # ------------------------------------------------------------------ actions
     "check": ("Action", "Accept", ["M4.6 12.6 L9.6 17.6 L19.4 6.6"], []),

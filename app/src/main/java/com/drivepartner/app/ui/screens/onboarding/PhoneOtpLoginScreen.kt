@@ -1,5 +1,6 @@
 package com.drivepartner.app.ui.screens.onboarding
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -13,8 +14,10 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.ArrowDropDown
 import androidx.compose.material.icons.outlined.Lock
 import androidx.compose.material.icons.outlined.PhoneAndroid
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -22,12 +25,18 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.RadioButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
@@ -44,6 +53,22 @@ import com.drivepartner.app.ui.viewmodel.OnboardingAuthUiState
 /**
  * S-02: Phone OTP Authentication screen (`11_SCREENS.md`, `03_APPFLOW.md`).
  */
+private data class CountryCodeOption(
+    val dialCode: String,
+    val isoCode: String,
+    val otpSupported: Boolean
+)
+
+private val countryCodes = listOf(
+    CountryCodeOption("+91", "IN", otpSupported = true),
+    CountryCodeOption("+977", "NP", otpSupported = false),
+    CountryCodeOption("+880", "BD", otpSupported = false),
+    CountryCodeOption("+94", "LK", otpSupported = false),
+    CountryCodeOption("+971", "AE", otpSupported = false),
+    CountryCodeOption("+44", "GB", otpSupported = false),
+    CountryCodeOption("+1", "US", otpSupported = false)
+)
+
 @Composable
 fun PhoneOtpLoginScreen(
     uiState: OnboardingAuthUiState,
@@ -88,26 +113,75 @@ fun PhoneOtpLoginScreen(
                     .padding(DriveSpacing.space16),
                 verticalArrangement = Arrangement.spacedBy(DriveSpacing.space12)
             ) {
-                OutlinedTextField(
-                    value = uiState.phoneInput,
-                    onValueChange = onPhoneChanged,
-                    enabled = !uiState.isOtpSent && !uiState.isLoading,
-                    label = { Text(stringResource(R.string.auth_phone_label)) },
-                    prefix = { Text("+91 ") },
-                    leadingIcon = {
-                        Icon(Icons.Outlined.PhoneAndroid, contentDescription = null)
-                    },
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                    singleLine = true,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .testTag("auth_phone_input")
-                )
+                var showCountryDialog by remember { mutableStateOf(false) }
+                var selectedDialCode by rememberSaveable { mutableStateOf("+91") }
+                val selectedOption = countryCodes.first { it.dialCode == selectedDialCode }
+
+                if (showCountryDialog) {
+                    CountryCodeDialog(
+                        selectedDialCode = selectedDialCode,
+                        onSelect = { code ->
+                            selectedDialCode = code
+                            showCountryDialog = false
+                        },
+                        onDismiss = { showCountryDialog = false }
+                    )
+                }
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(DriveSpacing.sm)
+                ) {
+                    OutlinedButton(
+                        onClick = { showCountryDialog = true },
+                        modifier = Modifier.defaultMinSize(minHeight = DriveSpacing.secondaryButtonHeight)
+                    ) {
+                        Text(text = selectedDialCode)
+                        Icon(
+                            imageVector = Icons.Outlined.ArrowDropDown,
+                            contentDescription = stringResource(
+                                R.string.auth_country_code_value,
+                                selectedDialCode
+                            )
+                        )
+                    }
+                    OutlinedTextField(
+                        value = uiState.phoneInput,
+                        onValueChange = onPhoneChanged,
+                        enabled = !uiState.isOtpSent && !uiState.isLoading,
+                        label = { Text(stringResource(R.string.auth_phone_label)) },
+                        supportingText = { Text(stringResource(R.string.auth_phone_helper)) },
+                        leadingIcon = {
+                            Icon(Icons.Outlined.PhoneAndroid, contentDescription = null)
+                        },
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                        singleLine = true,
+                        modifier = Modifier
+                            .weight(1f)
+                            .testTag("auth_phone_input")
+                    )
+                }
+
+                if (!selectedOption.otpSupported) {
+                    Text(
+                        text = stringResource(R.string.auth_country_code_unavailable),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.error
+                    )
+                } else if (uiState.phoneInput.isNotEmpty() && uiState.phoneInput.length < 10) {
+                    Text(
+                        text = stringResource(R.string.auth_phone_invalid),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.error
+                    )
+                }
 
                 if (!uiState.isOtpSent) {
                     Button(
                         onClick = onRequestOtp,
-                        enabled = !uiState.isLoading && uiState.phoneInput.length == 10,
+                        enabled = !uiState.isLoading && uiState.phoneInput.length == 10 &&
+                            selectedOption.otpSupported,
                         modifier = Modifier
                             .fillMaxWidth()
                             .defaultMinSize(minHeight = DriveSpacing.minTouchTarget)
@@ -164,6 +238,13 @@ fun PhoneOtpLoginScreen(
                         }
                     }
 
+                    if (uiState.otpInput.isNotEmpty() && uiState.otpInput.length < 6) {
+                        Text(
+                            text = stringResource(R.string.auth_otp_invalid_length),
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.error
+                        )
+                    }
                     Button(
                         onClick = onVerifyOtp,
                         enabled = !uiState.isLoading && uiState.otpInput.length == 6,
@@ -221,4 +302,54 @@ fun PhoneOtpLoginScreen(
             Text(text = stringResource(R.string.auth_change_language))
         }
     }
+}
+
+@Composable
+private fun CountryCodeDialog(
+    selectedDialCode: String,
+    onSelect: (String) -> Unit,
+    onDismiss: () -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(stringResource(R.string.auth_country_code_dialog_title)) },
+        text = {
+            Column {
+                countryCodes.forEach { option ->
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .defaultMinSize(minHeight = DriveSpacing.minTouchTarget)
+                            .clickable(enabled = option.otpSupported) { onSelect(option.dialCode) },
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        RadioButton(
+                            selected = option.dialCode == selectedDialCode,
+                            onClick = { if (option.otpSupported) onSelect(option.dialCode) },
+                            enabled = option.otpSupported
+                        )
+                        Text(
+                            text = "${option.dialCode} · ${option.isoCode}",
+                            style = MaterialTheme.typography.bodyLarge,
+                            color = if (option.otpSupported) {
+                                MaterialTheme.colorScheme.onSurface
+                            } else {
+                                MaterialTheme.colorScheme.onSurface.copy(alpha = 0.45f)
+                            }
+                        )
+                    }
+                }
+                Text(
+                    text = stringResource(R.string.auth_country_code_unavailable),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+        },
+        confirmButton = {
+            TextButton(onClick = onDismiss) {
+                Text(stringResource(R.string.payout_dialog_cancel))
+            }
+        }
+    )
 }

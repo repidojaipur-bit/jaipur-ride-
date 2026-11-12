@@ -16,7 +16,8 @@ export default defineConfig(() => {
     },
     server: {
       // The Arena live preview proxies this dev server under a generated host name.
-      allowedHosts: true,
+      // `as const` keeps the literal type: Vite's ServerOptions allow only `true` or a list.
+      allowedHosts: true as const,
       // HMR is disabled in AI Studio via DISABLE_HMR env var.
       // Do not modify—file watching is disabled to prevent flickering during agent edits.
       hmr: process.env.DISABLE_HMR !== 'true',
