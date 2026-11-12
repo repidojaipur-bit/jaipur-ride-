@@ -3,12 +3,13 @@ package com.drivepartner.app.ui.theme
 import android.app.Activity
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
-import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
+import com.drivepartner.app.data.model.ThemePreference
 
 private val LightColorScheme = lightColorScheme(
     primary = DriveBluePrimary,
@@ -16,22 +17,22 @@ private val LightColorScheme = lightColorScheme(
     primaryContainer = DriveBlueContainer,
     onPrimaryContainer = DriveOnBlueContainer,
 
-    secondary = DriveBlueLight,
+    secondary = DriveInfoBlue,
     onSecondary = DriveSurfaceWhite,
-    secondaryContainer = DriveSurfaceLightGrey,
+    secondaryContainer = DriveSurfaceSubtle,
     onSecondaryContainer = DriveTextPrimary,
 
-    tertiary = DriveYellowEarning,
-    onTertiary = DriveSurfaceWhite,
+    tertiary = DriveWarningAmber,
+    onTertiary = DriveTextPrimary,
     tertiaryContainer = DriveYellowContainer,
     onTertiaryContainer = DriveOnYellowContainer,
 
-    background = DriveSurfaceWhite,
+    background = DriveSurfaceSubtle,
     onBackground = DriveTextPrimary,
 
     surface = DriveSurfaceWhite,
     onSurface = DriveTextPrimary,
-    surfaceVariant = DriveSurfaceLightGrey,
+    surfaceVariant = DriveSurfaceSubtle,
     onSurfaceVariant = DriveTextSecondary,
 
     error = DriveError,
@@ -40,28 +41,67 @@ private val LightColorScheme = lightColorScheme(
     onErrorContainer = DriveOnErrorContainer,
 
     outline = DriveSurfaceBorder,
-    outlineVariant = DriveSurfaceLightGrey
+    outlineVariant = DriveSurfaceSubtle
+)
+
+private val DarkColorScheme = darkColorScheme(
+    primary = DriveDarkBluePrimary,
+    onPrimary = DriveDarkBackground,
+    primaryContainer = DriveDarkBlueContainer,
+    onPrimaryContainer = DriveDarkOnBlueContainer,
+
+    secondary = DriveBlueLight,
+    onSecondary = DriveDarkTextPrimary,
+    secondaryContainer = DriveDarkSurfaceVariant,
+    onSecondaryContainer = DriveDarkTextPrimary,
+
+    tertiary = DriveWarningAmber,
+    onTertiary = DriveDarkBackground,
+    tertiaryContainer = DriveOnYellowContainer,
+    onTertiaryContainer = DriveYellowContainer,
+
+    background = DriveDarkBackground,
+    onBackground = DriveDarkTextPrimary,
+
+    surface = DriveDarkSurface,
+    onSurface = DriveDarkTextPrimary,
+    surfaceVariant = DriveDarkSurfaceVariant,
+    onSurfaceVariant = DriveDarkTextSecondary,
+
+    error = DriveError,
+    onError = DriveSurfaceWhite,
+    errorContainer = DriveDarkErrorContainer,
+    onErrorContainer = DriveDarkOnErrorContainer,
+
+    outline = DriveDarkBorder,
+    outlineVariant = DriveDarkSurfaceVariant
 )
 
 /**
- * DrivePartnerTheme - Professional Material 3 theme tailored for driver partner application.
- * Retains high-contrast readability under bright daylight and dashboard mounted conditions.
+ * DrivePartnerTheme - Material 3 theme aligned with Design.md tokens.
+ * Supports high-contrast daylight mode and optional/system night dark mode.
  */
 @Composable
 fun DrivePartnerTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
+    themePreference: ThemePreference = ThemePreference.LIGHT,
     content: @Composable () -> Unit
 ) {
-    // Driver applications prioritize high daytime visibility with a crisp white/light-grey palette
-    val colorScheme = LightColorScheme
+    val useDark = when (themePreference) {
+        ThemePreference.DARK -> true
+        ThemePreference.LIGHT -> false
+        ThemePreference.SYSTEM -> isSystemInDarkTheme()
+    }
+    val colorScheme = if (useDark) DarkColorScheme else LightColorScheme
 
     val view = LocalView.current
     if (!view.isInEditMode) {
         SideEffect {
             val window = (view.context as? Activity)?.window
             if (window != null) {
-                window.statusBarColor = DriveBluePrimary.toArgb()
-                WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = false
+                WindowCompat.getInsetsController(window, view).apply {
+                    isAppearanceLightStatusBars = false
+                    isAppearanceLightNavigationBars = !useDark
+                }
             }
         }
     }

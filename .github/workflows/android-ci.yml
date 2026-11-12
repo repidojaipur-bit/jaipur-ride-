@@ -1,0 +1,61 @@
+name: Android CI
+
+on:
+  push:
+    branches: [ main, "arena/**" ]
+  pull_request:
+
+jobs:
+  android-foundation:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Set up Gradle 8.11.1
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: "8.11.1"
+
+      - name: Compile Demo & Live Debug variants
+        shell: bash
+        run: |
+          set -o pipefail
+          gradle assembleDemoDebug assembleLiveDebug --console=plain 2>&1 | tee /tmp/gradle-debug.log || {
+            python3 -c 'import pathlib, re; lines = [l.replace("\r", "").replace("%", "%25") for l in pathlib.Path("/tmp/gradle-debug.log").read_text(errors="replace").splitlines() if re.search(r"^e: |FAILURE:|> Task .* FAILED|error:|Exception", l)]; print("\n".join("::error::" + "%0A".join(lines[i:i+15]) for i in range(0, min(len(lines), 120), 15)))'
+            exit 1
+          }
+
+      - name: Verify Live Release R8 Compilation
+        shell: bash
+        run: |
+          set -o pipefail
+          gradle assembleLiveRelease --console=plain 2>&1 | tee /tmp/gradle-release.log || {
+            python3 -c 'import pathlib, re; lines = [l.replace("\r", "").replace("%", "%25") for l in pathlib.Path("/tmp/gradle-release.log").read_text(errors="replace").splitlines() if re.search(r"^e: |FAILURE:|> Task .* FAILED|error:|Exception", l)]; print("\n".join("::error::" + "%0A".join(lines[i:i+15]) for i in range(0, min(len(lines), 120), 15)))'
+            exit 1
+          }
+
+      - name: Run Android Lint
+        shell: bash
+        run: |
+          set -o pipefail
+          gradle lintDemoDebug lintLiveDebug --console=plain 2>&1 | tee /tmp/gradle-lint.log || {
+            python3 -c 'import pathlib, re; lines = [l.replace("\r", "").replace("%", "%25") for l in pathlib.Path("/tmp/gradle-lint.log").read_text(errors="replace").splitlines() if re.search(r"Error:|FAILURE:|> Task .* FAILED", l)]; print("\n".join("::error::" + "%0A".join(lines[i:i+15]) for i in range(0, min(len(lines), 120), 15)))'
+            exit 1
+          }
+
+      - name: Run JVM Unit Tests
+        shell: bash
+        run: |
+          set -o pipefail
+          gradle testDemoDebugUnitTest testLiveDebugUnitTest --console=plain 2>&1 | tee /tmp/gradle-test.log || {
+            python3 -c 'import pathlib, re; lines = [l.replace("\r", "").replace("%", "%25") for l in pathlib.Path("/tmp/gradle-test.log").read_text(errors="replace").splitlines() if re.search(r"^e: |FAILED|FAILURE:|Error|Exception|> Task .* FAILED", l)]; print("\n".join("::error::" + "%0A".join(lines[i:i+15]) for i in range(0, min(len(lines), 120), 15)))'
+            exit 1
+          }

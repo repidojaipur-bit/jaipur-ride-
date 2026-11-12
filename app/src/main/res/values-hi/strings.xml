@@ -12,26 +12,645 @@
     <string name="nav_rewards">रिवार्ड्स</string>
     <string name="nav_profile">प्रोफाइल</string>
 
-    <!-- Partner Status -->
+    <!-- Secondary Navigation & Drawer -->
+    <string name="drawer_header_subtitle">जयपुर पार्टनर शेल • चरण 7</string>
+    <string name="drawer_duty_badge_demo">डेमो सैंडबॉक्स</string>
+    <string name="drawer_duty_badge_live">लाइव बिल्ड</string>
+    <string name="nav_notifications">सूचनाएं</string>
+    <string name="nav_settings">ऐप सेटिंग्स</string>
+    <string name="nav_vehicle_details">वाहन विवरण</string>
+    <string name="nav_kyc_documents">केवाईसी और दस्तावेज</string>
+    <string name="nav_support">पार्टनर सहायता</string>
+    <string name="nav_emergency_sos">आपातकालीन एसओएस</string>
+
+    <!-- Accessibility Content Descriptions -->
+    <string name="cd_open_drawer">नेविगेशन मेनू खोलें</string>
+    <string name="cd_back">वापस जाएं</string>
+    <string name="cd_notifications">सूचनाएं खोलें</string>
+    <string name="cd_switch_language">भाषा बदलें</string>
+    <string name="cd_toggle_duty">ड्यूटी स्थिति बदलें</string>
+    <string name="cd_recenter_map">मैप रीसेंटर करें और वर्तमान लोकेशन रिफ्रेश करें</string>
+
+    <!-- Partner Status & 6-State Duty Control -->
     <string name="status_online">ऑनलाइन</string>
     <string name="status_offline">ऑफलाइन</string>
+    <string name="duty_state_offline">ऑफलाइन</string>
+    <string name="duty_state_turning_online">ऑनलाइन हो रहा है…</string>
+    <string name="duty_state_online">ऑनलाइन</string>
+    <string name="duty_state_turning_offline">ऑफलाइन हो रहा है…</string>
+    <string name="duty_state_blocked">पात्रता अवरुद्ध</string>
+    <string name="duty_state_connection_unknown">स्थिति अपुष्ट</string>
     <string name="go_online">ऑनलाइन जाएं</string>
     <string name="go_offline">ऑफलाइन जाएं</string>
-    <string name="ready_to_receive_orders">नई बुकिंग अनुरोध प्राप्त करने के लिए तैयार</string>
-    <string name="currently_offline_message">आप वर्तमान में ऑफलाइन हैं। राइड्स और डिलीवरी स्वीकार करने के लिए ऑनलाइन आएं।</string>
+    <string name="ready_to_receive_orders">ऑनलाइन हैं और डिस्पैच बाउंड्री के माध्यम से ऑर्डर प्राप्त करने के लिए तैयार हैं।</string>
+    <string name="currently_offline_message">आप वर्तमान में ऑफलाइन हैं। ड्यूटी लोकेशन ट्रैकिंग बंद है।</string>
+    <string name="duty_turning_online_msg">पात्रता की जांच और बैकएंड से ऑनलाइन पुष्टि की जा रही है…</string>
+    <string name="duty_turning_offline_msg">ऑफलाइन स्थिति की पुष्टि और लोकेशन ट्रैकिंग बंद की जा रही है…</string>
+    <string name="duty_blocked_msg">ऑनलाइन जाने से पहले अनिवार्य पात्रता शर्तें पूरी करें।</string>
+    <string name="duty_connection_unknown_msg">बैकएंड पुष्टि उपलब्ध नहीं है। आपकी स्थिति ऑनलाइन नहीं की गई है।</string>
+    <string name="duty_change_not_confirmed">सर्वर द्वारा ड्यूटी परिवर्तन की पुष्टि नहीं हुई। पिछली पुष्टि की गई स्थिति बहाल की गई।</string>
 
     <!-- Service Types -->
     <string name="service_bike_taxi">बाइक टैक्सी</string>
     <string name="service_auto">ऑटो रिक्शा</string>
     <string name="service_cab">कैब</string>
     <string name="service_delivery">डिलीवरी</string>
+    <string name="service_category_heading">सेवा श्रेणी</string>
 
-    <!-- Home Destination -->
+    <!-- Home Dashboard (Phase 3) -->
     <string name="home_title">पार्टनर डैशबोर्ड</string>
     <string name="home_welcome_back">वापसी पर स्वागत है, पार्टनर</string>
     <string name="home_duty_status">ड्यूटी स्थिति</string>
     <string name="home_today_summary">आज का विवरण</string>
-    <string name="home_empty_message">इस समय कोई सक्रिय राइड या डिलीवरी अनुरोध नहीं है।</string>
+    <string name="home_completed_trips_label">आज पूर्ण कार्य</string>
+    <string name="home_estimated_earnings_label">आज का अनुमान</string>
+    <string name="home_estimate_disclaimer">केवल अनुमानित राशि; अंतिम विवरण चरण 6 में समायोजित होगा।</string>
+    <string name="home_last_synced">अंतिम सिंक: %1$s</string>
+    <string name="home_not_synced">अभी बैकएंड से सिंक नहीं हुआ</string>
+    <string name="home_empty_message">ऑनलाइन रहने पर नए कार्य प्रस्ताव देखने के लिए ऑर्डर्स टैब खोलें।</string>
+    <string name="home_quick_actions">त्वरित विकल्प</string>
+    <string name="home_zones_label">कार्य क्षेत्र और ऑटो बूस्ट</string>
+    <string name="home_zones_placeholder">पसंदीदा कार्य क्षेत्र और ऑटो बूस्ट प्राथमिकता प्रबंधित करें।</string>
+    <string name="home_manage_preferences">प्राथमिकताएं बदलें</string>
+    <string name="home_selected_zones_count">%1$d पसंदीदा क्षेत्र चयनित</string>
+    <string name="home_autoboost_on">ऑटो बूस्ट प्राथमिकता: सक्षम (कभी स्वतः स्वीकार नहीं करता)</string>
+    <string name="home_autoboost_off">ऑटो बूस्ट प्राथमिकता: अक्षम</string>
+
+    <!-- Map Boundary & Location States -->
+    <string name="map_sdk_boundary_title">मैप और क्षेत्र बाउंड्री</string>
+    <string name="map_key_unconfigured_notice">इंटरैक्टिव गूगल मैप्स के लिए बाहरी प्रतिबंधित Maps API कुंजी (DRIVE_PARTNER_MAPS_API_KEY) आवश्यक है।</string>
+    <string name="map_location_permission_needed">मैप पर अपनी स्थिति देखने के लिए लोकेशन अनुमति आवश्यक है।</string>
+    <string name="map_gps_disabled_notice">डिवाइस GPS बंद है। अपनी स्थिति प्राप्त करने के लिए लोकेशन सेवाएं चालू करें।</string>
+    <string name="map_coordinates_preview">वर्तमान स्थिति: %1$s, %2$s (±%3$d मी.)</string>
+    <string name="map_own_location_marker">आपकी वर्तमान स्थिति</string>
+    <string name="map_configured_zones_heading">कॉन्फ़िगर किए गए कार्य क्षेत्र</string>
+    <string name="map_no_zones_configured">अभी कोई बैकएंड कार्य क्षेत्र सिंक नहीं हुआ है।</string>
+    <string name="map_no_surge_notice">केवल सत्यापित क्षेत्र और आपकी स्थिति दिखाई जाती है। लाइव डेटा के बिना डिमांड/सर्ज परतें छिपी रहती हैं।</string>
+    <string name="location_badge_live_gps">GPS तैयार</string>
+    <string name="location_badge_approximate">अनुमानित लोकेशन</string>
+    <string name="location_badge_stale">पुरानी लोकेशन — रीसेंटर दबाएं</string>
+    <string name="location_badge_unavailable">लोकेशन अनुपलब्ध</string>
+    <string name="location_badge_gps_off">GPS बंद है</string>
+    <string name="location_badge_permission_denied">अनुमति अस्वीकृत</string>
+    <string name="location_stale_banner">आपकी लोकेशन 90 सेकंड से अधिक पुरानी है। ताज़ा GPS स्थिति के लिए रीसेंटर दबाएं।</string>
+    <string name="location_approximate_banner">केवल अनुमानित लोकेशन मिली है। सटीक ड्यूटी ट्रैकिंग के लिए सटीक GPS अनुमति अनुशंसित है।</string>
+
+    <!-- Location Permissions & GPS Education -->
+    <string name="permission_edu_title">ड्यूटी के लिए लोकेशन अनुमति</string>
+    <string name="permission_edu_body">ऑनलाइन रहने पर आपका कार्य क्षेत्र सत्यापित करने और ड्यूटी उपलब्धता साझा करने के लिए ड्राइव पार्टनर लोकेशन का उपयोग करता है। ऑफलाइन जाने पर ट्रैकिंग बंद हो जाती है।</string>
+    <string name="permission_edu_allow">लोकेशन की अनुमति दें</string>
+    <string name="permission_edu_not_now">अभी नहीं</string>
+    <string name="permission_denied_banner">ऑनलाइन जाने के लिए लोकेशन अनुमति आवश्यक है।</string>
+    <string name="permission_permanently_denied_banner">लोकेशन अनुमति स्थायी रूप से बंद है। इसे चालू करने के लिए ऐप सेटिंग्स खोलें।</string>
+    <string name="gps_disabled_banner">डिवाइस GPS बंद है। ऑनलाइन जाने से पहले लोकेशन सेवाएं चालू करें।</string>
+    <string name="action_enable_gps">GPS चालू करें</string>
+    <string name="action_grant_permission">अनुमति दें</string>
+    <string name="error_gps_required_for_online">ऑनलाइन जाने से पहले डिवाइस GPS चालू करें।</string>
+    <string name="error_location_permission_required">ऑनलाइन जाने से पहले लोकेशन अनुमति दें।</string>
+    <string name="error_location_unavailable_for_online">ऑनलाइन जाने से पहले मान्य GPS लोकेशन की प्रतीक्षा है।</string>
+
+    <!-- Foreground Service Notification -->
+    <string name="duty_notification_channel_name">ऑन-ड्यूटी लोकेशन साझाकरण</string>
+    <string name="duty_notification_channel_desc">केवल ऑनलाइन ड्यूटी के दौरान सक्रिय रहने वाली सूचना।</string>
+    <string name="duty_notification_title">ड्राइव पार्टनर — आप ऑनलाइन हैं</string>
+    <string name="duty_notification_text">ड्यूटी लोकेशन साझा की जा रही है। ट्रैकिंग बंद करने के लिए ऑफलाइन जाएं।</string>
+
+    <!-- Driver Eligibility & Blocking Reasons -->
+    <string name="eligibility_heading">ड्राइवर पात्रता</string>
+    <string name="eligibility_verified_ready">ऑनलाइन जाने के लिए पात्र</string>
+    <string name="eligibility_blocked_title">ऑनलाइन पहुंच अवरुद्ध है</string>
+    <string name="eligibility_not_checked">बैकएंड द्वारा पात्रता की पुष्टि अभी नहीं हुई है।</string>
+    <string name="elig_reason_account_not_approved">आपका पार्टनर खाता अभी स्वीकृत नहीं है।</string>
+    <string name="elig_reason_kyc_incomplete">अनिवार्य केवाईसी दस्तावेज अधूरे हैं।</string>
+    <string name="elig_reason_document_rejected">एक या अधिक केवाईसी दस्तावेज अस्वीकृत हैं; कृपया पुनः अपलोड करें।</string>
+    <string name="elig_reason_document_expired">एक अनिवार्य दस्तावेज की अवधि समाप्त हो गई है।</string>
+    <string name="elig_reason_vehicle_not_approved">पंजीकृत वाहन की स्वीकृति लंबित है।</string>
+    <string name="elig_reason_city_not_enabled">आपके शहर में सेवा अभी सक्रिय नहीं है।</string>
+    <string name="elig_reason_active_suspension">आपके खाते पर वर्तमान में अस्थायी निलंबन लागू है।</string>
+    <string name="elig_reason_location_unavailable">मान्य GPS लोकेशन सत्यापित नहीं हो सकी।</string>
+
+    <!-- Service Area & Auto Boost Preferences Sheet -->
+    <string name="prefs_sheet_title">कार्य क्षेत्र और ऑटो बूस्ट</string>
+    <string name="prefs_zones_section">पसंदीदा कार्य क्षेत्र</string>
+    <string name="prefs_autoboost_title">ऑटो बूस्ट प्राथमिकता</string>
+    <string name="prefs_autoboost_desc">केवल बैकएंड प्राथमिकता: योग्य बूस्ट आवंटन में रुचि दर्शाता है। ऑर्डर हमेशा आपकी स्पष्ट स्वीकृति या अस्वीकृति पर निर्भर रहेंगे और कभी स्वतः स्वीकार नहीं होंगे।</string>
+    <string name="prefs_save_action">प्राथमिकताएं सहेजें</string>
+    <string name="prefs_cancel_action">रद्द करें</string>
+    <string name="prefs_save_success">प्राथमिकताएं अपडेट हो गईं।</string>
+
+    <!-- Demo Testing Controls (Visible ONLY in DEMO flavor) -->
+    <string name="demo_controls_title">डेमो सैंडबॉक्स नियंत्रण (केवल डेमो)</string>
+    <string name="demo_controls_eligible_toggle">पात्र ड्राइवर अनुकरण करें (बंद = दस्तावेज़ समाप्त)</string>
+
+    <!-- Orders Destination & Phase 4 Dispatch -->
+    <string name="orders_title">ऑर्डर्स और ट्रिप्स</string>
+    <string name="orders_tab_active">सक्रिय</string>
+    <string name="orders_tab_completed">पूर्ण</string>
+    <string name="orders_tab_cancelled">रद्द</string>
+    <string name="orders_empty_title">कोई सक्रिय प्रस्ताव नहीं</string>
+    <string name="orders_empty_description">ऑनलाइन होने पर बैकएंड डिस्पैच से आने वाले कार्य प्रस्ताव यहां दिखाई देंगे।</string>
+    <string name="orders_realtime_connected">रियलटाइम डिस्पैच: कनेक्टेड</string>
+    <string name="orders_realtime_connecting">रियलटाइम डिस्पैच: कनेक्ट हो रहा है…</string>
+    <string name="orders_realtime_reconnecting">रियलटाइम डिस्पैच: पुनः कनेक्ट और सिंक हो रहा है…</string>
+    <string name="orders_realtime_disconnected">रियलटाइम डिस्पैच: डिस्कनेक्टेड</string>
+    <string name="orders_realtime_unconfigured">रियलटाइम चैनल: बैकएंड WebSocket URL कॉन्फ़िगर नहीं है</string>
+
+    <!-- Phase 4 Order Offer Request Card -->
+    <string name="offer_card_heading">नया कार्य प्रस्ताव</string>
+    <string name="offer_pickup_label">पिकअप</string>
+    <string name="offer_drop_label">ड्रॉप</string>
+    <string name="offer_pickup_distance">पिकअप दूरी: %1$s</string>
+    <string name="offer_trip_summary">यात्रा: %1$s • अनुमानित %2$s</string>
+    <string name="offer_estimated_base">अनुमानित मूल किराया</string>
+    <string name="offer_eligible_incentive">पात्र इंसेंटिव</string>
+    <string name="offer_estimated_total">कुल अनुमानित आय</string>
+    <string name="offer_estimate_disclaimer">केवल पूर्व-अनुमान; अंतिम किराया चरण 6 में बैकएंड पर तय होगा।</string>
+    <string name="offer_countdown_remaining">%1$d सेकंड शेष</string>
+    <string name="offer_countdown_expired">प्रस्ताव समाप्त</string>
+    <string name="offer_accept_action">स्वीकार करें</string>
+    <string name="offer_reject_action">अस्वीकार करें</string>
+    <string name="offer_accepting">स्वीकार किया जा रहा है…</string>
+    <string name="offer_rejecting">अस्वीकार किया जा रहा है…</string>
+    <string name="offer_never_auto_accept_note">स्पष्ट स्वीकृति या अस्वीकृति आवश्यक है (कभी स्वतः स्वीकार नहीं)।</string>
+
+    <!-- Reject Reason Dialog -->
+    <string name="offer_reject_dialog_title">प्रस्ताव अस्वीकार करें?</string>
+    <string name="offer_reject_dialog_confirm">अस्वीकार की पुष्टि करें</string>
+    <string name="offer_reject_dialog_cancel">प्रस्ताव रखें</string>
+    <string name="offer_reject_reason_far">पिकअप बहुत दूर है</string>
+    <string name="offer_reject_reason_fare">अनुमानित किराया कम है</string>
+    <string name="offer_reject_reason_break">ब्रेक चाहिए / ऑफलाइन जा रहा हूँ</string>
+    <string name="offer_reject_reason_other">अन्य कारण</string>
+
+    <!-- Phase 4 Atomic Offer Outcome Notices -->
+    <string name="offer_outcome_accepted">प्रस्ताव स्वीकार! असाइन की गई ट्रिप आईडी: %1$s</string>
+    <string name="offer_outcome_rejected">प्रस्ताव अस्वीकार किया गया।</string>
+    <string name="offer_outcome_unavailable_other_driver">प्रस्ताव उपलब्ध नहीं — किसी अन्य पार्टनर ने यह ऑर्डर स्वीकार कर लिया है।</string>
+    <string name="offer_outcome_expired">इस प्रस्ताव की समय-सीमा समाप्त हो गई है और अब इसे स्वीकार नहीं किया जा सकता।</string>
+    <string name="offer_outcome_network_no_queue">नेटवर्क त्रुटि: स्वीकृति ऑफलाइन कतार में नहीं जोड़ी गई — सक्रिय प्रस्ताव रिफ्रेश करें।</string>
+    <string name="offer_outcome_not_eligible">प्रस्ताव स्वीकार करने के लिए आपका ऑनलाइन और पात्र होना आवश्यक है।</string>
+    <string name="offer_assigned_title">असाइन की गई ट्रिप सक्रिय है</string>
+    <string name="offer_assigned_subtitle">ट्रिप %1$s • ऑर्डर %2$s • स्थिति: %3$s</string>
+    <string name="offer_assigned_phase5_notice">अपनी ट्रिप पूरी करने के लिए नीचे दिए गए बैकएंड-सत्यापित चरणों का पालन करें।</string>
+    <string name="offer_dismiss_notice">बंद करें</string>
+
+    <!-- Phase 5 Active Trip Lifecycle & Navigation -->
+    <string name="trip_card_title">सक्रिय ट्रिप</string>
+    <string name="trip_status_assigned">स्वीकृत — पिकअप के लिए तैयार</string>
+    <string name="trip_status_en_route">पिकअप के रास्ते में</string>
+    <string name="trip_status_arrived">पिकअप स्थान पर पहुंचे</string>
+    <string name="trip_status_in_progress">ट्रिप प्रारंभ (चालू)</string>
+    <string name="trip_status_completed">ट्रिप पूर्ण</string>
+    <string name="trip_status_cancelled">ट्रिप रद्द</string>
+    <string name="trip_status_disputed">समीक्षाधीन (विवादित)</string>
+    <string name="trip_action_head_to_pickup">पिकअप के लिए निकलें</string>
+    <string name="trip_action_navigate_pickup">पिकअप नेविगेशन खोलें</string>
+    <string name="trip_action_navigate_drop">ड्रॉप नेविगेशन खोलें</string>
+    <string name="trip_action_reached_pickup">पिकअप पर पहुंच गए</string>
+    <string name="trip_action_start_trip">ट्रिप शुरू करें</string>
+    <string name="trip_action_complete_trip">ट्रिप पूरी करें</string>
+    <string name="trip_action_cancel_trip">ट्रिप रद्द करें</string>
+    <string name="trip_action_contact_customer">ग्राहक से संपर्क करें</string>
+    <string name="trip_contact_unavailable_note">टेलीफोनी प्रदाता कॉन्फ़िगर होने तक मास्क्ड कॉलिंग अक्षम है (D-014)।</string>
+    <string name="trip_start_pin_label">प्रारंभ सत्यापन पिन</string>
+    <string name="trip_start_pin_hint">4-अंकों का ग्राहक पिन दर्ज करें</string>
+    <string name="trip_precompletion_estimate_label">पूर्व-समाप्ति अनुमान: %1$s</string>
+    <string name="trip_no_local_earnings_note">अंतिम कमाई की गणना डिवाइस पर कभी नहीं होती। बैकएंड चरण 6 में विवरण तैयार करेगा।</string>
+    <string name="trip_completed_heading">ट्रिप सफलतापूर्वक पूर्ण</string>
+    <string name="trip_completed_source_ref">कमाई स्रोत संदर्भ: %1$s</string>
+    <string name="trip_completed_source_pending">बैकएंड कमाई विवरण प्रतीक्षारत (चरण 6)।</string>
+    <string name="trip_cancelled_heading">ट्रिप रद्द की गई</string>
+    <string name="trip_cancel_dialog_title">सक्रिय ट्रिप रद्द करें?</string>
+    <string name="trip_cancel_dialog_confirm">रद्द करने की पुष्टि करें</string>
+    <string name="trip_cancel_dialog_keep">ट्रिप जारी रखें</string>
+    <string name="trip_cancel_reason_no_show">ग्राहक पिकअप पर नहीं पहुंचा</string>
+    <string name="trip_cancel_reason_rider_requested">ग्राहक ने रद्द करने का अनुरोध किया</string>
+    <string name="trip_cancel_reason_vehicle">वाहन या यांत्रिक समस्या</string>
+    <string name="trip_cancel_reason_safety">सुरक्षा संबंधी चिंता</string>
+    <string name="trip_cancel_reason_other">अन्य परिचालन कारण</string>
+    <string name="trip_outcome_transition_confirmed">ट्रिप स्थिति अपडेट हुई: %1$s</string>
+    <string name="trip_outcome_completed">ट्रिप पूर्ण और दर्ज। अंतिम विवरण चरण 6 में समायोजित होगा।</string>
+    <string name="trip_outcome_cancelled">ट्रिप बैकएंड पर रद्द कर दी गई।</string>
+    <string name="trip_outcome_network_no_queue">परिवर्तन के दौरान नेटवर्क त्रुटि। ऑफलाइन कतार नहीं बनाई गई; सर्वर स्थिति सिंक की गई।</string>
+    <string name="trip_nav_app_missing">इस डिवाइस पर कोई संगत मैप या नेविगेशन ऐप नहीं मिला।</string>
+    <string name="trip_done_return_action">ठीक है</string>
+
+    <!-- Phase 5 Order History & Order Detail -->
+    <string name="orders_history_filter_all">सभी</string>
+    <string name="orders_history_filter_completed">पूर्ण</string>
+    <string name="orders_history_filter_cancelled">रद्द</string>
+    <string name="orders_history_empty_title">अभी कोई ऑर्डर इतिहास नहीं</string>
+    <string name="orders_history_empty_description">PostgreSQL इतिहास से पूर्ण और रद्द ट्रिप्स यहां दिखाई देंगी।</string>
+    <string name="orders_history_load_more">और लोड करें</string>
+    <string name="orders_history_loading_more">और लोड हो रहा है…</string>
+    <string name="orders_history_amount_pending">विवरण लंबित (चरण 6)</string>
+    <string name="order_detail_title">ऑर्डर विवरण</string>
+    <string name="order_detail_order_id">ऑर्डर आईडी: %1$s</string>
+    <string name="order_detail_trip_id">ट्रिप आईडी: %1$s</string>
+    <string name="order_detail_metrics">दूरी और अवधि: %1$s • %2$s</string>
+    <string name="order_detail_timeline_heading">ट्रिप इवेंट टाइमलाइन</string>
+    <string name="order_detail_earning_heading">वित्तीय विवरण संदर्भ</string>
+    <string name="order_detail_statement_id">स्टेटमेंट आईडी: %1$s</string>
+    <string name="order_detail_source_ref_id">कमाई स्रोत संदर्भ: %1$s</string>
+    <string name="order_detail_finalized_amount">बैकएंड द्वारा अंतिम राशि: %1$s</string>
+    <string name="order_detail_cancel_reason">रद्द करने का कारण: %1$s</string>
+    <string name="order_detail_close">बंद करें</string>
+
+    <!-- Home Active Trip & Incoming Offer Alerts -->
+    <string name="home_active_trip_banner">सक्रिय ट्रिप जारी है (%1$s) — पुनः खोलने के लिए टैप करें।</string>
+    <string name="home_active_trip_action">ट्रिप खोलें</string>
+    <string name="home_incoming_offer_banner">नया कार्य प्रस्ताव (%1$s शेष) — समय समाप्त होने से पहले उत्तर दें।</string>
+    <string name="home_incoming_offer_action">प्रस्ताव देखें</string>
+
+    <!-- Demo Dispatch Simulator Controls (DEMO ONLY) -->
+    <string name="orders_demo_simulator_title">डेमो प्रस्ताव सिम्युलेटर (केवल डेमो)</string>
+    <string name="orders_demo_create_offer">डेमो प्रस्ताव बनाएं</string>
+    <string name="orders_demo_simulate_race">अन्य ड्राइवर पहले जीता (409) अनुकरण करें</string>
+    <string name="orders_demo_duplicate_event">डुप्लिकेट रियलटाइम इवेंट पुनः भेजें</string>
+    <string name="orders_demo_must_be_online">डेमो प्रस्ताव आजमाने के लिए पहले होम से ऑनलाइन जाएं।</string>
+
+    <!-- Earnings Destination -->
+    <string name="earnings_title">मेरी कमाई</string>
+    <string name="earnings_today">आज की कमाई</string>
+    <string name="earnings_this_week">इस सप्ताह</string>
+    <string name="earnings_incentives">इंसेंटिव और बोनस</string>
+    <string name="earnings_period_today">आज</string>
+    <string name="earnings_period_week">इस सप्ताह</string>
+    <string name="earnings_period_month">इस माह</string>
+    <string name="earnings_payout_account_heading">बैंक भुगतान खाता</string>
+    <string name="earnings_transactions_heading">हालिया लेनदेन</string>
+    <string name="earnings_empty_title">कोई कमाई दर्ज नहीं</string>
+    <string name="earnings_empty_description">PostgreSQL में दर्ज होने के बाद पूर्ण ट्रिप्स और सत्यापित लेजर लेनदेन यहां दिखाई देंगे।</string>
+    <string name="earnings_payout_unlinked">बैकएंड वित्तीय एपीआई जुड़ने तक भुगतान खाता उपलब्ध नहीं है।</string>
+
+    <!-- Phase 6 Wallet, Ledger, Breakdown & Payouts -->
+    <string name="wallet_summary_heading">वॉलेट सारांश</string>
+    <string name="wallet_available_balance">उपलब्ध शेष</string>
+    <string name="wallet_pending_balance">लंबित शेष</string>
+    <string name="wallet_settled_total">कुल निपटाया गया</string>
+    <string name="wallet_derived_at">लेजर से प्राप्त समय: %1$s</string>
+    <string name="wallet_limits_info">निकासी सीमा: %1$s – %2$s</string>
+    <string name="wallet_backend_authority_note">सभी शेष राशि और भुगतान सर्वर लेजर द्वारा नियंत्रित हैं। क्लाइंट शेष बदल नहीं सकता या भुगतान को पूर्ण चिह्नित नहीं कर सकता।</string>
+    <string name="earnings_breakdown_heading">कमाई विवरण</string>
+    <string name="earnings_base_label">बेस और दूरी/समय</string>
+    <string name="earnings_referrals_label">रेफरल</string>
+    <string name="earnings_adjustments_label">समायोजन</string>
+    <string name="earnings_finalized_total_label">अंतिम कुल कमाई</string>
+    <string name="earnings_last_updated">अंतिम अपडेट: %1$s</string>
+    <string name="earnings_withdraw_action">निकासी करें</string>
+    <string name="earnings_link_account_action">बैंक खाता जोड़ें</string>
+    <string name="payout_disabled_no_provider">सत्यापित प्रदाता एकीकरण और वित्त स्वीकृति सक्रिय होने तक वास्तविक भुगतान अक्षम हैं (D-003 / D-005)।</string>
+    <string name="payout_disabled_no_verified_account">निकासी का अनुरोध करने से पहले टोकनयुक्त बैंक खाता जोड़ें और सत्यापित करें।</string>
+    <string name="payout_disabled_insufficient_balance">उपलब्ध शेष न्यूनतम निकासी सीमा (%1$s) से कम है।</string>
+    <string name="payout_disabled_backend_unconfigured">बैकएंड वित्तीय एपीआई तैनात होने तक निकासी उपलब्ध नहीं है।</string>
+    <string name="payout_dialog_title">निकासी का अनुरोध करें</string>
+    <string name="payout_dialog_account_label">गंतव्य खाता</string>
+    <string name="payout_dialog_amount_label">राशि (INR)</string>
+    <string name="payout_dialog_amount_hint">राशि दर्ज करें उदा. 250.00</string>
+    <string name="payout_dialog_submit">भुगतान अनुरोध भेजें</string>
+    <string name="payout_dialog_cancel">रद्द करें</string>
+    <string name="payout_validation_invalid_amount">अधिकतम 2 दशमलव स्थानों तक मान्य INR राशि दर्ज करें।</string>
+    <string name="payout_validation_out_of_bounds">राशि %1$s और उपलब्ध सीमा %2$s के बीच होनी चाहिए।</string>
+    <string name="payout_account_dialog_title">टोकनयुक्त बैंक खाता जोड़ें</string>
+    <string name="payout_account_holder_label">खाताधारक का नाम</string>
+    <string name="payout_account_number_label">बैंक खाता संख्या</string>
+    <string name="payout_account_ifsc_label">IFSC कोड (उदा. HDFC0001234)</string>
+    <string name="payout_account_submit">खाता सहेजें</string>
+    <string name="payout_account_status_not_linked">लिंक नहीं</string>
+    <string name="payout_account_status_pending">सत्यापन लंबित</string>
+    <string name="payout_account_status_verified">सत्यापित</string>
+    <string name="payout_account_status_rejected">अस्वीकृत</string>
+    <string name="payout_history_heading">भुगतान स्थिति और इतिहास</string>
+    <string name="payout_history_empty">अभी तक कोई निकासी अनुरोध दर्ज नहीं हुआ है।</string>
+    <string name="payout_status_pending">लंबित</string>
+    <string name="payout_status_processing">प्रक्रियाधीन</string>
+    <string name="payout_status_paid">भुगतान पूर्ण</string>
+    <string name="payout_status_failed">विफल</string>
+    <string name="payout_status_reversed">रिवर्स किया गया</string>
+    <string name="payout_requested_at">अनुरोध समय: %1$s</string>
+    <string name="payout_settled_at">निपटान समय: %1$s</string>
+    <string name="payout_failure_reason">कारण: %1$s</string>
+    <string name="ledger_type_trip_credit">ट्रिप कमाई क्रेडिट</string>
+    <string name="ledger_type_campaign_credit">अभियान रिवार्ड क्रेडिट</string>
+    <string name="ledger_type_referral_credit">रेफरल रिवार्ड क्रेडिट</string>
+    <string name="ledger_type_payout_hold">भुगतान होल्ड डेबिट</string>
+    <string name="ledger_type_payout_settled">भुगतान निपटान</string>
+    <string name="ledger_type_payout_reversal">भुगतान रिवर्सल क्रेडिट</string>
+    <string name="ledger_type_adjustment">समायोजन</string>
+    <string name="ledger_balance_after">बाद का शेष: %1$s</string>
+    <string name="ledger_load_more">और लेनदेन लोड करें</string>
+    <string name="payout_load_more">और भुगतान लोड करें</string>
+    <string name="transaction_detail_title">वित्तीय लेनदेन विवरण</string>
+    <string name="transaction_detail_entry_id">लेजर एंट्री आईडी: %1$s</string>
+    <string name="transaction_detail_source">स्रोत: %1$s (%2$s)</string>
+    <string name="transaction_detail_amount">राशि: %1$s</string>
+    <string name="transaction_detail_balance_after">लेजर बाद का शेष: %1$s</string>
+    <string name="transaction_detail_statement_heading">विस्तृत कमाई विवरण (स्टेटमेंट)</string>
+    <string name="transaction_detail_fare_version">किराया नियम संस्करण: %1$s</string>
+    <string name="transaction_detail_quote_id">कोट स्नैपशॉट: %1$s</string>
+    <string name="transaction_detail_base_fare">बेस किराया: %1$s</string>
+    <string name="transaction_detail_distance_fare">दूरी किराया: %1$s</string>
+    <string name="transaction_detail_time_fare">समय किराया: %1$s</string>
+    <string name="transaction_detail_incentive_fare">इंसेंटिव: %1$s</string>
+    <string name="transaction_detail_platform_fee">प्लेटफ़ॉर्म शुल्क: -%1$s</string>
+    <string name="transaction_detail_tax">कर (टैक्स): -%1$s</string>
+    <string name="transaction_detail_net_earning">अंतिम शुद्ध कमाई: %1$s</string>
+    <string name="transaction_detail_immutable_note">लेजर प्रविष्टियां केवल-जोड़ने योग्य (append-only) हैं और कभी संपादित नहीं होतीं। सुधार केवल समायोजन या रिवर्सल के रूप में दिखते हैं।</string>
+    <string name="transaction_detail_close">बंद करें</string>
+    <string name="financial_outcome_payout_requested">निकासी अनुरोध भेजा गया (%1$s) — स्थिति: %2$s।</string>
+    <string name="financial_outcome_account_linked">टोकनयुक्त भुगतान खाता जोड़ा गया (%1$s)।</string>
+    <string name="financial_outcome_network_no_queue">वित्तीय अनुरोध के दौरान नेटवर्क विफलता। ऑफलाइन कतार नहीं बनाई गई; कृपया पुनः प्रयास करें।</string>
+    <string name="demo_financial_sandbox_title">डेमो वित्तीय सैंडबॉक्स (केवल DEMO)</string>
+    <string name="demo_financial_seed_trip">पूर्ण ट्रिप कमाई का नमूना जोड़ें</string>
+    <string name="demo_financial_sandbox_toggle">सैंडबॉक्स टेस्ट भुगतान सक्षम करें (कोई वास्तविक धन नहीं)</string>
+    <string name="demo_financial_webhook_paid">वेबहुक: भुगतान पूर्ण करें</string>
+    <string name="demo_financial_webhook_failed">वेबहुक: विफल और रिवर्स करें</string>
+
+    <!-- Rewards Destination -->
+    <string name="rewards_title">रिवार्ड्स और टियर</string>
+    <string name="rewards_current_tier">पार्टनर टियर</string>
+    <string name="rewards_tier_unassigned">बैकएंड सिंक प्रतीक्षारत</string>
+    <string name="rewards_campaigns_heading">अभियान और लक्ष्य</string>
+    <string name="rewards_empty_title">कोई सक्रिय अभियान नहीं</string>
+    <string name="rewards_empty_description">पात्र होने पर बैकएंड-कॉन्फ़िगर दैनिक प्रोत्साहन, साप्ताहिक चुनौतियां और प्राथमिकता रिवार्ड यहां दिखाई देंगे।</string>
+    <string name="rewards_filter_all">सभी</string>
+    <string name="rewards_cat_daily_incentive">दैनिक प्रोत्साहन</string>
+    <string name="rewards_cat_weekly_challenge">साप्ताहिक चुनौतियां</string>
+    <string name="rewards_cat_priority_reward">प्राथमिकता रिवार्ड्स</string>
+    <string name="rewards_terms_version">नियम: %1$s • समाप्ति: %2$s</string>
+    <string name="rewards_progress_label">%1$d / %2$d पूर्ण</string>
+    <string name="rewards_qualified_badge">पात्र • क्रेडिट (%1$s)</string>
+    <string name="rewards_ineligible_badge">बैकएंड अपात्र</string>
+    <string name="rewards_server_eligibility_note">सभी रिवार्ड्स के लिए सर्वर-सत्यापित पात्रता आवश्यक है और प्रत्येक स्रोत पर केवल एक बार क्रेडिट होता है।</string>
+    <string name="referral_heading">रेफर करें और कमाएं</string>
+    <string name="referral_code_label">आपका रेफरल कोड: %1$s</string>
+    <string name="referral_share_action">रेफरल शेयर करें</string>
+    <string name="referral_stats_row">योग्य: %1$d • लंबित: %2$d • कमाई: %3$s</string>
+    <string name="referral_apply_heading">क्या आपके पास रेफरल कोड है?</string>
+    <string name="referral_apply_hint">मित्र का रेफरल कोड दर्ज करें</string>
+    <string name="referral_apply_action">कोड लागू करें</string>
+    <string name="referral_tracking_heading">रेफरल ट्रैकिंग</string>
+    <string name="referral_tracking_empty">अभी तक कोई रेफरल ट्रैक नहीं हुआ है।</string>
+    <string name="referral_status_pending">लंबित</string>
+    <string name="referral_status_qualified">योग्य</string>
+    <string name="referral_status_rewarded">पुरस्कृत</string>
+    <string name="referral_status_self_blocked">अवरुद्ध (स्व-रेफरल)</string>
+    <string name="referral_status_fraud_blocked">अवरुद्ध (धोखाधड़ी रोक)</string>
+    <string name="demo_rewards_sandbox_title">डेमो रिटेंशन सैंडबॉक्स (केवल DEMO)</string>
+    <string name="demo_rewards_eligibility_toggle">सर्वर पात्रता स्वीकृत (DEMO)</string>
+    <string name="demo_rewards_simulate_progress">+2 ट्रिप प्रगति जोड़ें (DEMO)</string>
+    <string name="demo_rewards_qualify_referral">रेफरल सत्यापित करें (DEMO)</string>
+
+    <!-- Phase 7 Safety Center, SOS, Emergency Contacts, Incidents & Insurance -->
+    <string name="safety_center_title">सुरक्षा केंद्र और एसओएस</string>
+    <string name="safety_sos_heading">आपातकालीन एसओएस (SOS)</string>
+    <string name="safety_sos_button">SOS अलर्ट भेजें</string>
+    <string name="safety_sos_confirm_title">आपातकालीन SOS की पुष्टि करें?</string>
+    <string name="safety_sos_confirm_body">यह आपकी वर्तमान लोकेशन के साथ बैकएंड रेस्पॉन्डर को SOS अनुरोध भेजता है। पुष्टि मिलने से पहले SOS को सफल न मानें।</string>
+    <string name="safety_sos_confirm_send">अभी SOS भेजें</string>
+    <string name="safety_sos_status_unconfirmed">भेजा नहीं गया / अपुष्ट</string>
+    <string name="safety_sos_status_sending">SOS अनुरोध भेजा जा रहा है…</string>
+    <string name="safety_sos_status_acknowledged">रेस्पॉन्डर द्वारा पुष्ट</string>
+    <string name="safety_sos_status_failed">SOS विफल / संपर्क नहीं हुआ</string>
+    <string name="safety_sos_ack_details">अलर्ट आईडी: %1$s • रेस्पॉन्डर: %2$s • पुष्टि: %3$s</string>
+    <string name="safety_sos_dial_112">स्थानीय आपातकाल (112) पर कॉल करें</string>
+    <string name="safety_sos_no_fake_ack_note">केवल सत्यापित सर्वर/रेस्पॉन्डर पुष्टि मिलने पर ही SOS को सफल दिखाया जाता है। विफल होने पर सीधे 112 डायल करें।</string>
+    <string name="safety_contacts_heading">आपातकालीन संपर्क</string>
+    <string name="safety_contacts_empty">अभी तक कोई आपातकालीन संपर्क नहीं जोड़ा गया है।</string>
+    <string name="safety_contacts_add">संपर्क जोड़ें</string>
+    <string name="safety_contact_name_label">संपर्क का नाम</string>
+    <string name="safety_contact_phone_label">फ़ोन नंबर (10+ अंक)</string>
+    <string name="safety_contact_rel_label">संबंध (उदा. जीवनसाथी, माता-पिता)</string>
+    <string name="safety_incident_heading">सुरक्षा घटना रिपोर्ट करें</string>
+    <string name="safety_incident_submit">घटना रिपोर्ट भेजें</string>
+    <string name="safety_incident_cat_label">श्रेणी (उदा. VEHICLE_ISSUE, RIDER_MISCONDUCT)</string>
+    <string name="safety_incident_desc_label">घटना का विवरण</string>
+    <string name="safety_insurance_heading">पार्टनर बीमा जानकारी</string>
+    <string name="safety_insurance_unverified">आपके खाते के लिए अभी तक कोई सक्रिय सत्यापित बीमा पॉलिसी पुष्ट नहीं हुई है (D-004)। स्वीकृत पॉलिसी होने पर ही कवरेज विवरण दिखाई देगा।</string>
+    <string name="safety_insurance_provider">प्रदाता: %1$s</string>
+    <string name="safety_insurance_policy_ref">पॉलिसी संदर्भ: %1$s</string>
+    <string name="demo_safety_sandbox_title">डेमो सुरक्षा सैंडबॉक्स (केवल DEMO)</string>
+    <string name="demo_safety_sos_responder_toggle">सैंडबॉक्स SOS रेस्पॉन्डर पुष्टि सक्षम करें (DEMO)</string>
+    <string name="demo_safety_insurance_toggle">नमूना बीमा पॉलिसी देखें (DEMO)</string>
+
+    <!-- Phase 7 Help & Support -->
+    <string name="support_title">सहायता और समर्थन</string>
+    <string name="support_create_ticket">नया सहायता टिकट</string>
+    <string name="support_tickets_empty">कोई सहायता टिकट नहीं मिला।</string>
+    <string name="support_load_more">और टिकट लोड करें</string>
+    <string name="support_ticket_cat_label">श्रेणी (उदा. EARNINGS, SAFETY, ACCOUNT)</string>
+    <string name="support_ticket_subject_label">विषय</string>
+    <string name="support_ticket_desc_label">अपनी समस्या लिखें</string>
+    <string name="support_ticket_attach_sample">नमूना निजी दस्तावेज़ कुंजी जोड़ें</string>
+    <string name="support_ticket_attached_count">निजी अटैचमेंट कुंजियां: %1$d</string>
+    <string name="support_ticket_submit">टिकट भेजें</string>
+    <string name="support_thread_title">टिकट #%1$s</string>
+    <string name="support_thread_privacy_note">केवल आपके टिकट और ड्राइवर-दृश्य उत्तर दिखाए जा रहे हैं। आंतरिक संचालन नोट्स निजी रहते हैं।</string>
+    <string name="support_reply_hint">उत्तर लिखें…</string>
+    <string name="support_reply_send">भेजें</string>
+    <string name="support_status_open">खुला</string>
+    <string name="support_status_in_progress">प्रक्रियाधीन</string>
+    <string name="support_status_waiting_driver">ड्राइवर के उत्तर की प्रतीक्षा</string>
+    <string name="support_status_resolved">समाधान पूर्ण</string>
+    <string name="support_status_closed">बंद</string>
+
+    <!-- Phase 7 Notification Inbox & Preferences -->
+    <string name="notifications_title">सूचनाएं</string>
+    <string name="notifications_unread_summary">अपठित: %1$d</string>
+    <string name="notifications_empty_title">कोई सूचना नहीं</string>
+    <string name="notifications_empty_desc">सर्वर पुश अलर्ट, भुगतान अपडेट और अभियान सूचनाएं यहां दिखाई देंगी।</string>
+    <string name="notifications_load_more">और सूचनाएं लोड करें</string>
+    <string name="notifications_prefs_heading">सूचना प्राथमिकताएं</string>
+    <string name="notifications_pref_orders">ऑर्डर और डिस्पैच अलर्ट</string>
+    <string name="notifications_pref_earnings">कमाई और भुगतान अलर्ट</string>
+    <string name="notifications_pref_campaigns">अभियान और प्रोत्साहन अलर्ट</string>
+    <string name="notifications_deep_link_chip">%1$s खोलें</string>
+    <string name="demo_notifications_simulate_push">पुश वेकअप नमूना जोड़ें (DEMO)</string>
+
+    <!-- Profile Destination -->
+    <string name="profile_title">पार्टनर प्रोफाइल</string>
+    <string name="profile_vehicle_info">वाहन विवरण</string>
+    <string name="profile_documents">केवाईसी और सत्यापन दस्तावेज</string>
+    <string name="profile_support">पार्टनर सहायता और हेल्प डेस्क</string>
+    <string name="profile_settings">ऐप सेटिंग्स</string>
+    <string name="profile_emergency_sos">सुरक्षा केंद्र और एसओएस</string>
+    <string name="profile_support_subtitle">सहायता टिकट, मदद और समस्या ट्रैकिंग</string>
+    <string name="profile_sos_subtitle">आपातकालीन संपर्क, SOS अलर्ट, घटना रिपोर्ट और बीमा</string>
+    <string name="profile_language_heading">भाषा / Language</string>
+    <string name="profile_rating_unavailable">रेटिंग उपलब्ध नहीं</string>
+    <string name="profile_demo_fixture_label">डेमो प्रोफाइल डेटा</string>
+
+    <!-- Reusable UI Component States -->
+    <string name="state_loading">जानकारी लोड हो रही है…</string>
+    <string name="state_please_wait">कृपया थोड़ी प्रतीक्षा करें, हम आपका पार्टनर प्रोफाइल सिंक कर रहे हैं।</string>
+    <string name="state_empty_title">कोई डेटा उपलब्ध नहीं है</string>
+    <string name="state_empty_subtitle">अभी प्रदर्शित करने के लिए कोई रिकॉर्ड नहीं है।</string>
+    <string name="state_error_title">कुछ गड़बड़ हो गई</string>
+    <string name="state_error_subtitle">सर्वर से कनेक्ट नहीं हो सका। कृपया अपना कनेक्शन जांचें और पुनः प्रयास करें।</string>
+    <string name="state_retry">पुनः प्रयास करें</string>
+    <string name="state_offline_title">आप वर्तमान में ऑफलाइन हैं</string>
+    <string name="state_offline_subtitle">आने वाले ट्रिप्स और ऑर्डर्स के लिए अपनी ड्यूटी ऑनलाइन सेट करें।</string>
+    <string name="state_permission_title">अनुमति आवश्यक है</string>
+    <string name="state_permission_subtitle">लाइव पार्टनर सेवाओं के लिए लोकेशन या नोटिफिकेशन अनुमति आवश्यक है।</string>
+    <string name="state_permission_action">सेटिंग्स खोलें</string>
+
+    <!-- Explicit Not-Implemented Placeholder States (Phase 2, 4-7) -->
+    <string name="not_implemented_badge">लागू नहीं (लंबित चरण)</string>
+    <string name="placeholder_vehicle_desc">वाहन पंजीकरण और श्रेणी सत्यापन चरण 2 में बैकएंड से जोड़ा जाएगा।</string>
+    <string name="placeholder_documents_desc">ड्राइविंग लाइसेंस, आरसी, बीमा और परमिट केवाईसी अपलोड चरण 2 में जोड़ा जाएगा।</string>
+    <string name="placeholder_notifications_desc">इन-ऐप सूचनाएं और अनपढ़ बैज सिंक चरण 7 में जोड़ा जाएगा।</string>
+    <string name="placeholder_support_desc">सहायता टिकट और समस्या रिपोर्टिंग चरण 7 में जोड़ी जाएगी।</string>
+    <string name="placeholder_sos_desc">लाइव आपातकालीन एसओएस और सुरक्षा जांच चरण 7 में जोड़ी जाएगी।</string>
+    <string name="placeholder_settings_title">भाषा और वातावरण सेटिंग्स</string>
+    <string name="placeholder_settings_desc">नीचे से ऐप की भाषा बदलें। कार्य क्षेत्र और ऑटो बूस्ट प्राथमिकताएं होम स्क्रीन पर उपलब्ध हैं।</string>
+
+    <!-- Common Actions -->
+    <string name="action_refresh">रिफ्रेश करें</string>
+    <string name="action_view_details">विवरण देखें</string>
+    <string name="action_switch_language">Switch to English (EN)</string>
+    <string name="action_help">सहायता</string>
+    <string name="current_language_value">वर्तमान भाषा: हिन्दी (HI)</string>
+
+    <!-- Boundary & Environment States -->
+    <string name="demo_mode_banner">डेमो मोड • केवल स्थानीय परीक्षण डेटा (लाइव नहीं)</string>
+    <string name="backend_not_deployed_notice">बैकएंड एपीआई अभी तैनात नहीं है। लाइव सुविधाएं उपलब्ध नहीं हैं।</string>
+    <string name="status_unverified">असत्यापित</string>
+    <string name="status_verified">सत्यापित</string>
+    <string name="profile_documents_unverified">बैकएंड केवाईसी एकीकरण लंबित है।</string>
+    <string name="profile_not_signed_in">लॉग इन नहीं है (प्रमाणीकरण लागू नहीं)</string>
+
+    <!-- D-018 Payout Status Keys -->
+    <string name="payout_status_requested">अनुरोधित</string>
+    <string name="payout_status_cancelled">रद्द</string>
+
+    <!-- Notification Channels -->
+    <string name="notification_channel_dispatch_name">डिस्पैच और ट्रिप अलर्ट</string>
+    <string name="notification_channel_dispatch_desc">नए राइड/डिलीवरी अनुरोध और सक्रिय ट्रिप स्थिति अपडेट के लिए उच्च-प्राथमिकता अलर्ट।</string>
+    <string name="notification_channel_general_name">खाता, भुगतान और सहायता</string>
+    <string name="notification_channel_general_desc">केवाईसी स्थिति, भुगतान पुष्टि, अभियान अपडेट और सहायता उत्तर।</string>
+
+    <!-- Phase 2 Onboarding, Auth, Vehicle & KYC -->
+    <string name="brand_tagline">स्मार्ट ड्राइव। अपने समय पर कमाई।</string>
+    <string name="onboarding_choose_language_title">अपनी भाषा चुनें</string>
+    <string name="onboarding_choose_language_subtitle">आप कभी भी English और हिन्दी के बीच बदल सकते हैं।</string>
+    <string name="onboarding_continue">आगे बढ़ें</string>
+    <string name="lang_english_title">English</string>
+    <string name="lang_english_subtitle">Continue in English</string>
+    <string name="lang_hindi_title">हिन्दी</string>
+    <string name="lang_hindi_subtitle">हिन्दी में आगे बढ़ें</string>
+
+    <string name="auth_phone_title">पार्टनर लॉगिन</string>
+    <string name="auth_phone_subtitle">OTP के माध्यम से सत्यापन के लिए अपना 10-अंकीय भारतीय मोबाइल नंबर दर्ज करें।</string>
+    <string name="auth_phone_label">मोबाइल नंबर</string>
+    <string name="auth_send_otp">OTP भेजें</string>
+    <string name="auth_otp_sent_to">%1$s पर OTP भेजा गया</string>
+    <string name="auth_edit_number">बदलें</string>
+    <string name="auth_otp_label">6-अंकीय OTP</string>
+    <string name="auth_demo_otp_hint">DEMO सैंडबॉक्स OTP: %1$s</string>
+    <string name="auth_verify_otp">सत्यापित करें और आगे बढ़ें</string>
+    <string name="auth_resend_otp">OTP पुनः भेजें</string>
+    <string name="auth_resend_otp_wait">OTP पुनः भेजें (%1$d से.)</string>
+    <string name="auth_change_language">भाषा बदलें / Change Language</string>
+    <string name="action_sign_out">साइन आउट</string>
+    <string name="action_close">बंद करें</string>
+
+    <string name="wizard_title">पार्टनर ऑनबोर्डिंग</string>
+    <string name="wizard_step_counter">चरण %1$d / %2$d</string>
+    <string name="wizard_step_personal">व्यक्तिगत</string>
+    <string name="wizard_step_vehicle">वाहन</string>
+    <string name="wizard_step_bank">बैंक</string>
+    <string name="wizard_step_docs">दस्तावेज़</string>
+    <string name="wizard_personal_heading">व्यक्तिगत विवरण</string>
+    <string name="wizard_vehicle_heading">वाहन और सेवा विवरण</string>
+    <string name="wizard_bank_heading">भुगतान बैंक खाता</string>
+    <string name="wizard_docs_heading">केवाईसी दस्तावेज़ अपलोड</string>
+    <string name="wizard_save_continue">सहेजें और आगे बढ़ें</string>
+    <string name="wizard_skip_for_now">अभी छोड़ें</string>
+    <string name="wizard_submit_review">सत्यापन के लिए भेजें</string>
+    <string name="bank_linked_summary">जुड़ा हुआ: %1$s (•••• %2$s)</string>
+
+    <string name="field_full_name">पूरा नाम</string>
+    <string name="field_city_code">शहर कोड (उदा. JAI)</string>
+    <string name="field_dob_optional">जन्म तिथि (YYYY-MM-DD, वैकल्पिक)</string>
+    <string name="field_address_optional">पता (वैकल्पिक)</string>
+    <string name="field_state_code">राज्य कोड (उदा. RJ)</string>
+    <string name="field_pincode">पिन कोड (6 अंक)</string>
+    <string name="field_vehicle_reg">पंजीकरण संख्या (उदा. RJ14AB1234)</string>
+    <string name="field_vehicle_brand">ब्रांड / कंपनी</string>
+    <string name="field_vehicle_model">मॉडल नाम</string>
+    <string name="field_vehicle_color">रंग</string>
+    <string name="field_vehicle_year">वर्ष (उदा. 2024)</string>
+    <string name="field_bank_holder">खाताधारक का नाम</string>
+    <string name="field_bank_account">बैंक खाता संख्या (9–18 अंक)</string>
+    <string name="field_bank_ifsc">IFSC कोड (11 अक्षर)</string>
+
+    <string name="vehicle_details_title">वाहन विवरण</string>
+    <string name="vehicle_details_subtitle">अपना सक्रिय वाहन पंजीकरण और सेवा श्रेणी प्रबंधित करें।</string>
+    <string name="vehicle_status_approved">स्वीकृत</string>
+    <string name="vehicle_save_cta">वाहन विवरण सहेजें</string>
+    <string name="vehicle_go_to_kyc">केवाईसी दस्तावेज़ खोलें</string>
+
+    <string name="kyc_documents_title">केवाईसी और सत्यापन दस्तावेज़</string>
+    <string name="kyc_aadhaar_compliance_note">अनुपालन नियम: कभी भी पूरा 12-अंकीय आधार नंबर दर्ज न करें। केवल सत्यापित मास्क्ड संदर्भ का उपयोग करें। दस्तावेज़ निजी स्टोरेज कुंजी से सहेजे जाते हैं।</string>
+    <string name="kyc_optional_reference_label">मास्क्ड संदर्भ / PAN (वैकल्पिक)</string>
+    <string name="kyc_optional_expiry_label">समाप्ति तिथि UTC (YYYY-MM-DD, वैकल्पिक)</string>
+    <string name="kyc_ref_display">संदर्भ: %1$s</string>
+    <string name="kyc_selected_preview_uri">चयनित फ़ाइल: %1$s</string>
+    <string name="kyc_pick_gallery">फ़ाइल चुनें</string>
+    <string name="kyc_quick_upload_demo">नमूना अपलोड (DEMO)</string>
+    <string name="kyc_demo_reviewer_controls">सैंडबॉक्स केवाईसी समीक्षक नियंत्रण (केवल DEMO)</string>
+    <string name="kyc_demo_approve_all">स्वीकृत और सक्रिय करें</string>
+    <string name="kyc_demo_reject_dl">ड्राइविंग लाइसेंस अस्वीकार करें</string>
+
+    <string name="kyc_doc_driving_license">ड्राइविंग लाइसेंस</string>
+    <string name="kyc_doc_vehicle_rc">वाहन आरसी (RC)</string>
+    <string name="kyc_doc_vehicle_insurance">वाहन बीमा</string>
+    <string name="kyc_doc_permit">कमर्शियल परमिट</string>
+    <string name="kyc_doc_pan_card">पैन (PAN) कार्ड</string>
+    <string name="kyc_doc_aadhaar_ref">आधार सत्यापन संदर्भ</string>
+    <string name="kyc_doc_profile_photo">प्रोफ़ाइल सेल्फ़ी फ़ोटो</string>
+
+    <string name="kyc_status_not_submitted">प्रस्तुत नहीं</string>
+    <string name="kyc_status_uploaded">अपलोड किया गया</string>
+    <string name="kyc_status_under_review">समीक्षाधीन</string>
+    <string name="kyc_status_approved">स्वीकृत</string>
+    <string name="kyc_status_rejected">अस्वीकृत</string>
+    <string name="kyc_status_expired">समाप्त</string>
+
+    <string name="account_status_applicant">ऑनबोर्डिंग अधूरी</string>
+    <string name="account_status_pending_review">सत्यापन समीक्षाधीन</string>
+    <string name="account_status_active">सत्यापित सक्रिय पार्टनर</string>
+    <string name="account_status_suspended">खाता निलंबित</string>
+    <string name="account_status_rejected">सत्यापन अस्वीकृत</string>
+    <string name="account_status_closed">खाता बंद</string>
+
+    <string name="verification_pending_subtitle">आपके दस्तावेज़ समीक्षा कतार में हैं। बैकएंड सत्यापन पूर्ण होने के बाद ऑनलाइन ड्यूटी अनलॉक होगी।</string>
+    <string name="verification_blocked_subtitle">ऑनलाइन जाने से पहले आपके खाते या केवाईसी दस्तावेज़ों पर कार्रवाई आवश्यक है।</string>
+    <string name="verification_docs_action_required">ध्यान देने योग्य दस्तावेज़</string>
+    <string name="verification_refresh_status">सत्यापन स्थिति रीफ़्रेश करें</string>
+    <string name="verification_fix_documents">दस्तावेज़ सुधारें और पुनः अपलोड करें</string>
+    <string name="verification_contact_support">पार्टनर सहायता से संपर्क करें</string>
+
+    <!-- Settings, Dark Mode & Legal Disclosures -->
+    <string name="settings_language_label">प्रदर्शन भाषा</string>
+    <string name="settings_appearance_title">रूप और थीम</string>
+    <string name="theme_light">लाइट</string>
+    <string name="theme_dark">डार्क</string>
+    <string name="theme_system">सिस्टम</string>
+    <string name="settings_permissions_and_legal">सूचनाएं, ऑनबोर्डिंग और नियम</string>
+    <string name="settings_notification_preferences">सूचना सिस्टम सेटिंग्स</string>
+    <string name="settings_open_onboarding_flow">ऑनबोर्डिंग और केवाईसी खोलें</string>
+    <string name="settings_app_version">संस्करण %1$s (%2$d)</string>
+    <string name="settings_logout_blocked_hint">साइन आउट (सक्रिय ट्रिप के दौरान उपलब्ध नहीं)</string>
+
+    <string name="legal_privacy_policy_title">गोपनीयता नीति</string>
+    <string name="legal_privacy_policy_body">Drive Partner राइड/डिलीवरी डिस्पैच, ट्रिप बिलिंग, सुरक्षा SOS और भुगतान संचालित करने के लिए केवल पार्टनर प्रोफ़ाइल, वाहन, निजी केवाईसी कुंजियां और ऑनलाइन ड्यूटी के दौरान GPS डेटा एकत्र करता है। पूरा 12-अंकीय आधार नंबर कभी संग्रहीत नहीं किया जाता।</string>
+    <string name="legal_terms_title">नियम और शर्तें</string>
+    <string name="legal_terms_body">पार्टनर्स को वैध ड्राइविंग लाइसेंस, आरसी और बीमा बनाए रखना आवश्यक है। सभी किराये, कमीशन, इंसेंटिव और लेजर भुगतान सर्वर रिकॉर्ड द्वारा नियंत्रित होते हैं। साइन आउट करने से पहले सक्रिय ट्रिप पूर्ण होना आवश्यक है।</string>
+    <string name="legal_location_disclosure_title">लोकेशन और फ़ोरग्राउंड सेवा प्रकटीकरण</string>
+    <string name="legal_location_disclosure_body">जब आप ऑनलाइन ड्यूटी पर या सक्रिय ट्रिप में होते हैं, तो Drive Partner नजदीकी ऑर्डर प्राप्त करने, रूट ट्रैक करने और SOS सहायता के लिए दृश्यमान फ़ोरग्राउंड लोकेशन सेवा चलाता है। ऑफलाइन रहने पर कोई लोकेशन ट्रैकिंग नहीं होती।</string>
+
+    <!-- Merged Upstream Prototype & Design Component Strings -->
     <string name="home_nav_shortcuts">त्वरित शॉर्टकट</string>
     <string name="home_online_hours">ऑनलाइन समय</string>
     <string name="home_completed_trips">पूर्ण ट्रिप्स</string>
@@ -44,63 +663,14 @@
     <string name="home_rewards_desc">लक्ष्य माइलस्टोन और ईंधन इंसेंटिव</string>
     <string name="home_profile_card">प्रोफाइल और वाहन</string>
     <string name="home_profile_desc">केवाईसी दस्तावेज, वाहन विवरण और सेटिंग्स</string>
-
-    <!-- Orders Destination -->
-    <string name="orders_title">ऑर्डर्स और ट्रिप्स</string>
-    <string name="orders_tab_active">सक्रिय</string>
-    <string name="orders_tab_completed">पूर्ण</string>
-    <string name="orders_tab_cancelled">रद्द</string>
-    <string name="orders_empty_title">अभी कोई ऑर्डर नहीं</string>
-    <string name="orders_empty_description">ऑनलाइन आने पर नए बुकिंग अनुरोध यहां दिखाई देंगे।</string>
-
-    <!-- Earnings Destination -->
-    <string name="earnings_title">मेरी कमाई</string>
-    <string name="earnings_today">आज की कमाई</string>
-    <string name="earnings_this_week">इस सप्ताह</string>
-    <string name="earnings_incentives">इंसेंटिव और बोनस</string>
-    <string name="earnings_empty_title">कोई कमाई दर्ज नहीं</string>
-    <string name="earnings_empty_description">पूर्ण की गई यात्राएं और डिलीवरी भुगतान यहां दिखाई देंगे।</string>
     <string name="earnings_payout_details">बैंक खाता लिंक है और सीधे भुगतान ट्रांसफर के लिए तैयार है।</string>
-
-    <!-- Rewards Destination -->
-    <string name="rewards_title">रिवार्ड्स और टियर</string>
-    <string name="rewards_current_tier">पार्टनर टियर</string>
-    <string name="rewards_empty_title">कोई रिवार्ड उपलब्ध नहीं</string>
-    <string name="rewards_empty_description">ईंधन कैशबैक और प्राथमिकता लाभ अनलॉक करने के लिए साप्ताहिक लक्ष्य पूरे करें।</string>
-
-    <!-- Profile Destination -->
-    <string name="profile_title">पार्टनर प्रोफाइल</string>
     <string name="profile_section_service">सेवा चयन</string>
     <string name="profile_section_vehicle_docs">वाहन और दस्तावेज</string>
     <string name="profile_section_preferences">प्राथमिकताएं और सेटिंग्स</string>
     <string name="profile_section_support_safety">सुरक्षा और सहायता</string>
-    <string name="profile_vehicle_info">वाहन विवरण</string>
-    <string name="profile_documents">केवाईसी और सत्यापन दस्तावेज</string>
-    <string name="profile_support">पार्टनर सहायता और हेल्प डेस्क</string>
-    <string name="profile_settings">ऐप सेटिंग्स</string>
-    <string name="profile_emergency_sos">आपातकालीन एसओएस सहायता</string>
     <string name="profile_notifications">पुश सूचनाएं और अलर्ट</string>
     <string name="profile_terms_privacy">सेवा की शर्तें और गोपनीयता</string>
     <string name="profile_app_version">ऐप संस्करण 1.0.0 (बिल्ड 1)</string>
-
-    <!-- Reusable UI Component States -->
-    <string name="state_loading">जानकारी लोड हो रही है…</string>
-    <string name="state_please_wait">कृपया थोड़ी प्रतीक्षा करें, हम आपका पार्टनर प्रोफाइल सिंक कर रहे हैं।</string>
-    <string name="state_empty_title">कोई डेटा उपलब्ध नहीं है</string>
-    <string name="state_empty_subtitle">अभी प्रदर्शित करने के लिए कोई रिकॉर्ड नहीं है।</string>
-    <string name="state_error_title">कुछ गड़बड़ हो गई</string>
-    <string name="state_error_subtitle">सर्वर से कनेक्ट नहीं हो सका। कृपया अपना कनेक्शन जांचें और पुनः प्रयास करें।</string>
-    <string name="state_retry">पुनः प्रयास करें</string>
-    <string name="state_offline_title">आप वर्तमान में ऑफलाइन हैं</string>
-    <string name="state_offline_subtitle">ट्रिप्स और ऑर्डर्स प्राप्त करना शुरू करने के लिए अपनी ड्यूटी ऑनलाइन सेट करें।</string>
-
-    <!-- Common Actions -->
-    <string name="action_refresh">रिफ्रेश करें</string>
-    <string name="action_view_details">विवरण देखें</string>
-    <string name="action_switch_language">Switch to English</string>
-    <string name="action_help">सहायता</string>
-
-    <!-- Design System Components -->
     <string name="order_request_title">नया बुकिंग अनुरोध</string>
     <string name="order_request_accept">स्वीकार करें</string>
     <string name="order_request_decline">अस्वीकार करें</string>
@@ -113,22 +683,15 @@
     <string name="reward_target_label">लक्ष्य माइलस्टोन</string>
     <string name="reward_progress_format">%1$d/%2$d पूर्ण</string>
     <string name="duty_switch_online_desc">ऑनलाइन • राइड्स स्वीकार करने के लिए तैयार</string>
-    <!-- Active Trip Lifecycle -->
     <string name="trip_stage_assigned">असाइन किया गया • पिकअप पर जा रहे हैं</string>
     <string name="trip_stage_arrived">पिकअप लोकेशन पर पहुंचे</string>
     <string name="trip_stage_in_progress">यात्रा जारी है • गंतव्य की ओर</string>
     <string name="trip_stage_completed">यात्रा पूर्ण</string>
-    <string name="trip_action_navigate_pickup">पिकअप नेविगेट करें</string>
     <string name="trip_action_arrived_pickup">मैं पहुंच गया हूं</string>
-    <string name="trip_action_start_trip">यात्रा शुरू करें</string>
-    <string name="trip_action_navigate_drop">ड्रॉप-ऑफ नेविगेट करें</string>
-    <string name="trip_action_complete_trip">यात्रा पूर्ण करें और किराया प्राप्त करें</string>
     <string name="trip_enter_start_pin">4-अंकीय राइडर पिन दर्ज करें</string>
     <string name="trip_verify_pin_instruction">यात्रा शुरू करने के लिए राइडर से 4-अंकीय स्टार्ट ओटीपी मांगें।</string>
     <string name="trip_sos_button">आपातकालीन एसओएस</string>
     <string name="trip_call_customer">ग्राहक को कॉल करें</string>
-
-    <!-- Authentication & Login -->
     <string name="auth_login_title">पार्टनर साइन इन</string>
     <string name="auth_enter_phone_title">मोबाइल नंबर दर्ज करें</string>
     <string name="auth_enter_phone_subtitle">हम आपके पार्टनर खाते को सत्यापित करने के लिए 6-अंकीय ओटीपी कोड भेजेंगे।</string>
@@ -137,10 +700,10 @@
     <string name="auth_invalid_phone">कृपया एक वैध 10-अंकीय मोबाइल नंबर दर्ज करें</string>
     <string name="auth_terms_disclaimer">आगे बढ़कर, आप ड्राइव पार्टनर की सेवा शर्तों और गोपनीयता नीति से सहमत होते हैं।</string>
     <string name="auth_verify_otp_title">ओटीपी कोड सत्यापित करें</string>
-    <string name="auth_otp_sent_to">%1$s पर भेजा गया 6-अंकीय सत्यापन कोड दर्ज करें</string>
     <string name="auth_verify_proceed">सत्यापित करें और आगे बढ़ें</string>
     <string name="auth_resend_code">ओटीपी कोड पुनः भेजें</string>
     <string name="auth_resend_timer">%1$d सेकंड में कोड पुनः भेजें</string>
     <string name="auth_invalid_otp">गलत ओटीपी। डिफ़ॉल्ट कोड 123456 है।</string>
     <string name="auth_edit_phone">नंबर संपादित करें</string>
+    <string name="duty_switch_offline_desc">ऑफलाइन • राइड्स प्राप्त करने के लिए ड्यूटी चालू करें</string>
 </resources>

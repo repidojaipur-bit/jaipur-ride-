@@ -1,0 +1,41 @@
+services:
+  postgres:
+    image: postgis/postgis:16-3.4-alpine
+    container_name: drive-partner-postgres
+    environment:
+      POSTGRES_DB: drive_partner
+      POSTGRES_USER: drivepartner
+      POSTGRES_PASSWORD: drivepartner_local
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U drivepartner -d drive_partner"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: drive-partner-api
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      NODE_ENV: development
+      HOST: 0.0.0.0
+      PORT: 8080
+      DATABASE_URL: postgresql://drivepartner:drivepartner_local@postgres:5432/drive_partner
+      AUTH_MODE: hs256-dev
+      JWT_DEV_SECRET: local-dev-only-jwt-secret-change-me
+      ADMIN_API_KEY: local-dev-only-admin-key-change-me
+      LIVE_PAYOUTS_ENABLED: "false"
+      OBJECT_STORAGE_BUCKET: drive-partner-kyc-private
+    ports:
+      - "8080:8080"
+
+volumes:
+  pgdata:

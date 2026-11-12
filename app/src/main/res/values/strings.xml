@@ -12,26 +12,645 @@
     <string name="nav_rewards">Rewards</string>
     <string name="nav_profile">Profile</string>
 
-    <!-- Partner Status -->
+    <!-- Secondary Navigation & Drawer -->
+    <string name="drawer_header_subtitle">Jaipur Partner Shell • Phase 7</string>
+    <string name="drawer_duty_badge_demo">DEMO SANDBOX</string>
+    <string name="drawer_duty_badge_live">LIVE BUILD</string>
+    <string name="nav_notifications">Notifications</string>
+    <string name="nav_settings">App Settings</string>
+    <string name="nav_vehicle_details">Vehicle Details</string>
+    <string name="nav_kyc_documents">KYC &amp; Documents</string>
+    <string name="nav_support">Partner Support</string>
+    <string name="nav_emergency_sos">Emergency SOS</string>
+
+    <!-- Accessibility Content Descriptions -->
+    <string name="cd_open_drawer">Open navigation menu</string>
+    <string name="cd_back">Navigate back</string>
+    <string name="cd_notifications">Open notifications</string>
+    <string name="cd_switch_language">Switch language</string>
+    <string name="cd_toggle_duty">Toggle duty status</string>
+    <string name="cd_recenter_map">Recenter map and refresh current location</string>
+
+    <!-- Partner Status & 6-State Duty Control -->
     <string name="status_online">Online</string>
     <string name="status_offline">Offline</string>
+    <string name="duty_state_offline">Offline</string>
+    <string name="duty_state_turning_online">Turning Online…</string>
+    <string name="duty_state_online">Online</string>
+    <string name="duty_state_turning_offline">Turning Offline…</string>
+    <string name="duty_state_blocked">Eligibility Blocked</string>
+    <string name="duty_state_connection_unknown">Status Unconfirmed</string>
     <string name="go_online">Go Online</string>
     <string name="go_offline">Go Offline</string>
-    <string name="ready_to_receive_orders">Ready to receive incoming booking requests</string>
-    <string name="currently_offline_message">You are currently offline. Turn on your status to accept rides and deliveries.</string>
+    <string name="ready_to_receive_orders">Online &amp; listening for work offers via dispatch boundary.</string>
+    <string name="currently_offline_message">You are currently offline. Duty location tracking is stopped.</string>
+    <string name="duty_turning_online_msg">Verifying eligibility and confirming online availability with backend…</string>
+    <string name="duty_turning_offline_msg">Confirming offline status with backend and stopping location tracking…</string>
+    <string name="duty_blocked_msg">Complete mandatory eligibility requirements before going online.</string>
+    <string name="duty_connection_unknown_msg">Backend confirmation unavailable. Your status has not been set to Online.</string>
+    <string name="duty_change_not_confirmed">Duty status change was not confirmed by server. Restored last confirmed state.</string>
 
     <!-- Service Types -->
     <string name="service_bike_taxi">Bike Taxi</string>
     <string name="service_auto">Auto Rickshaw</string>
     <string name="service_cab">Cab</string>
     <string name="service_delivery">Delivery</string>
+    <string name="service_category_heading">Service Category</string>
 
-    <!-- Home Destination -->
+    <!-- Home Dashboard (Phase 3) -->
     <string name="home_title">Partner Dashboard</string>
     <string name="home_welcome_back">Welcome back, Partner</string>
     <string name="home_duty_status">Duty Status</string>
     <string name="home_today_summary">Today\'s Overview</string>
-    <string name="home_empty_message">No active ride or delivery request at this moment.</string>
+    <string name="home_completed_trips_label">Completed Today</string>
+    <string name="home_estimated_earnings_label">Today\'s Estimate</string>
+    <string name="home_estimate_disclaimer">Estimated figure only; final statements reconcile in Phase 6.</string>
+    <string name="home_last_synced">Last synced: %1$s</string>
+    <string name="home_not_synced">Not synced with backend yet</string>
+    <string name="home_empty_message">Check the Orders tab while Online for incoming work offers.</string>
+    <string name="home_quick_actions">Quick Actions</string>
+    <string name="home_zones_label">Service Area &amp; Auto Boost</string>
+    <string name="home_zones_placeholder">Manage preferred operating zones and Auto Boost priority eligibility.</string>
+    <string name="home_manage_preferences">Manage Preferences</string>
+    <string name="home_selected_zones_count">%1$d preferred zone(s) selected</string>
+    <string name="home_autoboost_on">Auto Boost preference: Enabled (never auto-accepts)</string>
+    <string name="home_autoboost_off">Auto Boost preference: Disabled</string>
+
+    <!-- Map Boundary & Location States -->
+    <string name="map_sdk_boundary_title">Map &amp; Zone Boundary</string>
+    <string name="map_key_unconfigured_notice">Interactive Google Maps tiles require an external restricted Maps API key (DRIVE_PARTNER_MAPS_API_KEY).</string>
+    <string name="map_location_permission_needed">Location permission is required to show your current position on the map.</string>
+    <string name="map_gps_disabled_notice">Device GPS is turned off. Enable Location Services to acquire your position.</string>
+    <string name="map_coordinates_preview">Current fix: %1$s, %2$s (±%3$dm)</string>
+    <string name="map_own_location_marker">Your Current Location</string>
+    <string name="map_configured_zones_heading">Configured Operating Zones</string>
+    <string name="map_no_zones_configured">No backend operating zones synced yet.</string>
+    <string name="map_no_surge_notice">Only verified zones and your position are shown. Demand/surge overlays stay hidden without live backend data.</string>
+    <string name="location_badge_live_gps">GPS Ready</string>
+    <string name="location_badge_approximate">Approximate Location</string>
+    <string name="location_badge_stale">Stale Location — Tap Recenter</string>
+    <string name="location_badge_unavailable">Location Unavailable</string>
+    <string name="location_badge_gps_off">GPS Turned Off</string>
+    <string name="location_badge_permission_denied">Permission Denied</string>
+    <string name="location_stale_banner">Your location fix is stale (&gt;90s old). Tap Recenter to acquire a fresh GPS fix.</string>
+    <string name="location_approximate_banner">Approximate location granted. Precise GPS accuracy is recommended for on-duty tracking.</string>
+
+    <!-- Location Permissions & GPS Education -->
+    <string name="permission_edu_title">Location Access for Duty</string>
+    <string name="permission_edu_body">Drive Partner uses your device location while you are Online to verify your operating zone and share duty availability. Tracking stops when you go Offline.</string>
+    <string name="permission_edu_allow">Allow Location</string>
+    <string name="permission_edu_not_now">Not Now</string>
+    <string name="permission_denied_banner">Location permission is required before going Online.</string>
+    <string name="permission_permanently_denied_banner">Location permission was denied permanently. Open App Settings to enable location access.</string>
+    <string name="gps_disabled_banner">Device GPS/Location is turned off. Enable Location Services before going Online.</string>
+    <string name="action_enable_gps">Enable GPS</string>
+    <string name="action_grant_permission">Grant Permission</string>
+    <string name="error_gps_required_for_online">Turn on device GPS before going Online.</string>
+    <string name="error_location_permission_required">Allow location permission before going Online.</string>
+    <string name="error_location_unavailable_for_online">Waiting for a valid GPS location fix before going Online.</string>
+
+    <!-- Foreground Service Notification -->
+    <string name="duty_notification_channel_name">On-Duty Location Sharing</string>
+    <string name="duty_notification_channel_desc">Persistent notification active only while partner duty is confirmed Online.</string>
+    <string name="duty_notification_title">Drive Partner — You are Online</string>
+    <string name="duty_notification_text">Sharing duty location. Go Offline to stop location tracking.</string>
+
+    <!-- Driver Eligibility & Blocking Reasons -->
+    <string name="eligibility_heading">Driver Eligibility</string>
+    <string name="eligibility_verified_ready">Eligible to go Online</string>
+    <string name="eligibility_blocked_title">Online Access Restricted</string>
+    <string name="eligibility_not_checked">Eligibility status has not been confirmed by backend yet.</string>
+    <string name="elig_reason_account_not_approved">Your partner account is not yet approved.</string>
+    <string name="elig_reason_kyc_incomplete">Mandatory KYC documents are incomplete.</string>
+    <string name="elig_reason_document_rejected">One or more KYC documents were rejected and must be re-uploaded.</string>
+    <string name="elig_reason_document_expired">A mandatory document has expired. Renew it to go Online.</string>
+    <string name="elig_reason_vehicle_not_approved">Registered vehicle is pending approval.</string>
+    <string name="elig_reason_city_not_enabled">Service is not currently enabled in your registered city.</string>
+    <string name="elig_reason_active_suspension">Your partner account currently has an active suspension.</string>
+    <string name="elig_reason_location_unavailable">Valid GPS location could not be verified.</string>
+
+    <!-- Service Area & Auto Boost Preferences Sheet -->
+    <string name="prefs_sheet_title">Service Area &amp; Auto Boost</string>
+    <string name="prefs_zones_section">Preferred Operating Zones</string>
+    <string name="prefs_autoboost_title">Auto Boost Preference</string>
+    <string name="prefs_autoboost_desc">Backend preference only: signals interest in eligible boost allocations. Orders still require explicit Accept or Reject and are NEVER auto-accepted.</string>
+    <string name="prefs_save_action">Save Preferences</string>
+    <string name="prefs_cancel_action">Cancel</string>
+    <string name="prefs_save_success">Preferences updated.</string>
+
+    <!-- Demo Testing Controls (Visible ONLY in DEMO flavor) -->
+    <string name="demo_controls_title">Demo Sandbox Controls (DEMO ONLY)</string>
+    <string name="demo_controls_eligible_toggle">Simulate Eligible Driver (Off = Document Expired)</string>
+
+    <!-- Orders Destination & Phase 4 Dispatch -->
+    <string name="orders_title">Orders &amp; Trips</string>
+    <string name="orders_tab_active">Active</string>
+    <string name="orders_tab_completed">Completed</string>
+    <string name="orders_tab_cancelled">Cancelled</string>
+    <string name="orders_empty_title">No Active Offers</string>
+    <string name="orders_empty_description">Incoming offers from backend dispatch will appear here while you are Online.</string>
+    <string name="orders_realtime_connected">Realtime Dispatch: Connected</string>
+    <string name="orders_realtime_connecting">Realtime Dispatch: Connecting…</string>
+    <string name="orders_realtime_reconnecting">Realtime Dispatch: Reconnecting &amp; syncing…</string>
+    <string name="orders_realtime_disconnected">Realtime Dispatch: Disconnected</string>
+    <string name="orders_realtime_unconfigured">Realtime Channel: Backend WebSocket URL not configured</string>
+
+    <!-- Phase 4 Order Offer Request Card -->
+    <string name="offer_card_heading">Incoming Work Offer</string>
+    <string name="offer_pickup_label">Pickup</string>
+    <string name="offer_drop_label">Drop</string>
+    <string name="offer_pickup_distance">%1$s to pickup</string>
+    <string name="offer_trip_summary">Trip: %1$s • Est. %2$s</string>
+    <string name="offer_estimated_base">Estimated Base</string>
+    <string name="offer_eligible_incentive">Eligible Incentive</string>
+    <string name="offer_estimated_total">Estimated Total</string>
+    <string name="offer_estimate_disclaimer">Pre-completion estimate only; final fare reconciles on backend in Phase 6.</string>
+    <string name="offer_countdown_remaining">Expires in %1$ds</string>
+    <string name="offer_countdown_expired">Offer Expired</string>
+    <string name="offer_accept_action">Accept Offer</string>
+    <string name="offer_reject_action">Reject</string>
+    <string name="offer_accepting">Accepting…</string>
+    <string name="offer_rejecting">Rejecting…</string>
+    <string name="offer_never_auto_accept_note">Explicit Accept or Reject required (never auto-accepted).</string>
+
+    <!-- Reject Reason Dialog -->
+    <string name="offer_reject_dialog_title">Reject Work Offer?</string>
+    <string name="offer_reject_dialog_confirm">Confirm Reject</string>
+    <string name="offer_reject_dialog_cancel">Keep Offer</string>
+    <string name="offer_reject_reason_far">Pickup is too far</string>
+    <string name="offer_reject_reason_fare">Estimated fare is low</string>
+    <string name="offer_reject_reason_break">Need a break / going offline</string>
+    <string name="offer_reject_reason_other">Other reason</string>
+
+    <!-- Phase 4 Atomic Offer Outcome Notices -->
+    <string name="offer_outcome_accepted">Offer accepted! Assigned Trip ID: %1$s</string>
+    <string name="offer_outcome_rejected">Offer rejected.</string>
+    <string name="offer_outcome_unavailable_other_driver">Offer unavailable — another partner accepted this order.</string>
+    <string name="offer_outcome_expired">This offer has expired and can no longer be accepted.</string>
+    <string name="offer_outcome_network_no_queue">Network error while accepting. Acceptance was NOT queued offline — refresh active offers.</string>
+    <string name="offer_outcome_not_eligible">You must be confirmed Online and eligible to accept offers.</string>
+    <string name="offer_assigned_title">Assigned Trip Active</string>
+    <string name="offer_assigned_subtitle">Trip %1$s • Order %2$s • Status: %3$s</string>
+    <string name="offer_assigned_phase5_notice">Follow the backend-authoritative trip steps below to complete your trip.</string>
+    <string name="offer_dismiss_notice">Dismiss</string>
+
+    <!-- Phase 5 Active Trip Lifecycle & Navigation -->
+    <string name="trip_card_title">Active Trip</string>
+    <string name="trip_status_assigned">Accepted — Ready for Pickup</string>
+    <string name="trip_status_en_route">En Route to Pickup</string>
+    <string name="trip_status_arrived">Reached Pickup</string>
+    <string name="trip_status_in_progress">Trip Started (In Progress)</string>
+    <string name="trip_status_completed">Trip Completed</string>
+    <string name="trip_status_cancelled">Trip Cancelled</string>
+    <string name="trip_status_disputed">Under Review (Disputed)</string>
+    <string name="trip_action_head_to_pickup">Head to Pickup</string>
+    <string name="trip_action_navigate_pickup">Navigate to Pickup</string>
+    <string name="trip_action_navigate_drop">Navigate to Drop</string>
+    <string name="trip_action_reached_pickup">Reached Pickup</string>
+    <string name="trip_action_start_trip">Start Trip</string>
+    <string name="trip_action_complete_trip">Complete Trip</string>
+    <string name="trip_action_cancel_trip">Cancel Trip</string>
+    <string name="trip_action_contact_customer">Contact Customer</string>
+    <string name="trip_contact_unavailable_note">Masked calling is disabled until telephony provider is configured (D-014).</string>
+    <string name="trip_start_pin_label">Start Verification PIN</string>
+    <string name="trip_start_pin_hint">Enter 4-digit customer PIN</string>
+    <string name="trip_precompletion_estimate_label">Pre-completion Estimate: %1$s</string>
+    <string name="trip_no_local_earnings_note">Final earnings are never calculated on device. Backend Phase 6 reconciles statements.</string>
+    <string name="trip_completed_heading">Trip Completed</string>
+    <string name="trip_completed_source_ref">Earning Source Ref: %1$s</string>
+    <string name="trip_completed_source_pending">Pending backend earning statement (Phase 6).</string>
+    <string name="trip_cancelled_heading">Trip Cancelled</string>
+    <string name="trip_cancel_dialog_title">Cancel Active Trip?</string>
+    <string name="trip_cancel_dialog_confirm">Confirm Cancellation</string>
+    <string name="trip_cancel_dialog_keep">Keep Trip</string>
+    <string name="trip_cancel_reason_no_show">Customer no-show at pickup</string>
+    <string name="trip_cancel_reason_rider_requested">Customer requested cancellation</string>
+    <string name="trip_cancel_reason_vehicle">Vehicle or mechanical issue</string>
+    <string name="trip_cancel_reason_safety">Safety concern</string>
+    <string name="trip_cancel_reason_other">Other operational reason</string>
+    <string name="trip_outcome_transition_confirmed">Trip status updated: %1$s</string>
+    <string name="trip_outcome_completed">Trip completed and recorded. Final statement reconciles in Phase 6.</string>
+    <string name="trip_outcome_cancelled">Trip cancelled on backend.</string>
+    <string name="trip_outcome_network_no_queue">Network error during transition. State was NOT queued offline; synced with server truth.</string>
+    <string name="trip_nav_app_missing">No compatible maps or navigation app found on this device.</string>
+    <string name="trip_done_return_action">Done</string>
+
+    <!-- Phase 5 Order History & Order Detail -->
+    <string name="orders_history_filter_all">All</string>
+    <string name="orders_history_filter_completed">Completed</string>
+    <string name="orders_history_filter_cancelled">Cancelled</string>
+    <string name="orders_history_empty_title">No Order History Yet</string>
+    <string name="orders_history_empty_description">Completed and cancelled trips from PostgreSQL history will appear here.</string>
+    <string name="orders_history_load_more">Load More</string>
+    <string name="orders_history_loading_more">Loading more…</string>
+    <string name="orders_history_amount_pending">Statement pending (Phase 6)</string>
+    <string name="order_detail_title">Order Details</string>
+    <string name="order_detail_order_id">Order ID: %1$s</string>
+    <string name="order_detail_trip_id">Trip ID: %1$s</string>
+    <string name="order_detail_metrics">Distance &amp; Duration: %1$s • %2$s</string>
+    <string name="order_detail_timeline_heading">Trip Event Timeline</string>
+    <string name="order_detail_earning_heading">Financial Statement Reference</string>
+    <string name="order_detail_statement_id">Statement ID: %1$s</string>
+    <string name="order_detail_source_ref_id">Earning Source Ref: %1$s</string>
+    <string name="order_detail_finalized_amount">Finalized by Backend: %1$s</string>
+    <string name="order_detail_cancel_reason">Cancellation Reason: %1$s</string>
+    <string name="order_detail_close">Close</string>
+
+    <!-- Home Active Trip & Incoming Offer Alerts -->
+    <string name="home_active_trip_banner">Active trip in progress (%1$s) — tap to resume.</string>
+    <string name="home_active_trip_action">Resume Trip</string>
+    <string name="home_incoming_offer_banner">New work offer (%1$s remaining) — respond before it expires.</string>
+    <string name="home_incoming_offer_action">View Offer</string>
+
+    <!-- Demo Dispatch Simulator Controls (DEMO ONLY) -->
+    <string name="orders_demo_simulator_title">Demo Offer Simulator (DEMO ONLY)</string>
+    <string name="orders_demo_create_offer">Simulate Demo Offer</string>
+    <string name="orders_demo_simulate_race">Simulate Another Driver Claimed First (409)</string>
+    <string name="orders_demo_duplicate_event">Replay Duplicate Realtime Event</string>
+    <string name="orders_demo_must_be_online">Go Online on Home first to test incoming demo offers.</string>
+
+    <!-- Earnings Destination -->
+    <string name="earnings_title">My Earnings</string>
+    <string name="earnings_today">Today\'s Earning</string>
+    <string name="earnings_this_week">This Week</string>
+    <string name="earnings_incentives">Incentives &amp; Bonus</string>
+    <string name="earnings_period_today">Today</string>
+    <string name="earnings_period_week">This Week</string>
+    <string name="earnings_period_month">This Month</string>
+    <string name="earnings_payout_account_heading">Bank Settlement Account</string>
+    <string name="earnings_transactions_heading">Recent Transactions</string>
+    <string name="earnings_empty_title">No Earnings Recorded</string>
+    <string name="earnings_empty_description">Completed trips and verified ledger transactions will appear here once recorded in PostgreSQL.</string>
+    <string name="earnings_payout_unlinked">Payout account unavailable until backend financial API is connected.</string>
+
+    <!-- Phase 6 Wallet, Ledger, Breakdown & Payouts -->
+    <string name="wallet_summary_heading">Wallet Summary</string>
+    <string name="wallet_available_balance">Available Balance</string>
+    <string name="wallet_pending_balance">Pending Balance</string>
+    <string name="wallet_settled_total">Settled Total</string>
+    <string name="wallet_derived_at">Ledger derived at: %1$s</string>
+    <string name="wallet_limits_info">Withdrawal limits: %1$s – %2$s</string>
+    <string name="wallet_backend_authority_note">All balances and payouts are owned by the server ledger. Client cannot alter balances or mark withdrawals paid.</string>
+    <string name="earnings_breakdown_heading">Earnings Breakdown</string>
+    <string name="earnings_base_label">Base &amp; Distance/Time</string>
+    <string name="earnings_referrals_label">Referrals</string>
+    <string name="earnings_adjustments_label">Adjustments</string>
+    <string name="earnings_finalized_total_label">Finalized Total</string>
+    <string name="earnings_last_updated">Last updated: %1$s</string>
+    <string name="earnings_withdraw_action">Withdraw</string>
+    <string name="earnings_link_account_action">Link Bank Account</string>
+    <string name="payout_disabled_no_provider">Real payouts are disabled until verified provider integration and finance approvals are enabled (D-003 / D-005).</string>
+    <string name="payout_disabled_no_verified_account">Link and verify a tokenized bank account before requesting a withdrawal.</string>
+    <string name="payout_disabled_insufficient_balance">Available balance is below minimum withdrawal limit (%1$s).</string>
+    <string name="payout_disabled_backend_unconfigured">Withdrawals unavailable until backend financial API is deployed.</string>
+    <string name="payout_dialog_title">Request Withdrawal</string>
+    <string name="payout_dialog_account_label">Destination Account</string>
+    <string name="payout_dialog_amount_label">Amount (INR)</string>
+    <string name="payout_dialog_amount_hint">Enter amount e.g. 250.00</string>
+    <string name="payout_dialog_submit">Submit Payout Request</string>
+    <string name="payout_dialog_cancel">Cancel</string>
+    <string name="payout_validation_invalid_amount">Enter a valid INR amount with up to 2 decimal places.</string>
+    <string name="payout_validation_out_of_bounds">Amount must be between %1$s and available limit %2$s.</string>
+    <string name="payout_account_dialog_title">Link Tokenized Bank Account</string>
+    <string name="payout_account_holder_label">Account Holder Name</string>
+    <string name="payout_account_number_label">Bank Account Number</string>
+    <string name="payout_account_ifsc_label">IFSC Code (e.g. HDFC0001234)</string>
+    <string name="payout_account_submit">Save Account</string>
+    <string name="payout_account_status_not_linked">Not Linked</string>
+    <string name="payout_account_status_pending">Pending Verification</string>
+    <string name="payout_account_status_verified">Verified</string>
+    <string name="payout_account_status_rejected">Rejected</string>
+    <string name="payout_history_heading">Payout Status &amp; History</string>
+    <string name="payout_history_empty">No withdrawal requests recorded yet.</string>
+    <string name="payout_status_pending">Pending</string>
+    <string name="payout_status_processing">Processing</string>
+    <string name="payout_status_paid">Paid</string>
+    <string name="payout_status_failed">Failed</string>
+    <string name="payout_status_reversed">Reversed</string>
+    <string name="payout_requested_at">Requested: %1$s</string>
+    <string name="payout_settled_at">Settled: %1$s</string>
+    <string name="payout_failure_reason">Reason: %1$s</string>
+    <string name="ledger_type_trip_credit">Trip Earning Credit</string>
+    <string name="ledger_type_campaign_credit">Campaign Reward Credit</string>
+    <string name="ledger_type_referral_credit">Referral Reward Credit</string>
+    <string name="ledger_type_payout_hold">Payout Hold Debit</string>
+    <string name="ledger_type_payout_settled">Payout Settled</string>
+    <string name="ledger_type_payout_reversal">Payout Reversal Credit</string>
+    <string name="ledger_type_adjustment">Adjustment</string>
+    <string name="ledger_balance_after">Balance after: %1$s</string>
+    <string name="ledger_load_more">Load More Transactions</string>
+    <string name="payout_load_more">Load More Payouts</string>
+    <string name="transaction_detail_title">Financial Transaction Details</string>
+    <string name="transaction_detail_entry_id">Ledger Entry ID: %1$s</string>
+    <string name="transaction_detail_source">Source: %1$s (%2$s)</string>
+    <string name="transaction_detail_amount">Amount: %1$s</string>
+    <string name="transaction_detail_balance_after">Ledger Balance After: %1$s</string>
+    <string name="transaction_detail_statement_heading">Itemized Earning Statement</string>
+    <string name="transaction_detail_fare_version">Fare Config Version: %1$s</string>
+    <string name="transaction_detail_quote_id">Quote Snapshot: %1$s</string>
+    <string name="transaction_detail_base_fare">Base Fare: %1$s</string>
+    <string name="transaction_detail_distance_fare">Distance Fare: %1$s</string>
+    <string name="transaction_detail_time_fare">Time Fare: %1$s</string>
+    <string name="transaction_detail_incentive_fare">Incentives: %1$s</string>
+    <string name="transaction_detail_platform_fee">Platform Fee: -%1$s</string>
+    <string name="transaction_detail_tax">Tax: -%1$s</string>
+    <string name="transaction_detail_net_earning">Net Finalized Earning: %1$s</string>
+    <string name="transaction_detail_immutable_note">Ledger entries are append-only and never modified. Corrections appear only as adjustments or reversals.</string>
+    <string name="transaction_detail_close">Close</string>
+    <string name="financial_outcome_payout_requested">Payout request submitted (%1$s) — status: %2$s.</string>
+    <string name="financial_outcome_account_linked">Tokenized payout account added (%1$s).</string>
+    <string name="financial_outcome_network_no_queue">Network failure during financial request. Not queued offline; please retry safely.</string>
+    <string name="demo_financial_sandbox_title">Demo Financial Sandbox (DEMO ONLY)</string>
+    <string name="demo_financial_seed_trip">Simulate Completed Trip Earning</string>
+    <string name="demo_financial_sandbox_toggle">Enable Sandbox Test Payouts (NO REAL MONEY)</string>
+    <string name="demo_financial_webhook_paid">Webhook: Mark Paid</string>
+    <string name="demo_financial_webhook_failed">Webhook: Fail &amp; Reverse</string>
+
+    <!-- Rewards Destination -->
+    <string name="rewards_title">Rewards &amp; Tier</string>
+    <string name="rewards_current_tier">Partner Tier</string>
+    <string name="rewards_tier_unassigned">Tier Pending Backend Sync</string>
+    <string name="rewards_campaigns_heading">Campaigns &amp; Milestones</string>
+    <string name="rewards_empty_title">No Active Campaigns</string>
+    <string name="rewards_empty_description">Backend-configured daily incentives, weekly challenges, and priority rewards will appear here when eligible.</string>
+    <string name="rewards_filter_all">All</string>
+    <string name="rewards_cat_daily_incentive">Daily Incentives</string>
+    <string name="rewards_cat_weekly_challenge">Weekly Challenges</string>
+    <string name="rewards_cat_priority_reward">Priority Rewards</string>
+    <string name="rewards_terms_version">Terms: %1$s • Expires: %2$s</string>
+    <string name="rewards_progress_label">%1$d / %2$d completed</string>
+    <string name="rewards_qualified_badge">Qualified • Credited (%1$s)</string>
+    <string name="rewards_ineligible_badge">Backend Ineligible</string>
+    <string name="rewards_server_eligibility_note">All rewards require server-verified eligibility and post once per source.</string>
+    <string name="referral_heading">Refer &amp; Earn</string>
+    <string name="referral_code_label">Your Referral Code: %1$s</string>
+    <string name="referral_share_action">Share Referral</string>
+    <string name="referral_stats_row">Qualified: %1$d • Pending: %2$d • Earned: %3$s</string>
+    <string name="referral_apply_heading">Have a Referral Code?</string>
+    <string name="referral_apply_hint">Enter friend referral code</string>
+    <string name="referral_apply_action">Apply Code</string>
+    <string name="referral_tracking_heading">Referral Tracking</string>
+    <string name="referral_tracking_empty">No referrals tracked yet.</string>
+    <string name="referral_status_pending">Pending</string>
+    <string name="referral_status_qualified">Qualified</string>
+    <string name="referral_status_rewarded">Rewarded</string>
+    <string name="referral_status_self_blocked">Blocked (Self-Referral)</string>
+    <string name="referral_status_fraud_blocked">Blocked (Anti-Fraud)</string>
+    <string name="demo_rewards_sandbox_title">Demo Retention Sandbox (DEMO ONLY)</string>
+    <string name="demo_rewards_eligibility_toggle">Server Eligibility Approved (DEMO)</string>
+    <string name="demo_rewards_simulate_progress">+2 Trip Progress (DEMO)</string>
+    <string name="demo_rewards_qualify_referral">Qualify Referral (DEMO)</string>
+
+    <!-- Phase 7 Safety Center, SOS, Emergency Contacts, Incidents & Insurance -->
+    <string name="safety_center_title">Safety Center &amp; SOS</string>
+    <string name="safety_sos_heading">Emergency SOS</string>
+    <string name="safety_sos_button">Send SOS Alert</string>
+    <string name="safety_sos_confirm_title">Confirm Emergency SOS?</string>
+    <string name="safety_sos_confirm_body">This sends an emergency SOS request with your current coordinates to the backend responder. Never treat SOS as confirmed unless acknowledged.</string>
+    <string name="safety_sos_confirm_send">Trigger SOS Now</string>
+    <string name="safety_sos_status_unconfirmed">Not Sent / Unconfirmed</string>
+    <string name="safety_sos_status_sending">Sending SOS Request…</string>
+    <string name="safety_sos_status_acknowledged">Responder Acknowledged</string>
+    <string name="safety_sos_status_failed">SOS Failed / Not Contacted</string>
+    <string name="safety_sos_ack_details">Alert ID: %1$s • Responder: %2$s • Ack: %3$s</string>
+    <string name="safety_sos_dial_112">Call Local Emergency (112)</string>
+    <string name="safety_sos_no_fake_ack_note">SOS is shown as contacted ONLY after verified server/responder acknowledgement. On failure, dial 112 directly.</string>
+    <string name="safety_contacts_heading">Emergency Contacts</string>
+    <string name="safety_contacts_empty">No emergency contacts added yet.</string>
+    <string name="safety_contacts_add">Add Contact</string>
+    <string name="safety_contact_name_label">Contact Name</string>
+    <string name="safety_contact_phone_label">Phone Number (10+ digits)</string>
+    <string name="safety_contact_rel_label">Relationship (e.g. Spouse, Parent)</string>
+    <string name="safety_incident_heading">Report Safety Incident</string>
+    <string name="safety_incident_submit">Submit Incident Report</string>
+    <string name="safety_incident_cat_label">Category (e.g. VEHICLE_ISSUE, RIDER_MISCONDUCT)</string>
+    <string name="safety_incident_desc_label">Incident Description</string>
+    <string name="safety_insurance_heading">Partner Insurance Information</string>
+    <string name="safety_insurance_unverified">No active verified insurance policy is confirmed for your account yet (D-004). Coverage terms will appear only with an approved policy.</string>
+    <string name="safety_insurance_provider">Provider: %1$s</string>
+    <string name="safety_insurance_policy_ref">Policy Ref: %1$s</string>
+    <string name="demo_safety_sandbox_title">Demo Safety Sandbox (DEMO ONLY)</string>
+    <string name="demo_safety_sos_responder_toggle">Enable Sandbox SOS Responder Ack (DEMO)</string>
+    <string name="demo_safety_insurance_toggle">Preview Sample Insurance Policy (DEMO)</string>
+
+    <!-- Phase 7 Help & Support -->
+    <string name="support_title">Help &amp; Support</string>
+    <string name="support_create_ticket">New Support Ticket</string>
+    <string name="support_tickets_empty">No support tickets found.</string>
+    <string name="support_load_more">Load More Tickets</string>
+    <string name="support_ticket_cat_label">Category (e.g. EARNINGS, SAFETY, ACCOUNT)</string>
+    <string name="support_ticket_subject_label">Subject</string>
+    <string name="support_ticket_desc_label">Describe your issue</string>
+    <string name="support_ticket_attach_sample">Attach Sample Private Doc Key</string>
+    <string name="support_ticket_attached_count">Private attachment keys: %1$d</string>
+    <string name="support_ticket_submit">Submit Ticket</string>
+    <string name="support_thread_title">Ticket #%1$s</string>
+    <string name="support_thread_privacy_note">Showing your tickets and driver-visible support replies only. Internal operations notes remain private.</string>
+    <string name="support_reply_hint">Write a reply…</string>
+    <string name="support_reply_send">Send</string>
+    <string name="support_status_open">Open</string>
+    <string name="support_status_in_progress">In Progress</string>
+    <string name="support_status_waiting_driver">Waiting for Driver</string>
+    <string name="support_status_resolved">Resolved</string>
+    <string name="support_status_closed">Closed</string>
+
+    <!-- Phase 7 Notification Inbox & Preferences -->
+    <string name="notifications_title">Notifications</string>
+    <string name="notifications_unread_summary">Unread: %1$d</string>
+    <string name="notifications_empty_title">No Notifications</string>
+    <string name="notifications_empty_desc">Server push alerts, payout updates, and campaign notifications will appear here.</string>
+    <string name="notifications_load_more">Load More Notifications</string>
+    <string name="notifications_prefs_heading">Notification Preferences</string>
+    <string name="notifications_pref_orders">Order &amp; Dispatch Alerts</string>
+    <string name="notifications_pref_earnings">Earnings &amp; Payout Alerts</string>
+    <string name="notifications_pref_campaigns">Campaign &amp; Incentive Alerts</string>
+    <string name="notifications_deep_link_chip">Open %1$s</string>
+    <string name="demo_notifications_simulate_push">Simulate Push Wakeup (DEMO)</string>
+
+    <!-- Profile Destination -->
+    <string name="profile_title">Partner Profile</string>
+    <string name="profile_vehicle_info">Vehicle Details</string>
+    <string name="profile_documents">KYC &amp; Verification Documents</string>
+    <string name="profile_support">Partner Support &amp; Help Desk</string>
+    <string name="profile_settings">App Settings</string>
+    <string name="profile_emergency_sos">Safety Center &amp; SOS</string>
+    <string name="profile_support_subtitle">Support tickets, help topics &amp; issue tracking</string>
+    <string name="profile_sos_subtitle">Emergency contacts, SOS alert, incident report &amp; insurance</string>
+    <string name="profile_language_heading">Language / भाषा</string>
+    <string name="profile_rating_unavailable">Rating unavailable</string>
+    <string name="profile_demo_fixture_label">Demo Profile Fixture</string>
+
+    <!-- Reusable UI Component States -->
+    <string name="state_loading">Loading information…</string>
+    <string name="state_please_wait">Please wait a moment while we sync your partner profile.</string>
+    <string name="state_empty_title">No Data Available</string>
+    <string name="state_empty_subtitle">There are no records to display right now.</string>
+    <string name="state_error_title">Something went wrong</string>
+    <string name="state_error_subtitle">Could not connect to service. Please check your connection and try again.</string>
+    <string name="state_retry">Try Again</string>
+    <string name="state_offline_title">You\'re Currently Offline</string>
+    <string name="state_offline_subtitle">Toggle your duty status to Online to prepare for incoming trips and orders.</string>
+    <string name="state_permission_title">Permission Required</string>
+    <string name="state_permission_subtitle">Location or notification permission is required for live partner workflows.</string>
+    <string name="state_permission_action">Open Settings</string>
+
+    <!-- Explicit Not-Implemented Placeholder States (Phase 2, 4-7) -->
+    <string name="not_implemented_badge">Not Implemented (Deferred Phase)</string>
+    <string name="placeholder_vehicle_desc">Vehicle registration and category validation will be wired to PostgreSQL in Phase 2.</string>
+    <string name="placeholder_documents_desc">Driving License, RC, Insurance, and Permit KYC upload will be wired in Phase 2.</string>
+    <string name="placeholder_notifications_desc">In-app notification inbox and unread badge sync will be wired in Phase 7.</string>
+    <string name="placeholder_support_desc">Support tickets and issue reporting workflows will be wired in Phase 7.</string>
+    <string name="placeholder_sos_desc">Live emergency SOS dispatch and safety check-ins will be wired in Phase 7.</string>
+    <string name="placeholder_settings_title">Language &amp; Environment Settings</string>
+    <string name="placeholder_settings_desc">Change app display language below. Service-area and Auto Boost preferences are available on Home.</string>
+
+    <!-- Common Actions -->
+    <string name="action_refresh">Refresh</string>
+    <string name="action_view_details">View Details</string>
+    <string name="action_switch_language">हिन्दी में बदलें (HI)</string>
+    <string name="action_help">Help &amp; Support</string>
+    <string name="current_language_value">Current Language: English (EN)</string>
+
+    <!-- Boundary & Environment States -->
+    <string name="demo_mode_banner">DEMO MODE • Isolated local test data only</string>
+    <string name="backend_not_deployed_notice">Backend API not deployed yet. Live features are unavailable.</string>
+    <string name="status_unverified">Unverified</string>
+    <string name="status_verified">Verified</string>
+    <string name="profile_documents_unverified">KYC verification pending backend onboarding integration.</string>
+    <string name="profile_not_signed_in">Not signed in (Auth not implemented)</string>
+
+    <!-- D-018 Payout Status Keys -->
+    <string name="payout_status_requested">Requested</string>
+    <string name="payout_status_cancelled">Cancelled</string>
+
+    <!-- Notification Channels -->
+    <string name="notification_channel_dispatch_name">Dispatch &amp; Trip Alerts</string>
+    <string name="notification_channel_dispatch_desc">High-priority incoming ride and delivery requests and trip status updates.</string>
+    <string name="notification_channel_general_name">Account, Payouts &amp; Support</string>
+    <string name="notification_channel_general_desc">KYC status, payout confirmations, campaign updates, and support replies.</string>
+
+    <!-- Phase 2 Onboarding, Auth, Vehicle & KYC -->
+    <string name="brand_tagline">Drive Smart. Earn on Your Time.</string>
+    <string name="onboarding_choose_language_title">Choose Your Language</string>
+    <string name="onboarding_choose_language_subtitle">Switch anytime between English and हिन्दी.</string>
+    <string name="onboarding_continue">Continue</string>
+    <string name="lang_english_title">English</string>
+    <string name="lang_english_subtitle">Continue in English</string>
+    <string name="lang_hindi_title">हिन्दी</string>
+    <string name="lang_hindi_subtitle">हिन्दी में आगे बढ़ें</string>
+
+    <string name="auth_phone_title">Partner Sign In</string>
+    <string name="auth_phone_subtitle">Enter your 10-digit Indian mobile number to verify your identity via OTP.</string>
+    <string name="auth_phone_label">Mobile Number</string>
+    <string name="auth_send_otp">Send OTP</string>
+    <string name="auth_otp_sent_to">OTP sent to %1$s</string>
+    <string name="auth_edit_number">Edit</string>
+    <string name="auth_otp_label">6-Digit OTP</string>
+    <string name="auth_demo_otp_hint">DEMO Sandbox OTP: %1$s</string>
+    <string name="auth_verify_otp">Verify &amp; Continue</string>
+    <string name="auth_resend_otp">Resend OTP</string>
+    <string name="auth_resend_otp_wait">Resend OTP (%1$ds)</string>
+    <string name="auth_change_language">Change Language / भाषा बदलें</string>
+    <string name="action_sign_out">Sign Out</string>
+    <string name="action_close">Close</string>
+
+    <string name="wizard_title">Partner Onboarding</string>
+    <string name="wizard_step_counter">Step %1$d of %2$d</string>
+    <string name="wizard_step_personal">Personal</string>
+    <string name="wizard_step_vehicle">Vehicle</string>
+    <string name="wizard_step_bank">Bank</string>
+    <string name="wizard_step_docs">Documents</string>
+    <string name="wizard_personal_heading">Personal Details</string>
+    <string name="wizard_vehicle_heading">Vehicle &amp; Service Details</string>
+    <string name="wizard_bank_heading">Payout Bank Account</string>
+    <string name="wizard_docs_heading">KYC Document Upload</string>
+    <string name="wizard_save_continue">Save &amp; Continue</string>
+    <string name="wizard_skip_for_now">Skip for Now</string>
+    <string name="wizard_submit_review">Submit for Verification</string>
+    <string name="bank_linked_summary">Linked: %1$s (•••• %2$s)</string>
+
+    <string name="field_full_name">Full Name</string>
+    <string name="field_city_code">City Code (e.g. JAI)</string>
+    <string name="field_dob_optional">Date of Birth (YYYY-MM-DD, optional)</string>
+    <string name="field_address_optional">Address Line (optional)</string>
+    <string name="field_state_code">State Code (e.g. RJ)</string>
+    <string name="field_pincode">PIN Code (6 digits)</string>
+    <string name="field_vehicle_reg">Registration Number (e.g. RJ14AB1234)</string>
+    <string name="field_vehicle_brand">Brand / Make</string>
+    <string name="field_vehicle_model">Model Name</string>
+    <string name="field_vehicle_color">Color</string>
+    <string name="field_vehicle_year">Year (e.g. 2024)</string>
+    <string name="field_bank_holder">Account Holder Name</string>
+    <string name="field_bank_account">Bank Account Number (9–18 digits)</string>
+    <string name="field_bank_ifsc">IFSC Code (11 chars)</string>
+
+    <string name="vehicle_details_title">Vehicle Details</string>
+    <string name="vehicle_details_subtitle">Manage your active vehicle registration and service category.</string>
+    <string name="vehicle_status_approved">Approved</string>
+    <string name="vehicle_save_cta">Save Vehicle Details</string>
+    <string name="vehicle_go_to_kyc">Open KYC Documents</string>
+
+    <string name="kyc_documents_title">KYC &amp; Verification Documents</string>
+    <string name="kyc_aadhaar_compliance_note">Compliance rule: Never enter raw 12-digit Aadhaar numbers. Use verified masked references only. Documents are stored privately via object keys.</string>
+    <string name="kyc_optional_reference_label">Masked Reference / PAN (optional)</string>
+    <string name="kyc_optional_expiry_label">Expiry Date UTC (YYYY-MM-DD, optional)</string>
+    <string name="kyc_ref_display">Reference: %1$s</string>
+    <string name="kyc_selected_preview_uri">Selected file: %1$s</string>
+    <string name="kyc_pick_gallery">Choose File</string>
+    <string name="kyc_quick_upload_demo">Upload Sample (DEMO)</string>
+    <string name="kyc_demo_reviewer_controls">Sandbox KYC Reviewer Controls (DEMO ONLY)</string>
+    <string name="kyc_demo_approve_all">Approve &amp; Activate</string>
+    <string name="kyc_demo_reject_dl">Reject Driving License</string>
+
+    <string name="kyc_doc_driving_license">Driving License</string>
+    <string name="kyc_doc_vehicle_rc">Vehicle RC</string>
+    <string name="kyc_doc_vehicle_insurance">Vehicle Insurance</string>
+    <string name="kyc_doc_permit">Commercial Permit</string>
+    <string name="kyc_doc_pan_card">PAN Card</string>
+    <string name="kyc_doc_aadhaar_ref">Aadhaar Verification Reference</string>
+    <string name="kyc_doc_profile_photo">Profile Selfie Photo</string>
+
+    <string name="kyc_status_not_submitted">Not Submitted</string>
+    <string name="kyc_status_uploaded">Uploaded</string>
+    <string name="kyc_status_under_review">Under Review</string>
+    <string name="kyc_status_approved">Approved</string>
+    <string name="kyc_status_rejected">Rejected</string>
+    <string name="kyc_status_expired">Expired</string>
+
+    <string name="account_status_applicant">Onboarding Incomplete</string>
+    <string name="account_status_pending_review">Verification Under Review</string>
+    <string name="account_status_active">Verified Active Partner</string>
+    <string name="account_status_suspended">Account Suspended</string>
+    <string name="account_status_rejected">Verification Rejected</string>
+    <string name="account_status_closed">Account Closed</string>
+
+    <string name="verification_pending_subtitle">Your documents are in the review queue. Online duty will unlock once backend verification completes.</string>
+    <string name="verification_blocked_subtitle">Action is required on your account or KYC documents before you can go Online.</string>
+    <string name="verification_docs_action_required">Documents Requiring Attention</string>
+    <string name="verification_refresh_status">Refresh Verification Status</string>
+    <string name="verification_fix_documents">Fix &amp; Re-upload Documents</string>
+    <string name="verification_contact_support">Contact Partner Support</string>
+
+    <!-- Settings, Dark Mode & Legal Disclosures -->
+    <string name="settings_language_label">Display Language</string>
+    <string name="settings_appearance_title">Appearance (Theme)</string>
+    <string name="theme_light">Light</string>
+    <string name="theme_dark">Dark</string>
+    <string name="theme_system">System</string>
+    <string name="settings_permissions_and_legal">Notifications, Onboarding &amp; Legal</string>
+    <string name="settings_notification_preferences">Notification System Settings</string>
+    <string name="settings_open_onboarding_flow">Open Onboarding &amp; KYC Flow</string>
+    <string name="settings_app_version">Version %1$s (%2$d)</string>
+    <string name="settings_logout_blocked_hint">Sign Out (Unavailable During Active Trip)</string>
+
+    <string name="legal_privacy_policy_title">Privacy Policy</string>
+    <string name="legal_privacy_policy_body">Drive Partner collects partner profile, vehicle, private KYC object keys, and duty-active GPS telemetry solely to operate ride/delivery dispatch, trip billing, safety SOS, and payouts. Raw 12-digit Aadhaar numbers are never stored or logged.</string>
+    <string name="legal_terms_title">Terms &amp; Conditions</string>
+    <string name="legal_terms_body">Partners must maintain valid driving licenses, vehicle registration, and insurance. All fares, commissions, incentives, and ledger payouts are governed by authoritative server records. Active trips must be completed or resolved before signing out.</string>
+    <string name="legal_location_disclosure_title">Location &amp; Foreground Service Disclosure</string>
+    <string name="legal_location_disclosure_body">While you are set to Online Duty or on an active trip, Drive Partner runs a visible foreground location service to receive nearby dispatch offers, track trip routes, and support SOS alerts. No location tracking occurs while Offline.</string>
+
+    <!-- Merged Upstream Prototype & Design Component Strings -->
     <string name="home_nav_shortcuts">Quick Shortcuts</string>
     <string name="home_online_hours">Online Time</string>
     <string name="home_completed_trips">Trips Completed</string>
@@ -44,63 +663,14 @@
     <string name="home_rewards_desc">Milestone badges &amp; fuel incentive perks</string>
     <string name="home_profile_card">Profile &amp; Vehicle</string>
     <string name="home_profile_desc">KYC documents, vehicle info &amp; settings</string>
-
-    <!-- Orders Destination -->
-    <string name="orders_title">Orders &amp; Trips</string>
-    <string name="orders_tab_active">Active</string>
-    <string name="orders_tab_completed">Completed</string>
-    <string name="orders_tab_cancelled">Cancelled</string>
-    <string name="orders_empty_title">No Orders Yet</string>
-    <string name="orders_empty_description">New booking requests will appear here once you go online.</string>
-
-    <!-- Earnings Destination -->
-    <string name="earnings_title">My Earnings</string>
-    <string name="earnings_today">Today\'s Earning</string>
-    <string name="earnings_this_week">This Week</string>
-    <string name="earnings_incentives">Incentives &amp; Bonus</string>
-    <string name="earnings_empty_title">No Earnings Recorded</string>
-    <string name="earnings_empty_description">Completed trips and delivery payouts will be visible here.</string>
     <string name="earnings_payout_details">Bank account linked &amp; ready for direct payout transfer.</string>
-
-    <!-- Rewards Destination -->
-    <string name="rewards_title">Rewards &amp; Tier</string>
-    <string name="rewards_current_tier">Partner Tier</string>
-    <string name="rewards_empty_title">No Rewards Available</string>
-    <string name="rewards_empty_description">Complete weekly goal milestones to unlock fuel cashback and priority perks.</string>
-
-    <!-- Profile Destination -->
-    <string name="profile_title">Partner Profile</string>
     <string name="profile_section_service">Service Selection</string>
     <string name="profile_section_vehicle_docs">Vehicle &amp; Documents</string>
     <string name="profile_section_preferences">Preferences &amp; Settings</string>
     <string name="profile_section_support_safety">Safety &amp; Support</string>
-    <string name="profile_vehicle_info">Vehicle Details</string>
-    <string name="profile_documents">KYC &amp; Verification Documents</string>
-    <string name="profile_support">Partner Support &amp; Help Desk</string>
-    <string name="profile_settings">App Settings</string>
-    <string name="profile_emergency_sos">Emergency SOS Assistance</string>
     <string name="profile_notifications">Push Notifications &amp; Alerts</string>
     <string name="profile_terms_privacy">Terms of Service &amp; Privacy</string>
     <string name="profile_app_version">App Version 1.0.0 (Build 1)</string>
-
-    <!-- Reusable UI Component States -->
-    <string name="state_loading">Loading information…</string>
-    <string name="state_please_wait">Please wait a moment while we sync your partner profile.</string>
-    <string name="state_empty_title">No Data Available</string>
-    <string name="state_empty_subtitle">There are no records to display right now.</string>
-    <string name="state_error_title">Something went wrong</string>
-    <string name="state_error_subtitle">Could not connect to service. Please check your connection and try again.</string>
-    <string name="state_retry">Try Again</string>
-    <string name="state_offline_title">You\'re Currently Offline</string>
-    <string name="state_offline_subtitle">Toggle your duty status to Online to start receiving trips and orders.</string>
-
-    <!-- Common Actions -->
-    <string name="action_refresh">Refresh</string>
-    <string name="action_view_details">View Details</string>
-    <string name="action_switch_language">हिन्दी में बदलें</string>
-    <string name="action_help">Help &amp; Support</string>
-
-    <!-- Design System Components -->
     <string name="order_request_title">Incoming Booking Request</string>
     <string name="order_request_accept">Accept Order</string>
     <string name="order_request_decline">Decline</string>
@@ -113,22 +683,15 @@
     <string name="reward_target_label">Target Milestone</string>
     <string name="reward_progress_format">%1$d of %2$d completed</string>
     <string name="duty_switch_online_desc">Online • Ready to accept rides</string>
-    <!-- Active Trip Lifecycle -->
     <string name="trip_stage_assigned">Assigned • En-Route to Pickup</string>
     <string name="trip_stage_arrived">Arrived at Pickup Location</string>
     <string name="trip_stage_in_progress">Trip In-Progress to Destination</string>
     <string name="trip_stage_completed">Trip Completed</string>
-    <string name="trip_action_navigate_pickup">Navigate to Pickup</string>
     <string name="trip_action_arrived_pickup">I Have Arrived</string>
-    <string name="trip_action_start_trip">Start Ride / Trip</string>
-    <string name="trip_action_navigate_drop">Navigate to Drop-Off</string>
-    <string name="trip_action_complete_trip">Complete Ride &amp; Collect Fare</string>
     <string name="trip_enter_start_pin">Enter 4-Digit Rider PIN</string>
     <string name="trip_verify_pin_instruction">Ask the rider for their 4-digit start OTP to begin trip.</string>
     <string name="trip_sos_button">Emergency SOS</string>
     <string name="trip_call_customer">Call Customer</string>
-
-    <!-- Authentication & Login -->
     <string name="auth_login_title">Partner Sign In</string>
     <string name="auth_enter_phone_title">Enter Mobile Number</string>
     <string name="auth_enter_phone_subtitle">We will send a 6-digit OTP code to verify your partner account.</string>
@@ -137,10 +700,10 @@
     <string name="auth_invalid_phone">Please enter a valid 10-digit mobile number</string>
     <string name="auth_terms_disclaimer">By continuing, you agree to Drive Partner Terms of Service &amp; Privacy Policy.</string>
     <string name="auth_verify_otp_title">Verify OTP Code</string>
-    <string name="auth_otp_sent_to">Enter the 6-digit verification code sent to %1$s</string>
     <string name="auth_verify_proceed">Verify &amp; Proceed</string>
     <string name="auth_resend_code">Resend OTP Code</string>
     <string name="auth_resend_timer">Resend code in %1$ds</string>
     <string name="auth_invalid_otp">Incorrect OTP. Default demo code is 123456.</string>
     <string name="auth_edit_phone">Edit Number</string>
+    <string name="duty_switch_offline_desc">Offline • Turn on duty status to receive rides</string>
 </resources>

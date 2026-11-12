@@ -1,32 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Brand Primary: Deep Blue -->
-    <color name="drive_blue_primary">#0D2560</color>
-    <color name="drive_blue_dark">#08173D</color>
-    <color name="drive_blue_light">#1E3A8A</color>
-    <color name="drive_blue_container">#E0E7FF</color>
-    <color name="drive_on_blue_container">#0A1A44</color>
+    <!-- Design.md Approved Color Palette -->
+    <color name="drive_blue_primary">#1769AA</color>
+    <color name="drive_blue_dark">#124B7A</color>
+    <color name="drive_blue_light">#2878C7</color>
+    <color name="drive_blue_container">#E3F0FB</color>
+    <color name="drive_on_blue_container">#0D3A61</color>
 
     <!-- Online & Success: Green -->
-    <color name="drive_green_online">#16A34A</color>
-    <color name="drive_green_container">#DCFCE7</color>
-    <color name="drive_on_green_container">#14532D</color>
+    <color name="drive_green_online">#16A36A</color>
+    <color name="drive_green_container">#E6F6EF</color>
+    <color name="drive_on_green_container">#0B5C3B</color>
 
-    <!-- Earnings Highlight: Yellow/Gold -->
-    <color name="drive_yellow_earning">#CA8A04</color>
-    <color name="drive_yellow_container">#FEF08A</color>
-    <color name="drive_on_yellow_container">#713F12</color>
+    <!-- Warning / Highlight: Amber -->
+    <color name="drive_yellow_earning">#F5A623</color>
+    <color name="drive_yellow_container">#FEF3DC</color>
+    <color name="drive_on_yellow_container">#7A4F04</color>
 
-    <!-- Neutral Surfaces -->
+    <!-- Neutral Surfaces & Text -->
     <color name="drive_surface_white">#FFFFFF</color>
-    <color name="drive_surface_light_grey">#F3F4F6</color>
-    <color name="drive_surface_border">#E5E7EB</color>
-    <color name="drive_text_primary">#111827</color>
-    <color name="drive_text_secondary">#4B5563</color>
-    <color name="drive_text_muted">#9CA3AF</color>
+    <color name="drive_surface_light_grey">#F5F7FA</color>
+    <color name="drive_surface_border">#E7EAF0</color>
+    <color name="drive_text_primary">#17202A</color>
+    <color name="drive_text_secondary">#697586</color>
+    <color name="drive_text_muted">#94A3B8</color>
 
     <!-- Status & Alerts -->
-    <color name="drive_error">#DC2626</color>
-    <color name="drive_error_container">#FEE2E2</color>
-    <color name="drive_offline_grey">#6B7280</color>
+    <color name="drive_error">#DC3545</color>
+    <color name="drive_error_container">#FDECEC</color>
+    <color name="drive_offline_grey">#697586</color>
 </resources>

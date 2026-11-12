@@ -13,4 +13,8 @@ sealed interface DriveUiState {
         val canRetry: Boolean = true
     ) : DriveUiState
     data object Offline : DriveUiState
+    data class PermissionRequired(
+        val title: String? = null,
+        val message: String? = null
+    ) : DriveUiState
 }
