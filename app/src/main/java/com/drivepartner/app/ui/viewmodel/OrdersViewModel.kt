@@ -473,9 +473,9 @@ class OrdersViewModel(
             return
         }
 
+        _inFlightOfferId.value = offerId
+        _inFlightAction.value = OfferAction.ACCEPT
         viewModelScope.launch {
-            _inFlightOfferId.value = offerId
-            _inFlightAction.value = OfferAction.ACCEPT
             val idempotencyKey = idempotencyTracker.getOrCreateKey(offerId, OfferAction.ACCEPT)
             try {
                 when (val result = repo.acceptOffer(offerId, idempotencyKey, clockMillis())) {
@@ -545,9 +545,9 @@ class OrdersViewModel(
         val repo = dispatchRepository ?: return
         if (_inFlightOfferId.value != null) return
 
+        _inFlightOfferId.value = offerId
+        _inFlightAction.value = OfferAction.REJECT
         viewModelScope.launch {
-            _inFlightOfferId.value = offerId
-            _inFlightAction.value = OfferAction.REJECT
             val idempotencyKey = idempotencyTracker.getOrCreateKey(offerId, OfferAction.REJECT)
             try {
                 when (val result = repo.rejectOffer(offerId, reason?.code, idempotencyKey)) {
@@ -610,8 +610,8 @@ class OrdersViewModel(
         val currentTrip = repo.activeTrip.value ?: return
         if (_inFlightTripTargetStatus.value != null) return
 
+        _inFlightTripTargetStatus.value = targetStatus
         viewModelScope.launch {
-            _inFlightTripTargetStatus.value = targetStatus
             val idempotencyKey = tripTransitionIdempotencyTracker.getOrCreateKey(
                 tripId = currentTrip.tripId,
                 targetStatus = targetStatus,

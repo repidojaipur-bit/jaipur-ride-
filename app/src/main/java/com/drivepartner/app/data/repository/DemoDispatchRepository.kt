@@ -92,21 +92,21 @@ class DemoDispatchCoordinator {
             return@withLock ApiResult.Success(existing, origin = DataOrigin.DEMO)
         }
 
-        if (!isDriverOnline) {
-            return@withLock ApiResult.HttpError(
-                httpStatus = 403,
-                error = ApiErrorEnvelope(
-                    code = DispatchErrorCodes.DRIVER_OFFLINE,
-                    message = "Driver must be confirmed Online before accepting offers."
-                )
-            )
-        }
         if (!isDriverEligible) {
             return@withLock ApiResult.HttpError(
                 httpStatus = 403,
                 error = ApiErrorEnvelope(
                     code = DispatchErrorCodes.DRIVER_INELIGIBLE,
                     message = "Driver eligibility requirements are incomplete."
+                )
+            )
+        }
+        if (!isDriverOnline) {
+            return@withLock ApiResult.HttpError(
+                httpStatus = 403,
+                error = ApiErrorEnvelope(
+                    code = DispatchErrorCodes.DRIVER_OFFLINE,
+                    message = "Driver must be confirmed Online before accepting offers."
                 )
             )
         }

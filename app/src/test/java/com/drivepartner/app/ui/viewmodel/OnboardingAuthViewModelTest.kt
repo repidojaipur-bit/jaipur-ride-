@@ -114,9 +114,10 @@ class OnboardingAuthViewModelTest {
 
         viewModel.selectRegistrationStep(RegistrationStep.DOCUMENTS)
         DemoAuthOnboardingCoordinator.mandatoryDocTypes.forEach { docType ->
+            val ref = if (docType == KycDocumentType.PAN_CARD) "ABCDE1234F" else "MASK-9988"
             viewModel.uploadAndRegisterDocument(
                 documentType = docType,
-                maskedReference = "MASK-9988"
+                maskedReference = ref
             )
             advanceUntilIdle()
         }
