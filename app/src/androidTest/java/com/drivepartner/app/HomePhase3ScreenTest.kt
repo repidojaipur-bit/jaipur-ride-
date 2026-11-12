@@ -60,7 +60,8 @@ class HomePhase3ScreenTest {
         composeRule.onNodeWithText(context.getString(R.string.eligibility_blocked_title)).assertIsDisplayed()
         composeRule.onNodeWithText("• ${context.getString(R.string.elig_reason_document_expired)}")
             .assertIsDisplayed()
-        composeRule.onNodeWithText(context.getString(R.string.go_online)).assertIsNotEnabled()
+        composeRule.onNodeWithText(context.getString(R.string.duty_switch_state_offline))
+            .assertIsDisplayed()
     }
 
     @Test
@@ -90,7 +91,7 @@ class HomePhase3ScreenTest {
         }
 
         composeRule.onNodeWithText(context.getString(R.string.action_enable_gps)).assertIsDisplayed()
-        composeRule.onNodeWithText(context.getString(R.string.map_no_surge_notice))
+        composeRule.onNodeWithText(context.getString(R.string.map_demand_zone_backend_note))
             .performScrollTo()
             .assertIsDisplayed()
 

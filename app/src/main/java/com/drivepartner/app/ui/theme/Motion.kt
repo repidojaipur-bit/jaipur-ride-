@@ -79,7 +79,7 @@ data class DriveMotionTokens(
     ): SpringSpec<T> =
         SpringSpec(
             dampingRatio = dampingRatio,
-            stiffness = if (reducedMotion) Spring.StiffnessVeryHigh else stiffness
+            stiffness = if (reducedMotion) Spring.StiffnessHigh else stiffness
         )
 
     companion object {

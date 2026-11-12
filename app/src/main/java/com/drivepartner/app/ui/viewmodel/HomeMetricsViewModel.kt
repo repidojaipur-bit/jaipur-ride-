@@ -17,6 +17,7 @@ import com.drivepartner.app.data.model.HomeTodayMetrics
 import com.drivepartner.app.data.model.OrderHistoryItem
 import com.drivepartner.app.data.model.PerformanceSuggestion
 import com.drivepartner.app.data.model.SuggestionAccent
+import com.drivepartner.app.data.model.toDomain
 import com.drivepartner.app.data.remote.dto.OrderHistoryFilter
 import com.drivepartner.app.data.remote.dto.TripStatus
 import com.drivepartner.app.data.repository.FinancialRepository
@@ -109,12 +110,14 @@ class HomeMetricsViewModel(
             val todayResult = financialRepository.fetchEarningsSummary(PERIOD_TODAY)
             val weekResult = financialRepository.fetchEarningsSummary(PERIOD_WEEK)
             when (todayResult) {
-                is ApiResult.Success -> todayEarnings = todayResult.data
+                is ApiResult.Success ->
+                    todayEarnings = todayResult.data.toDomain(todayResult.origin)
                 is ApiResult.HttpError,
                 is ApiResult.NetworkError,
                 is ApiResult.BackendNotDeployed -> errorMessageRes = R.string.home_metrics_error
             }
-            weekEarnings = (weekResult as? ApiResult.Success)?.data
+            weekEarnings = (weekResult as? ApiResult.Success)
+                ?.let { success -> success.data.toDomain(success.origin) }
 
             val historyResult = tripHistoryRepository.fetchOrderHistory(
                 filter = OrderHistoryFilter.ALL,

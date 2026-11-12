@@ -45,8 +45,7 @@ fun DrivePrimaryButton(
             containerColor = containerColor,
             contentColor = contentColor,
             disabledContainerColor = colors.surfaceTonal,
-            disabledContentColor = colors.textDisabled,
-            pressedContainerColor = colors.brandPressed
+            disabledContentColor = colors.textDisabled
         ),
         content = content
     )
@@ -72,8 +71,7 @@ fun DriveSuccessButton(
             containerColor = colors.successStrong,
             contentColor = colors.onSuccess,
             disabledContainerColor = colors.surfaceTonal,
-            disabledContentColor = colors.textDisabled,
-            pressedContainerColor = colors.successStrong.copy(alpha = 0.88f)
+            disabledContentColor = colors.textDisabled
         ),
         content = content
     )
@@ -123,8 +121,7 @@ fun DriveDangerButton(
             containerColor = colors.danger,
             contentColor = colors.onDanger,
             disabledContainerColor = colors.surfaceTonal,
-            disabledContentColor = colors.textDisabled,
-            pressedContainerColor = colors.danger.copy(alpha = 0.88f)
+            disabledContentColor = colors.textDisabled
         ),
         content = content
     )

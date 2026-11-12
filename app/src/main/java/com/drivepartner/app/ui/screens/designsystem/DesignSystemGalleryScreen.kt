@@ -367,13 +367,13 @@ private fun MotionSection() {
                 modifier = Modifier
                     .weight(1f)
                     .height(DriveSpacing.lg)
-                    .background(colors.surfaceTonal, RoundedCornerShape(DriveSpacing.pill))
+                    .background(colors.surfaceTonal, RoundedCornerShape(DriveShapeRadius.pill))
             ) {
                 Box(
                     modifier = Modifier
                         .fillMaxWidth(fraction = 0.15f + 0.85f * animated)
                         .height(DriveSpacing.lg)
-                        .background(colors.brand, RoundedCornerShape(DriveSpacing.pill))
+                        .background(colors.brand, RoundedCornerShape(DriveShapeRadius.pill))
                 )
             }
             Spacer(modifier = Modifier.width(DriveSpacing.md))

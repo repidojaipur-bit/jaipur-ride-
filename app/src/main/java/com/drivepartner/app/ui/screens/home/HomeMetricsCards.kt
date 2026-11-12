@@ -344,18 +344,14 @@ fun HomePerformanceCard(
         Spacer(modifier = Modifier.height(DriveSpacing.sm))
 
         if (progress != null) {
+            val progressDescription = stringResource(R.string.home_performance_progress_label) +
+                " " +
+                stringResource(R.string.home_performance_rate_value, (progress * 100).toInt())
             LinearProgressIndicator(
                 progress = { progress },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .semantics {
-                        contentDescription = stringResource(
-                            R.string.home_performance_progress_label
-                        ) + " " + stringResource(
-                            R.string.home_performance_rate_value,
-                            (progress * 100).toInt()
-                        )
-                    },
+                    .semantics { contentDescription = progressDescription },
                 color = colors.brand,
                 trackColor = colors.surfaceSunken,
                 strokeCap = StrokeCap.Round

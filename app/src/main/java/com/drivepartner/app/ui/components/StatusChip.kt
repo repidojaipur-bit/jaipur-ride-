@@ -28,6 +28,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.drivepartner.app.ui.icons.DriveIconSpec
+import com.drivepartner.app.ui.icons.DriveIcons
 import com.drivepartner.app.ui.theme.DriveColors
 import com.drivepartner.app.data.model.PartnerStatus
 import com.drivepartner.app.ui.theme.DriveChipShape
@@ -99,14 +100,14 @@ fun PartnerStatusChip(
             label = "Online",
             containerColor = DriveColors.current.successContainer,
             contentColor = DriveColors.current.onSuccessContainer,
-            icon = Icons.Outlined.GpsFixed,
+            icon = DriveIcons.Crosshair,
             modifier = modifier
         )
         PartnerStatus.OFFLINE -> StatusChip(
             label = "Offline",
             containerColor = DriveColors.current.neutralContainer,
             contentColor = DriveColors.current.neutral,
-            icon = Icons.Outlined.PowerSettingsNew,
+            icon = DriveIcons.Power,
             modifier = modifier
         )
     }
@@ -129,28 +130,28 @@ fun VerificationStatusChip(
             label = "Verified",
             containerColor = DriveColors.current.successContainer,
             contentColor = DriveColors.current.onSuccessContainer,
-            icon = Icons.Filled.CheckCircle,
+            icon = DriveIcons.ShieldCheck,
             modifier = modifier
         )
         VerificationBadgeType.UNDER_REVIEW -> StatusChip(
             label = "Under Review",
             containerColor = DriveColors.current.warningContainer,
             contentColor = DriveColors.current.onWarningContainer,
-            icon = Icons.Filled.Warning,
+            icon = DriveIcons.Clock,
             modifier = modifier
         )
         VerificationBadgeType.ACTION_REQUIRED -> StatusChip(
             label = "Action Required",
             containerColor = DriveColors.current.dangerContainer,
             contentColor = DriveColors.current.onDangerContainer,
-            icon = Icons.Outlined.Cancel,
+            icon = DriveIcons.ShieldAlert,
             modifier = modifier
         )
         VerificationBadgeType.SUSPENDED -> StatusChip(
             label = "Suspended",
             containerColor = DriveColors.current.dangerContainer,
             contentColor = DriveColors.current.danger,
-            icon = Icons.Outlined.Cancel,
+            icon = DriveIcons.ShieldAlert,
             modifier = modifier
         )
     }

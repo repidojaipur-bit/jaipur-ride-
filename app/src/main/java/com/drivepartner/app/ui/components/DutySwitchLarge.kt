@@ -78,6 +78,7 @@ fun DutySwitchLarge(
         label = "dutyKnobOffset"
     )
 
+    val dutyDescription = stringResource(R.string.duty_switch_title)
     val stateText = when {
         isPending -> stringResource(R.string.duty_switch_updating)
         isOnline -> stringResource(R.string.duty_switch_state_online)
@@ -109,7 +110,7 @@ fun DutySwitchLarge(
                 .padding(DriveSpacing.lg)
                 .semantics {
                     stateDescription = stateText
-                    contentDescription = stringResource(R.string.duty_switch_title)
+                    contentDescription = dutyDescription
                 },
             verticalAlignment = Alignment.CenterVertically
         ) {
