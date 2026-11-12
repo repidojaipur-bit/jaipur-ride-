@@ -122,7 +122,7 @@ fun DrivePartnerMainContent(
 ) {
     val uiState by viewModel.mainUiState.collectAsState()
     val onboardingState by onboardingViewModel.uiState.collectAsState()
-    val activeTrip by appContainer.dispatchRepository.activeTrip.collectAsState()
+    val activeTrip by appContainer.tripHistoryRepository.activeTrip.collectAsState()
     val hasActiveTrip = activeTrip != null
 
     if (!onboardingState.isAuthenticatedAndActive) {

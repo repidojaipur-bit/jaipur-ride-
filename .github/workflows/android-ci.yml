@@ -29,7 +29,12 @@ jobs:
         run: |
           set -o pipefail
           gradle assembleDemoDebug assembleLiveDebug --console=plain 2>&1 | tee /tmp/gradle-debug.log || {
-            grep -E "^e: |FAILURE:|> Task .* FAILED|error:|Exception" /tmp/gradle-debug.log | head -n 10 | while IFS= read -r line; do echo "::error::$line"; done
+            python3 -c '
+import pathlib, re
+lines = [l.replace("\r", "").replace("%", "%25") for l in pathlib.Path("/tmp/gradle-debug.log").read_text(errors="replace").splitlines() if re.search(r"^e: |FAILURE:|> Task .* FAILED|error:|Exception", l)]
+for i in range(0, min(len(lines), 120), 15):
+    print("::error::" + "%0A".join(lines[i:i+15]))
+'
             exit 1
           }
 
@@ -38,7 +43,12 @@ jobs:
         run: |
           set -o pipefail
           gradle assembleLiveRelease --console=plain 2>&1 | tee /tmp/gradle-release.log || {
-            grep -E "^e: |FAILURE:|> Task .* FAILED|error:|Exception" /tmp/gradle-release.log | head -n 10 | while IFS= read -r line; do echo "::error::$line"; done
+            python3 -c '
+import pathlib, re
+lines = [l.replace("\r", "").replace("%", "%25") for l in pathlib.Path("/tmp/gradle-release.log").read_text(errors="replace").splitlines() if re.search(r"^e: |FAILURE:|> Task .* FAILED|error:|Exception", l)]
+for i in range(0, min(len(lines), 120), 15):
+    print("::error::" + "%0A".join(lines[i:i+15]))
+'
             exit 1
           }
 
@@ -47,7 +57,12 @@ jobs:
         run: |
           set -o pipefail
           gradle lintDemoDebug lintLiveDebug --console=plain 2>&1 | tee /tmp/gradle-lint.log || {
-            grep -E "Error:|FAILURE:|> Task .* FAILED" /tmp/gradle-lint.log | head -n 10 | while IFS= read -r line; do echo "::error::$line"; done
+            python3 -c '
+import pathlib, re
+lines = [l.replace("\r", "").replace("%", "%25") for l in pathlib.Path("/tmp/gradle-lint.log").read_text(errors="replace").splitlines() if re.search(r"Error:|FAILURE:|> Task .* FAILED", l)]
+for i in range(0, min(len(lines), 120), 15):
+    print("::error::" + "%0A".join(lines[i:i+15]))
+'
             exit 1
           }
 
@@ -56,6 +71,11 @@ jobs:
         run: |
           set -o pipefail
           gradle testDemoDebugUnitTest testLiveDebugUnitTest --console=plain 2>&1 | tee /tmp/gradle-test.log || {
-            grep -E "FAILED|FAILURE:|Error|> Task .* FAILED" /tmp/gradle-test.log | head -n 10 | while IFS= read -r line; do echo "::error::$line"; done
+            python3 -c '
+import pathlib, re
+lines = [l.replace("\r", "").replace("%", "%25") for l in pathlib.Path("/tmp/gradle-test.log").read_text(errors="replace").splitlines() if re.search(r"FAILED|FAILURE:|Error|> Task .* FAILED", l)]
+for i in range(0, min(len(lines), 120), 15):
+    print("::error::" + "%0A".join(lines[i:i+15]))
+'
             exit 1
           }
