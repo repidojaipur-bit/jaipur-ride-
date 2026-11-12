@@ -47,6 +47,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
+import com.drivepartner.app.ui.theme.DriveColors
 import com.drivepartner.app.R
 import com.drivepartner.app.core.config.DataOrigin
 import com.drivepartner.app.core.money.MoneyPaise
@@ -64,25 +65,8 @@ import com.drivepartner.app.ui.components.DriveCard
 import com.drivepartner.app.ui.components.DriveOutlinedButton
 import com.drivepartner.app.ui.components.DrivePrimaryButton
 import com.drivepartner.app.ui.components.state.DriveEmptyView
-import com.drivepartner.app.ui.theme.DriveBlueContainer
-import com.drivepartner.app.ui.theme.DriveBluePrimary
 import com.drivepartner.app.ui.theme.DriveChipShape
-import com.drivepartner.app.ui.theme.DriveError
-import com.drivepartner.app.ui.theme.DriveErrorContainer
-import com.drivepartner.app.ui.theme.DriveGreenContainer
-import com.drivepartner.app.ui.theme.DriveGreenOnline
-import com.drivepartner.app.ui.theme.DriveOnBlueContainer
-import com.drivepartner.app.ui.theme.DriveOnErrorContainer
-import com.drivepartner.app.ui.theme.DriveOnGreenContainer
-import com.drivepartner.app.ui.theme.DriveOnYellowContainer
 import com.drivepartner.app.ui.theme.DriveSpacing
-import com.drivepartner.app.ui.theme.DriveSurfaceSubtle
-import com.drivepartner.app.ui.theme.DriveSurfaceWhite
-import com.drivepartner.app.ui.theme.DriveTextMuted
-import com.drivepartner.app.ui.theme.DriveTextSecondary
-import com.drivepartner.app.ui.theme.DriveWarningAmber
-import com.drivepartner.app.ui.theme.DriveYellowContainer
-import com.drivepartner.app.ui.theme.DriveYellowEarning
 import com.drivepartner.app.ui.viewmodel.EarningsPeriod
 import com.drivepartner.app.ui.viewmodel.EarningsUiState
 import com.drivepartner.app.ui.viewmodel.EarningsViewModel
@@ -196,7 +180,7 @@ fun EarningsScreen(
     BoxWithConstraints(
         modifier = modifier
             .fillMaxSize()
-            .background(DriveSurfaceSubtle)
+            .background(DriveColors.current.backgroundSubtle)
     ) {
         val isWideViewport = maxWidth >= 600.dp
 
@@ -210,13 +194,13 @@ fun EarningsScreen(
             // Top Boundary or Outcome Notice
             if (uiState.dataOrigin == DataOrigin.LIVE && !uiState.boundaryMessage.isNullOrBlank()) {
                 DriveCard(
-                    backgroundColor = DriveErrorContainer,
-                    borderColor = DriveError.copy(alpha = 0.35f)
+                    backgroundColor = DriveColors.current.dangerContainer,
+                    borderColor = DriveColors.current.danger.copy(alpha = 0.35f)
                 ) {
                     Text(
                         text = uiState.boundaryMessage,
                         style = MaterialTheme.typography.bodySmall,
-                        color = DriveOnErrorContainer,
+                        color = DriveColors.current.onDangerContainer,
                         fontWeight = FontWeight.Medium
                     )
                 }
@@ -270,8 +254,8 @@ fun EarningsScreen(
                             onClick = { onSelectPeriod(period) },
                             label = { Text(stringResource(labelRes)) },
                             colors = FilterChipDefaults.filterChipColors(
-                                selectedContainerColor = DriveBlueContainer,
-                                selectedLabelColor = DriveBluePrimary
+                                selectedContainerColor = DriveColors.current.brandContainer,
+                                selectedLabelColor = DriveColors.current.brand
                             )
                         )
                     }
@@ -360,8 +344,8 @@ private fun WalletSummaryCard(
     onWithdrawClick: () -> Unit
 ) {
     DriveCard(
-        backgroundColor = DriveYellowContainer,
-        borderColor = DriveYellowEarning.copy(alpha = 0.45f)
+        backgroundColor = DriveColors.current.warningContainer,
+        borderColor = DriveColors.current.warning.copy(alpha = 0.45f)
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -370,13 +354,13 @@ private fun WalletSummaryCard(
             Box(
                 modifier = Modifier
                     .size(44.dp)
-                    .background(DriveYellowEarning, CircleShape),
+                    .background(DriveColors.current.warning, CircleShape),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
                     imageVector = Icons.Filled.CurrencyRupee,
                     contentDescription = null,
-                    tint = DriveSurfaceWhite,
+                    tint = DriveColors.current.onBrand,
                     modifier = Modifier.size(26.dp)
                 )
             }
@@ -389,15 +373,15 @@ private fun WalletSummaryCard(
                     Text(
                         text = stringResource(R.string.wallet_summary_heading),
                         style = MaterialTheme.typography.titleMedium,
-                        color = DriveOnYellowContainer,
+                        color = DriveColors.current.onWarningContainer,
                         fontWeight = FontWeight.Bold
                     )
                     if (dataOrigin == DataOrigin.DEMO) {
-                        Surface(shape = DriveChipShape, color = DriveSurfaceWhite) {
+                        Surface(shape = DriveChipShape, color = DriveColors.current.onBrand) {
                             Text(
                                 text = "DEMO",
                                 style = MaterialTheme.typography.labelSmall,
-                                color = DriveOnYellowContainer,
+                                color = DriveColors.current.onWarningContainer,
                                 fontWeight = FontWeight.Bold,
                                 modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
                             )
@@ -408,19 +392,19 @@ private fun WalletSummaryCard(
                     text = (wallet?.available ?: MoneyPaise.ZERO_INR).formatDisplay(),
                     style = MaterialTheme.typography.displayMedium,
                     fontWeight = FontWeight.Bold,
-                    color = DriveOnYellowContainer
+                    color = DriveColors.current.onWarningContainer
                 )
                 Text(
                     text = stringResource(R.string.wallet_available_balance),
                     style = MaterialTheme.typography.labelSmall,
-                    color = DriveOnYellowContainer
+                    color = DriveColors.current.onWarningContainer
                 )
             }
             IconButton(onClick = onRefresh, enabled = !isRefreshing) {
                 Icon(
                     imageVector = Icons.Outlined.Refresh,
                     contentDescription = stringResource(R.string.action_refresh),
-                    tint = DriveOnYellowContainer
+                    tint = DriveColors.current.onWarningContainer
                 )
             }
         }
@@ -435,26 +419,26 @@ private fun WalletSummaryCard(
                 Text(
                     text = stringResource(R.string.wallet_pending_balance),
                     style = MaterialTheme.typography.labelSmall,
-                    color = DriveOnYellowContainer
+                    color = DriveColors.current.onWarningContainer
                 )
                 Text(
                     text = (wallet?.pending ?: MoneyPaise.ZERO_INR).formatDisplay(),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold,
-                    color = DriveOnYellowContainer
+                    color = DriveColors.current.onWarningContainer
                 )
             }
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = stringResource(R.string.wallet_settled_total),
                     style = MaterialTheme.typography.labelSmall,
-                    color = DriveOnYellowContainer
+                    color = DriveColors.current.onWarningContainer
                 )
                 Text(
                     text = (wallet?.settled ?: MoneyPaise.ZERO_INR).formatDisplay(),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold,
-                    color = DriveOnYellowContainer
+                    color = DriveColors.current.onWarningContainer
                 )
             }
         }
@@ -468,12 +452,12 @@ private fun WalletSummaryCard(
                     wallet.maximumPayout.formatDisplay()
                 ),
                 style = MaterialTheme.typography.labelSmall,
-                color = DriveOnYellowContainer
+                color = DriveColors.current.onWarningContainer
             )
             Text(
                 text = stringResource(R.string.wallet_derived_at, wallet.derivedAtUtc),
                 style = MaterialTheme.typography.labelSmall,
-                color = DriveOnYellowContainer.copy(alpha = 0.85f)
+                color = DriveColors.current.onWarningContainer.copy(alpha = 0.85f)
             )
         }
 
@@ -481,7 +465,7 @@ private fun WalletSummaryCard(
         Text(
             text = stringResource(R.string.wallet_backend_authority_note),
             style = MaterialTheme.typography.labelSmall,
-            color = DriveOnYellowContainer.copy(alpha = 0.9f)
+            color = DriveColors.current.onWarningContainer.copy(alpha = 0.9f)
         )
 
         Spacer(modifier = Modifier.height(DriveSpacing.md))
@@ -510,7 +494,7 @@ private fun WalletSummaryCard(
             Text(
                 text = reasonText,
                 style = MaterialTheme.typography.labelSmall,
-                color = DriveOnYellowContainer,
+                color = DriveColors.current.onWarningContainer,
                 fontWeight = FontWeight.Medium
             )
         }
@@ -537,7 +521,7 @@ private fun DailyAndWeeklyCards(
                     stringResource(R.string.earnings_today)
                 },
                 style = MaterialTheme.typography.labelMedium,
-                color = DriveTextSecondary
+                color = DriveColors.current.textSecondary
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
@@ -554,7 +538,7 @@ private fun DailyAndWeeklyCards(
                     stringResource(R.string.earnings_this_week)
                 },
                 style = MaterialTheme.typography.labelMedium,
-                color = DriveTextSecondary
+                color = DriveColors.current.textSecondary
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
@@ -589,7 +573,7 @@ private fun EarningsBreakdownCard(summary: EarningsSummary) {
         Text(
             text = stringResource(R.string.earnings_last_updated, summary.lastUpdatedUtc),
             style = MaterialTheme.typography.labelSmall,
-            color = DriveTextSecondary
+            color = DriveColors.current.textSecondary
         )
     }
 }
@@ -606,7 +590,7 @@ private fun BreakdownRow(label: String, value: String, bold: Boolean = false) {
             text = label,
             style = MaterialTheme.typography.bodySmall,
             fontWeight = if (bold) FontWeight.Bold else FontWeight.Normal,
-            color = if (bold) MaterialTheme.colorScheme.onSurface else DriveTextSecondary
+            color = if (bold) MaterialTheme.colorScheme.onSurface else DriveColors.current.textSecondary
         )
         Text(
             text = value,
@@ -632,7 +616,7 @@ private fun PayoutAccountCard(
             Icon(
                 imageVector = Icons.Filled.AccountBalance,
                 contentDescription = null,
-                tint = DriveBluePrimary,
+                tint = DriveColors.current.brand,
                 modifier = Modifier.size(DriveSpacing.iconMedium)
             )
             Spacer(modifier = Modifier.width(DriveSpacing.md))
@@ -650,7 +634,7 @@ private fun PayoutAccountCard(
                             boundaryMessage ?: stringResource(R.string.earnings_payout_unlinked)
                         },
                         style = MaterialTheme.typography.bodySmall,
-                        color = DriveTextSecondary
+                        color = DriveColors.current.textSecondary
                     )
                 }
             }
@@ -678,24 +662,24 @@ private fun PayoutAccountCard(
                         Text(
                             text = "${account.maskedAccountNumber} • ${account.ifscCode}",
                             style = MaterialTheme.typography.labelSmall,
-                            color = DriveTextSecondary
+                            color = DriveColors.current.textSecondary
                         )
                     }
                     Surface(
                         shape = DriveChipShape,
                         color = if (account.status == PayoutAccountStatus.VERIFIED) {
-                            DriveGreenContainer
+                            DriveColors.current.successContainer
                         } else {
-                            DriveYellowContainer
+                            DriveColors.current.warningContainer
                         }
                     ) {
                         Text(
                             text = stringResource(account.status.labelRes()),
                             style = MaterialTheme.typography.labelSmall,
                             color = if (account.status == PayoutAccountStatus.VERIFIED) {
-                                DriveOnGreenContainer
+                                DriveColors.current.onSuccessContainer
                             } else {
-                                DriveOnYellowContainer
+                                DriveColors.current.onWarningContainer
                             },
                             fontWeight = FontWeight.Bold,
                             modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
@@ -727,18 +711,18 @@ private fun PayoutHistoryCard(
             Text(
                 text = stringResource(R.string.payout_history_empty),
                 style = MaterialTheme.typography.bodySmall,
-                color = DriveTextSecondary
+                color = DriveColors.current.textSecondary
             )
         } else {
             Column(verticalArrangement = Arrangement.spacedBy(DriveSpacing.sm)) {
                 payouts.forEach { payout ->
                     val (bg, fg) = when (payout.status) {
-                        PayoutStatus.PAID -> DriveGreenContainer to DriveOnGreenContainer
+                        PayoutStatus.PAID -> DriveColors.current.successContainer to DriveColors.current.onSuccessContainer
                         PayoutStatus.REQUESTED,
-                        PayoutStatus.PROCESSING -> DriveBlueContainer to DriveOnBlueContainer
+                        PayoutStatus.PROCESSING -> DriveColors.current.brandContainer to DriveColors.current.onBrandContainer
                         PayoutStatus.FAILED,
                         PayoutStatus.CANCELLED,
-                        PayoutStatus.REVERSED -> DriveErrorContainer to DriveOnErrorContainer
+                        PayoutStatus.REVERSED -> DriveColors.current.dangerContainer to DriveColors.current.onDangerContainer
                     }
                     Column(modifier = Modifier.fillMaxWidth()) {
                         Row(
@@ -764,20 +748,20 @@ private fun PayoutHistoryCard(
                         Text(
                             text = stringResource(R.string.payout_requested_at, payout.requestedAtUtc),
                             style = MaterialTheme.typography.labelSmall,
-                            color = DriveTextSecondary
+                            color = DriveColors.current.textSecondary
                         )
                         payout.settledAtUtc?.let { settledAt ->
                             Text(
                                 text = stringResource(R.string.payout_settled_at, settledAt),
                                 style = MaterialTheme.typography.labelSmall,
-                                color = DriveTextSecondary
+                                color = DriveColors.current.textSecondary
                             )
                         }
                         payout.failureReason?.let { reason ->
                             Text(
                                 text = stringResource(R.string.payout_failure_reason, reason),
                                 style = MaterialTheme.typography.labelSmall,
-                                color = DriveError
+                                color = DriveColors.current.danger
                             )
                         }
 
@@ -799,7 +783,7 @@ private fun PayoutHistoryCard(
                                 ) {
                                     Text(
                                         text = stringResource(R.string.demo_financial_webhook_failed),
-                                        color = DriveError
+                                        color = DriveColors.current.danger
                                     )
                                 }
                             }
@@ -841,12 +825,12 @@ private fun LedgerEntryRow(
             Text(
                 text = entry.description,
                 style = MaterialTheme.typography.bodySmall,
-                color = DriveTextSecondary
+                color = DriveColors.current.textSecondary
             )
             Text(
                 text = stringResource(R.string.ledger_balance_after, entry.balanceAfter.formatDisplay()),
                 style = MaterialTheme.typography.labelSmall,
-                color = DriveTextSecondary
+                color = DriveColors.current.textSecondary
             )
         }
         Spacer(modifier = Modifier.width(DriveSpacing.sm))
@@ -854,12 +838,12 @@ private fun LedgerEntryRow(
             text = entry.amount.formatDisplay(),
             style = MaterialTheme.typography.titleSmall,
             fontWeight = FontWeight.Bold,
-            color = if (entry.isCredit) DriveGreenOnline else DriveError
+            color = if (entry.isCredit) DriveColors.current.success else DriveColors.current.danger
         )
         Icon(
             imageVector = Icons.Outlined.ChevronRight,
             contentDescription = null,
-            tint = DriveTextMuted
+            tint = DriveColors.current.textTertiary
         )
     }
 }
@@ -871,8 +855,8 @@ private fun FinancialOutcomeBanner(
 ) {
     val (bg, fg, msg) = when (notice) {
         is FinancialOutcomeNotice.PayoutRequested -> Triple(
-            DriveGreenContainer,
-            DriveOnGreenContainer,
+            DriveColors.current.successContainer,
+            DriveColors.current.onSuccessContainer,
             stringResource(
                 R.string.financial_outcome_payout_requested,
                 notice.payout.amount.formatDisplay(),
@@ -880,26 +864,26 @@ private fun FinancialOutcomeBanner(
             )
         )
         is FinancialOutcomeNotice.PayoutAccountLinked -> Triple(
-            DriveBlueContainer,
-            DriveOnBlueContainer,
+            DriveColors.current.brandContainer,
+            DriveColors.current.onBrandContainer,
             stringResource(
                 R.string.financial_outcome_account_linked,
                 notice.account.maskedAccountNumber
             )
         )
         is FinancialOutcomeNotice.ActionRejected -> Triple(
-            DriveErrorContainer,
-            DriveOnErrorContainer,
+            DriveColors.current.dangerContainer,
+            DriveColors.current.onDangerContainer,
             notice.serverMessage
         )
         is FinancialOutcomeNotice.NetworkFailedNoOfflineQueue -> Triple(
-            DriveErrorContainer,
-            DriveOnErrorContainer,
+            DriveColors.current.dangerContainer,
+            DriveColors.current.onDangerContainer,
             stringResource(R.string.financial_outcome_network_no_queue)
         )
         is FinancialOutcomeNotice.BackendNotDeployed -> Triple(
-            DriveErrorContainer,
-            DriveOnErrorContainer,
+            DriveColors.current.dangerContainer,
+            DriveColors.current.onDangerContainer,
             notice.reason
         )
     }
@@ -941,13 +925,13 @@ private fun DemoFinancialSandboxCard(
     onSeedCompletedTrip: () -> Unit
 ) {
     DriveCard(
-        backgroundColor = DriveYellowContainer,
-        borderColor = DriveWarningAmber.copy(alpha = 0.5f)
+        backgroundColor = DriveColors.current.warningContainer,
+        borderColor = DriveColors.current.warning.copy(alpha = 0.5f)
     ) {
         Text(
             text = stringResource(R.string.demo_financial_sandbox_title),
             style = MaterialTheme.typography.titleSmall,
-            color = DriveOnYellowContainer,
+            color = DriveColors.current.onWarningContainer,
             fontWeight = FontWeight.Bold
         )
         Spacer(modifier = Modifier.height(DriveSpacing.sm))
@@ -958,7 +942,7 @@ private fun DemoFinancialSandboxCard(
             Text(
                 text = stringResource(R.string.demo_financial_sandbox_toggle),
                 style = MaterialTheme.typography.bodySmall,
-                color = DriveOnYellowContainer,
+                color = DriveColors.current.onWarningContainer,
                 modifier = Modifier.weight(1f)
             )
             Spacer(modifier = Modifier.width(DriveSpacing.sm))

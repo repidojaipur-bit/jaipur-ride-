@@ -31,7 +31,9 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -43,6 +45,8 @@ import com.drivepartner.app.core.location.DriverLocationSnapshot
 import com.drivepartner.app.core.location.GpsReadinessStatus
 import com.drivepartner.app.core.location.LocationPermissionStatus
 import com.drivepartner.app.data.model.ServiceZone
+import com.drivepartner.app.ui.components.DriveIcon
+import com.drivepartner.app.ui.icons.DriveIcons
 import com.drivepartner.app.ui.theme.DriveBlueContainer
 import com.drivepartner.app.ui.theme.DriveBluePrimary
 import com.drivepartner.app.ui.theme.DriveCardShape
@@ -89,6 +93,31 @@ data class MapSurfaceConfig(
 )
 
 /**
+ * Zoom intent shared between the on-map controls and the Google Maps camera. Kept as a plain
+ * holder so the fallback surface (no Maps key) can render the same controls in a disabled state.
+ */
+@androidx.compose.runtime.Stable
+class MapCameraController {
+    var zoomTarget: Float by androidx.compose.runtime.mutableFloatStateOf(DEFAULT_ZOOM)
+        private set
+
+    fun zoomIn() {
+        zoomTarget = (zoomTarget + ZOOM_STEP).coerceAtMost(MAX_ZOOM)
+    }
+
+    fun zoomOut() {
+        zoomTarget = (zoomTarget - ZOOM_STEP).coerceAtLeast(MIN_ZOOM)
+    }
+
+    companion object {
+        const val DEFAULT_ZOOM = 15f
+        const val MIN_ZOOM = 4f
+        const val MAX_ZOOM = 20f
+        const val ZOOM_STEP = 1f
+    }
+}
+
+/**
  * Google Maps boundary isolating vendor SDK usage from business logic.
  * - Renders Google Maps Compose ONLY when [MapSurfaceConfig.isMapsKeyConfigured] is true.
  * - Falls back to a clean, accessible zone/location surface when unconfigured so dev/demo builds
@@ -102,6 +131,8 @@ fun DrivePartnerMapBoundary(
     onRecenterClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val cameraController = remember { MapCameraController() }
+    var trafficEnabled by remember { androidx.compose.runtime.mutableStateOf(false) }
     Surface(
         modifier = modifier.fillMaxWidth(),
         shape = DriveCardShape,
@@ -119,6 +150,8 @@ fun DrivePartnerMapBoundary(
                 if (config.isMapsKeyConfigured) {
                     ConfiguredGoogleMapView(
                         config = config,
+                        cameraController = cameraController,
+                        trafficEnabled = trafficEnabled,
                         modifier = Modifier.fillMaxSize()
                     )
                 } else {
@@ -133,6 +166,18 @@ fun DrivePartnerMapBoundary(
                     config = config,
                     modifier = Modifier
                         .align(Alignment.TopStart)
+                        .padding(DriveSpacing.md)
+                )
+
+                // Map layer + zoom controls (bottom-end), reachable with a thumb on a mount
+                MapControlsOverlay(
+                    isMapsConfigured = config.isMapsKeyConfigured,
+                    trafficEnabled = trafficEnabled,
+                    onToggleTraffic = { trafficEnabled = !trafficEnabled },
+                    onZoomIn = { cameraController.zoomIn() },
+                    onZoomOut = { cameraController.zoomOut() },
+                    modifier = Modifier
+                        .align(Alignment.BottomEnd)
                         .padding(DriveSpacing.md)
                 )
 
@@ -163,14 +208,14 @@ fun DrivePartnerMapBoundary(
                 verticalArrangement = Arrangement.spacedBy(DriveSpacing.sm)
             ) {
                 Text(
-                    text = stringResource(R.string.map_configured_zones_heading),
+                    text = stringResource(R.string.map_demand_zones_title),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold
                 )
 
                 if (config.configuredZones.isEmpty()) {
                     Text(
-                        text = stringResource(R.string.map_no_zones_configured),
+                        text = stringResource(R.string.map_demand_zones_empty),
                         style = MaterialTheme.typography.bodySmall,
                         color = DriveTextSecondary
                     )
@@ -201,7 +246,7 @@ fun DrivePartnerMapBoundary(
                 }
 
                 Text(
-                    text = stringResource(R.string.map_no_surge_notice),
+                    text = stringResource(R.string.map_demand_zone_backend_note),
                     style = MaterialTheme.typography.bodySmall,
                     color = DriveTextSecondary
                 )
@@ -213,6 +258,8 @@ fun DrivePartnerMapBoundary(
 @Composable
 private fun ConfiguredGoogleMapView(
     config: MapSurfaceConfig,
+    cameraController: MapCameraController,
+    trafficEnabled: Boolean,
     modifier: Modifier = Modifier
 ) {
     val defaultCityViewport = LatLng(26.9124, 75.7873) // Jaipur neutral viewport center only
@@ -226,9 +273,13 @@ private fun ConfiguredGoogleMapView(
     LaunchedEffect(driverLatLng) {
         if (driverLatLng != null) {
             cameraPositionState.animate(
-                CameraUpdateFactory.newLatLngZoom(driverLatLng, 15f)
+                CameraUpdateFactory.newLatLngZoom(driverLatLng, MapCameraController.DEFAULT_ZOOM)
             )
         }
+    }
+
+    LaunchedEffect(cameraController.zoomTarget) {
+        cameraPositionState.move(CameraUpdateFactory.zoomTo(cameraController.zoomTarget))
     }
 
     GoogleMap(
@@ -236,11 +287,12 @@ private fun ConfiguredGoogleMapView(
         cameraPositionState = cameraPositionState,
         properties = MapProperties(
             isMyLocationEnabled = config.permissionStatus.hasLocationAccess &&
-                config.gpsStatus == GpsReadinessStatus.READY
+                config.gpsStatus == GpsReadinessStatus.READY,
+            isTrafficEnabled = trafficEnabled
         ),
         uiSettings = MapUiSettings(
             myLocationButtonEnabled = false,
-            zoomControlsEnabled = true,
+            zoomControlsEnabled = false,
             compassEnabled = true
         )
     ) {
@@ -249,6 +301,85 @@ private fun ConfiguredGoogleMapView(
             Marker(
                 state = markerState,
                 title = stringResource(R.string.map_own_location_marker)
+            )
+        }
+    }
+}
+
+/**
+ * Traffic-layer toggle plus accessible zoom controls. Without a configured Maps key there is no
+ * camera to drive, so the controls render disabled with the reason instead of silently doing
+ * nothing.
+ */
+@Composable
+private fun MapControlsOverlay(
+    isMapsConfigured: Boolean,
+    trafficEnabled: Boolean,
+    onToggleTraffic: () -> Unit,
+    onZoomIn: () -> Unit,
+    onZoomOut: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(DriveSpacing.sm),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        FilledTonalIconButton(
+            onClick = onToggleTraffic,
+            enabled = isMapsConfigured,
+            colors = IconButtonDefaults.filledTonalIconButtonColors(
+                containerColor = if (trafficEnabled) DriveBluePrimary else DriveSurfaceWhite,
+                contentColor = if (trafficEnabled) DriveSurfaceWhite else DriveBluePrimary,
+                disabledContainerColor = DriveSurfaceSubtle,
+                disabledContentColor = DriveTextSecondary
+            ),
+            modifier = Modifier.size(DriveSpacing.minTouchTarget)
+        ) {
+            DriveIcon(
+                icon = DriveIcons.Layers,
+                contentDescription = stringResource(
+                    if (trafficEnabled) R.string.map_traffic_on else R.string.map_traffic_toggle
+                ),
+                tint = when {
+                    !isMapsConfigured -> DriveTextSecondary
+                    trafficEnabled -> DriveSurfaceWhite
+                    else -> DriveBluePrimary
+                }
+            )
+        }
+        FilledTonalIconButton(
+            onClick = onZoomIn,
+            enabled = isMapsConfigured,
+            colors = IconButtonDefaults.filledTonalIconButtonColors(
+                containerColor = DriveSurfaceWhite,
+                contentColor = DriveBluePrimary,
+                disabledContainerColor = DriveSurfaceSubtle,
+                disabledContentColor = DriveTextSecondary
+            ),
+            modifier = Modifier.size(DriveSpacing.minTouchTarget)
+        ) {
+            DriveIcon(
+                icon = DriveIcons.ZoomIn,
+                contentDescription = stringResource(R.string.map_zoom_in),
+                tint = if (isMapsConfigured) DriveBluePrimary else DriveTextSecondary
+            )
+        }
+        FilledTonalIconButton(
+            onClick = onZoomOut,
+            enabled = isMapsConfigured,
+            colors = IconButtonDefaults.filledTonalIconButtonColors(
+                containerColor = DriveSurfaceWhite,
+                contentColor = DriveBluePrimary,
+                disabledContainerColor = DriveSurfaceSubtle,
+                disabledContentColor = DriveTextSecondary
+            ),
+            modifier = Modifier.size(DriveSpacing.minTouchTarget)
+        ) {
+            DriveIcon(
+                icon = DriveIcons.ZoomOut,
+                contentDescription = stringResource(R.string.map_zoom_out),
+                tint = if (isMapsConfigured) DriveBluePrimary else DriveTextSecondary
             )
         }
     }

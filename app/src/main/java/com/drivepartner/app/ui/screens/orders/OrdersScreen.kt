@@ -47,6 +47,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
+import com.drivepartner.app.ui.theme.DriveColors
 import com.drivepartner.app.R
 import com.drivepartner.app.core.config.DataOrigin
 import com.drivepartner.app.core.realtime.RealtimeConnectionState
@@ -66,24 +67,8 @@ import com.drivepartner.app.ui.components.DrivePrimaryButton
 import com.drivepartner.app.ui.components.state.DriveEmptyView
 import com.drivepartner.app.ui.components.state.DriveLoadingView
 import com.drivepartner.app.ui.components.state.DriveOfflineView
-import com.drivepartner.app.ui.theme.DriveBlueContainer
-import com.drivepartner.app.ui.theme.DriveBluePrimary
 import com.drivepartner.app.ui.theme.DriveChipShape
-import com.drivepartner.app.ui.theme.DriveError
-import com.drivepartner.app.ui.theme.DriveErrorContainer
-import com.drivepartner.app.ui.theme.DriveGreenContainer
-import com.drivepartner.app.ui.theme.DriveGreenOnline
-import com.drivepartner.app.ui.theme.DriveOnBlueContainer
-import com.drivepartner.app.ui.theme.DriveOnErrorContainer
-import com.drivepartner.app.ui.theme.DriveOnGreenContainer
-import com.drivepartner.app.ui.theme.DriveOnYellowContainer
 import com.drivepartner.app.ui.theme.DriveSpacing
-import com.drivepartner.app.ui.theme.DriveSurfaceSubtle
-import com.drivepartner.app.ui.theme.DriveSurfaceWhite
-import com.drivepartner.app.ui.theme.DriveTextMuted
-import com.drivepartner.app.ui.theme.DriveTextSecondary
-import com.drivepartner.app.ui.theme.DriveWarningAmber
-import com.drivepartner.app.ui.theme.DriveYellowContainer
 import com.drivepartner.app.ui.viewmodel.OrdersTab
 import com.drivepartner.app.ui.viewmodel.OrdersUiState
 import com.drivepartner.app.ui.viewmodel.OrdersViewModel
@@ -200,16 +185,16 @@ fun OrdersScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(DriveSurfaceSubtle)
+            .background(DriveColors.current.backgroundSubtle)
     ) {
         TabRow(
             selectedTabIndex = selectedIndex,
-            containerColor = DriveSurfaceWhite,
-            contentColor = DriveBluePrimary,
+            containerColor = DriveColors.current.surface,
+            contentColor = DriveColors.current.brand,
             indicator = { tabPositions ->
                 TabRowDefaults.SecondaryIndicator(
                     modifier = Modifier.tabIndicatorOffset(tabPositions[selectedIndex]),
-                    color = DriveBluePrimary
+                    color = DriveColors.current.brand
                 )
             }
         ) {
@@ -222,7 +207,7 @@ fun OrdersScreen(
                         Text(
                             text = title,
                             style = MaterialTheme.typography.titleSmall,
-                            color = if (selected) DriveBluePrimary else DriveTextMuted
+                            color = if (selected) DriveColors.current.brand else DriveColors.current.textTertiary
                         )
                     }
                 )
@@ -260,13 +245,13 @@ fun OrdersScreen(
             // Live Backend Deployment Boundary Notice
             if (uiState.dataOrigin == DataOrigin.LIVE && !uiState.boundaryMessage.isNullOrBlank()) {
                 DriveCard(
-                    backgroundColor = DriveErrorContainer,
-                    borderColor = DriveError.copy(alpha = 0.35f)
+                    backgroundColor = DriveColors.current.dangerContainer,
+                    borderColor = DriveColors.current.danger.copy(alpha = 0.35f)
                 ) {
                     Text(
                         text = uiState.boundaryMessage,
                         style = MaterialTheme.typography.bodySmall,
-                        color = DriveOnErrorContainer,
+                        color = DriveColors.current.onDangerContainer,
                         fontWeight = FontWeight.Medium
                     )
                 }
@@ -419,20 +404,20 @@ private fun OrderHistorySection(
                 Icon(
                     imageVector = Icons.Outlined.Refresh,
                     contentDescription = stringResource(R.string.action_refresh),
-                    tint = DriveBluePrimary
+                    tint = DriveColors.current.brand
                 )
             }
         }
 
         uiState.historyErrorMessage?.let { errorMsg ->
             DriveCard(
-                backgroundColor = DriveErrorContainer,
-                borderColor = DriveError.copy(alpha = 0.4f)
+                backgroundColor = DriveColors.current.dangerContainer,
+                borderColor = DriveColors.current.danger.copy(alpha = 0.4f)
             ) {
                 Text(
                     text = errorMsg,
                     style = MaterialTheme.typography.bodySmall,
-                    color = DriveOnErrorContainer
+                    color = DriveColors.current.onDangerContainer
                 )
                 Spacer(modifier = Modifier.height(DriveSpacing.sm))
                 DriveOutlinedButton(onClick = onRefreshHistory) {
@@ -442,11 +427,11 @@ private fun OrderHistorySection(
         }
 
         uiState.orderDetailErrorMessage?.let { detailErr ->
-            DriveCard(backgroundColor = DriveErrorContainer) {
+            DriveCard(backgroundColor = DriveColors.current.dangerContainer) {
                 Text(
                     text = detailErr,
                     style = MaterialTheme.typography.bodySmall,
-                    color = DriveOnErrorContainer
+                    color = DriveColors.current.onDangerContainer
                 )
             }
         }
@@ -503,8 +488,8 @@ private fun OrderHistoryItemCard(
     onClick: () -> Unit
 ) {
     val isCompleted = item.status == TripStatus.COMPLETED
-    val badgeBg = if (isCompleted) DriveGreenContainer else DriveErrorContainer
-    val badgeFg = if (isCompleted) DriveOnGreenContainer else DriveOnErrorContainer
+    val badgeBg = if (isCompleted) DriveColors.current.successContainer else DriveColors.current.dangerContainer
+    val badgeFg = if (isCompleted) DriveColors.current.onSuccessContainer else DriveColors.current.onDangerContainer
 
     DriveCard(
         modifier = Modifier.clickable(onClick = onClick)
@@ -528,11 +513,11 @@ private fun OrderHistoryItemCard(
                     )
                 }
                 if (item.dataOrigin == DataOrigin.DEMO) {
-                    Surface(shape = DriveChipShape, color = DriveYellowContainer) {
+                    Surface(shape = DriveChipShape, color = DriveColors.current.warningContainer) {
                         Text(
                             text = "DEMO",
                             style = MaterialTheme.typography.labelSmall,
-                            color = DriveOnYellowContainer,
+                            color = DriveColors.current.onWarningContainer,
                             fontWeight = FontWeight.Bold,
                             modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
                         )
@@ -549,7 +534,7 @@ private fun OrderHistoryItemCard(
                 Icon(
                     imageVector = Icons.Outlined.ChevronRight,
                     contentDescription = null,
-                    tint = DriveTextMuted
+                    tint = DriveColors.current.textTertiary
                 )
             }
         }
@@ -564,7 +549,7 @@ private fun OrderHistoryItemCard(
         Text(
             text = "${item.orderId} • ${item.completedOrCancelledAtUtc}",
             style = MaterialTheme.typography.labelSmall,
-            color = DriveTextSecondary
+            color = DriveColors.current.textSecondary
         )
     }
 }
@@ -576,38 +561,38 @@ private fun TripOutcomeBanner(
 ) {
     val (bgColor, fgColor, text) = when (notice) {
         is TripOutcomeNotice.TransitionConfirmed -> Triple(
-            DriveBlueContainer,
-            DriveOnBlueContainer,
+            DriveColors.current.brandContainer,
+            DriveColors.current.onBrandContainer,
             stringResource(R.string.trip_outcome_transition_confirmed, notice.status.name)
         )
         is TripOutcomeNotice.CompletedRecorded -> Triple(
-            DriveGreenContainer,
-            DriveOnGreenContainer,
+            DriveColors.current.successContainer,
+            DriveColors.current.onSuccessContainer,
             stringResource(R.string.trip_outcome_completed)
         )
         is TripOutcomeNotice.Cancelled -> Triple(
-            DriveYellowContainer,
-            DriveOnYellowContainer,
+            DriveColors.current.warningContainer,
+            DriveColors.current.onWarningContainer,
             stringResource(R.string.trip_outcome_cancelled)
         )
         is TripOutcomeNotice.IllegalTransitionOrConflict -> Triple(
-            DriveYellowContainer,
-            DriveOnYellowContainer,
+            DriveColors.current.warningContainer,
+            DriveColors.current.onWarningContainer,
             notice.serverMessage
         )
         is TripOutcomeNotice.InvalidStartPin -> Triple(
-            DriveErrorContainer,
-            DriveOnErrorContainer,
+            DriveColors.current.dangerContainer,
+            DriveColors.current.onDangerContainer,
             notice.serverMessage
         )
         is TripOutcomeNotice.NetworkFailedNoOfflineQueue -> Triple(
-            DriveErrorContainer,
-            DriveOnErrorContainer,
+            DriveColors.current.dangerContainer,
+            DriveColors.current.onDangerContainer,
             stringResource(R.string.trip_outcome_network_no_queue)
         )
         is TripOutcomeNotice.BackendNotDeployed -> Triple(
-            DriveErrorContainer,
-            DriveOnErrorContainer,
+            DriveColors.current.dangerContainer,
+            DriveColors.current.onDangerContainer,
             notice.reason
         )
     }
@@ -662,10 +647,10 @@ private fun RealtimeStatusStrip(
         else -> Icons.Outlined.WifiOff
     }
     val tint = when (connectionState) {
-        RealtimeConnectionState.CONNECTED -> DriveGreenOnline
+        RealtimeConnectionState.CONNECTED -> DriveColors.current.success
         RealtimeConnectionState.CONNECTING,
-        RealtimeConnectionState.RECONNECTING -> DriveWarningAmber
-        else -> DriveTextSecondary
+        RealtimeConnectionState.RECONNECTING -> DriveColors.current.warning
+        else -> DriveColors.current.textSecondary
     }
 
     DriveCard {
@@ -683,7 +668,7 @@ private fun RealtimeStatusStrip(
             Text(
                 text = stringResource(labelRes),
                 style = MaterialTheme.typography.bodySmall,
-                color = DriveTextSecondary,
+                color = DriveColors.current.textSecondary,
                 modifier = Modifier.weight(1f)
             )
             IconButton(
@@ -693,7 +678,7 @@ private fun RealtimeStatusStrip(
                 Icon(
                     imageVector = Icons.Outlined.Refresh,
                     contentDescription = stringResource(R.string.action_refresh),
-                    tint = if (isOnline) DriveBluePrimary else DriveTextMuted
+                    tint = if (isOnline) DriveColors.current.brand else DriveColors.current.textTertiary
                 )
             }
         }
@@ -707,38 +692,38 @@ private fun OfferOutcomeBanner(
 ) {
     val (bgColor, fgColor, text) = when (notice) {
         is OfferOutcomeNotice.Accepted -> Triple(
-            DriveGreenContainer,
-            DriveOnGreenContainer,
+            DriveColors.current.successContainer,
+            DriveColors.current.onSuccessContainer,
             stringResource(R.string.offer_outcome_accepted, notice.assignment.tripId)
         )
         is OfferOutcomeNotice.Rejected -> Triple(
-            DriveBlueContainer,
-            DriveOnBlueContainer,
+            DriveColors.current.brandContainer,
+            DriveColors.current.onBrandContainer,
             stringResource(R.string.offer_outcome_rejected)
         )
         is OfferOutcomeNotice.AlreadyAssignedToOtherDriver -> Triple(
-            DriveYellowContainer,
-            DriveOnYellowContainer,
+            DriveColors.current.warningContainer,
+            DriveColors.current.onWarningContainer,
             notice.serverMessage ?: stringResource(R.string.offer_outcome_unavailable_other_driver)
         )
         is OfferOutcomeNotice.OfferExpired -> Triple(
-            DriveErrorContainer,
-            DriveOnErrorContainer,
+            DriveColors.current.dangerContainer,
+            DriveColors.current.onDangerContainer,
             notice.serverMessage ?: stringResource(R.string.offer_outcome_expired)
         )
         is OfferOutcomeNotice.DriverNotEligibleOrOffline -> Triple(
-            DriveErrorContainer,
-            DriveOnErrorContainer,
+            DriveColors.current.dangerContainer,
+            DriveColors.current.onDangerContainer,
             notice.serverMessage.ifBlank { stringResource(R.string.offer_outcome_not_eligible) }
         )
         is OfferOutcomeNotice.NetworkFailedNoQueue -> Triple(
-            DriveErrorContainer,
-            DriveOnErrorContainer,
+            DriveColors.current.dangerContainer,
+            DriveColors.current.onDangerContainer,
             stringResource(R.string.offer_outcome_network_no_queue)
         )
         is OfferOutcomeNotice.BackendNotDeployed -> Triple(
-            DriveErrorContainer,
-            DriveOnErrorContainer,
+            DriveColors.current.dangerContainer,
+            DriveColors.current.onDangerContainer,
             notice.reason
         )
     }
@@ -779,8 +764,8 @@ private fun AcceptedAssignmentHandoffCard(
     onDismiss: () -> Unit
 ) {
     DriveCard(
-        backgroundColor = DriveGreenContainer,
-        borderColor = DriveGreenOnline.copy(alpha = 0.5f)
+        backgroundColor = DriveColors.current.successContainer,
+        borderColor = DriveColors.current.success.copy(alpha = 0.5f)
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -789,7 +774,7 @@ private fun AcceptedAssignmentHandoffCard(
             Icon(
                 imageVector = Icons.Outlined.CheckCircle,
                 contentDescription = null,
-                tint = DriveGreenOnline,
+                tint = DriveColors.current.success,
                 modifier = Modifier.size(24.dp)
             )
             Spacer(modifier = Modifier.width(DriveSpacing.md))
@@ -797,7 +782,7 @@ private fun AcceptedAssignmentHandoffCard(
                 Text(
                     text = stringResource(R.string.offer_assigned_title),
                     style = MaterialTheme.typography.titleSmall,
-                    color = DriveOnGreenContainer,
+                    color = DriveColors.current.onSuccessContainer,
                     fontWeight = FontWeight.Bold
                 )
                 Text(
@@ -808,19 +793,19 @@ private fun AcceptedAssignmentHandoffCard(
                         assignment.tripStatus.name
                     ),
                     style = MaterialTheme.typography.bodySmall,
-                    color = DriveOnGreenContainer
+                    color = DriveColors.current.onSuccessContainer
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
                     text = stringResource(R.string.offer_assigned_phase5_notice),
                     style = MaterialTheme.typography.labelSmall,
-                    color = DriveOnGreenContainer.copy(alpha = 0.85f)
+                    color = DriveColors.current.onSuccessContainer.copy(alpha = 0.85f)
                 )
             }
             TextButton(onClick = onDismiss) {
                 Text(
                     text = stringResource(R.string.offer_dismiss_notice),
-                    color = DriveOnGreenContainer
+                    color = DriveColors.current.onSuccessContainer
                 )
             }
         }
@@ -837,13 +822,13 @@ private fun DemoDispatchSimulatorCard(
     onSimulateDuplicateEvent: () -> Unit
 ) {
     DriveCard(
-        backgroundColor = DriveYellowContainer,
-        borderColor = DriveWarningAmber.copy(alpha = 0.5f)
+        backgroundColor = DriveColors.current.warningContainer,
+        borderColor = DriveColors.current.warning.copy(alpha = 0.5f)
     ) {
         Text(
             text = stringResource(R.string.orders_demo_simulator_title),
             style = MaterialTheme.typography.titleSmall,
-            color = DriveOnYellowContainer,
+            color = DriveColors.current.onWarningContainer,
             fontWeight = FontWeight.Bold
         )
         Spacer(modifier = Modifier.height(DriveSpacing.sm))
@@ -852,7 +837,7 @@ private fun DemoDispatchSimulatorCard(
             Text(
                 text = stringResource(R.string.orders_demo_must_be_online),
                 style = MaterialTheme.typography.bodySmall,
-                color = DriveOnYellowContainer
+                color = DriveColors.current.onWarningContainer
             )
         } else {
             Row(
@@ -862,7 +847,7 @@ private fun DemoDispatchSimulatorCard(
                 Text(
                     text = stringResource(R.string.orders_demo_simulate_race),
                     style = MaterialTheme.typography.bodySmall,
-                    color = DriveOnYellowContainer,
+                    color = DriveColors.current.onWarningContainer,
                     modifier = Modifier.weight(1f)
                 )
                 Spacer(modifier = Modifier.width(DriveSpacing.sm))

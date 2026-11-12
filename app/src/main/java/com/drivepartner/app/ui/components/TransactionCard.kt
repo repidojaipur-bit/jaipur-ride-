@@ -26,16 +26,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.drivepartner.app.ui.theme.DriveColors
 import com.drivepartner.app.ui.theme.DriveCardShape
-import com.drivepartner.app.ui.theme.DriveGreenContainer
-import com.drivepartner.app.ui.theme.DriveGreenOnline
-import com.drivepartner.app.ui.theme.DriveOfflineContainer
-import com.drivepartner.app.ui.theme.DriveOfflineGrey
-import com.drivepartner.app.ui.theme.DriveSurfaceBorder
-import com.drivepartner.app.ui.theme.DriveSurfaceWhite
-import com.drivepartner.app.ui.theme.DriveTextMuted
-import com.drivepartner.app.ui.theme.DriveTextPrimary
-import com.drivepartner.app.ui.theme.DriveTextSecondary
 
 /**
  * TransactionCard - Reusable financial ledger transaction row.
@@ -68,8 +60,8 @@ fun TransactionCard(
     Card(
         modifier = cardModifier,
         shape = DriveCardShape,
-        colors = CardDefaults.cardColors(containerColor = DriveSurfaceWhite),
-        border = androidx.compose.foundation.BorderStroke(1.dp, DriveSurfaceBorder),
+        colors = CardDefaults.cardColors(containerColor = DriveColors.current.surface),
+        border = androidx.compose.foundation.BorderStroke(1.dp, DriveColors.current.border),
         elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
     ) {
         Row(
@@ -80,9 +72,9 @@ fun TransactionCard(
         ) {
             // Directional Icon
             val (icon, bg, fg) = if (isCredit) {
-                Triple(Icons.Filled.ArrowDownward, DriveGreenContainer, DriveGreenOnline)
+                Triple(Icons.Filled.ArrowDownward, DriveColors.current.successContainer, DriveColors.current.success)
             } else {
-                Triple(Icons.Filled.ArrowUpward, DriveOfflineContainer, DriveOfflineGrey)
+                Triple(Icons.Filled.ArrowUpward, DriveColors.current.neutralContainer, DriveColors.current.neutral)
             }
 
             Box(
@@ -107,12 +99,12 @@ fun TransactionCard(
                     text = title,
                     fontSize = 13.sp,
                     fontWeight = FontWeight.SemiBold,
-                    color = DriveTextPrimary
+                    color = DriveColors.current.textPrimary
                 )
                 Text(
                     text = "$timestamp • Ref: $referenceId",
                     fontSize = 11.sp,
-                    color = DriveTextMuted
+                    color = DriveColors.current.textTertiary
                 )
             }
 
@@ -121,7 +113,7 @@ fun TransactionCard(
                 text = "${if (isCredit) "+" else "-"}$amountFormatted",
                 fontSize = 15.sp,
                 fontWeight = FontWeight.Bold,
-                color = if (isCredit) DriveGreenOnline else DriveTextPrimary
+                color = if (isCredit) DriveColors.current.success else DriveColors.current.textPrimary
             )
         }
     }

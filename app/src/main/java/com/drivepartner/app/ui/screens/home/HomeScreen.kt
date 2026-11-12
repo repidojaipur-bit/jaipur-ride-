@@ -37,8 +37,6 @@ import androidx.compose.material.icons.filled.LocalTaxi
 import androidx.compose.material.icons.outlined.Block
 import androidx.compose.material.icons.outlined.CheckCircle
 import androidx.compose.material.icons.outlined.GpsOff
-import androidx.compose.material.icons.outlined.Headphones
-import androidx.compose.material.icons.outlined.ListAlt
 import androidx.compose.material.icons.outlined.LocationDisabled
 import androidx.compose.material.icons.outlined.PowerSettingsNew
 import androidx.compose.material.icons.outlined.Tune
@@ -49,6 +47,8 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Slider
+import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -56,6 +56,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -68,6 +69,7 @@ import androidx.compose.ui.unit.dp
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
+import com.drivepartner.app.ui.theme.DriveColors
 import com.drivepartner.app.R
 import com.drivepartner.app.core.config.DataOrigin
 import com.drivepartner.app.core.location.GpsReadinessStatus
@@ -83,29 +85,17 @@ import com.drivepartner.app.data.model.ServiceType
 import com.drivepartner.app.data.model.WorkOffer
 import com.drivepartner.app.data.remote.dto.EligibilityBlockingReason
 import com.drivepartner.app.ui.components.DriveCard
+import com.drivepartner.app.ui.components.DutySwitchLarge
 import com.drivepartner.app.ui.components.DriveOutlinedButton
 import com.drivepartner.app.ui.components.state.DriveLoadingView
 import com.drivepartner.app.ui.components.state.DriveUiState
-import com.drivepartner.app.ui.theme.DriveBlueContainer
-import com.drivepartner.app.ui.theme.DriveBluePrimary
 import com.drivepartner.app.ui.theme.DriveButtonShape
-import com.drivepartner.app.ui.theme.DriveError
-import com.drivepartner.app.ui.theme.DriveErrorContainer
-import com.drivepartner.app.ui.theme.DriveGreenContainer
-import com.drivepartner.app.ui.theme.DriveGreenOnline
-import com.drivepartner.app.ui.theme.DriveOfflineGrey
-import com.drivepartner.app.ui.theme.DriveOnBlueContainer
-import com.drivepartner.app.ui.theme.DriveOnErrorContainer
-import com.drivepartner.app.ui.theme.DriveOnGreenContainer
-import com.drivepartner.app.ui.theme.DriveOnYellowContainer
 import com.drivepartner.app.ui.theme.DriveSpacing
-import com.drivepartner.app.ui.theme.DriveSurfaceBorder
-import com.drivepartner.app.ui.theme.DriveSurfaceSubtle
-import com.drivepartner.app.ui.theme.DriveSurfaceWhite
-import com.drivepartner.app.ui.theme.DriveTextPrimary
-import com.drivepartner.app.ui.theme.DriveTextSecondary
-import com.drivepartner.app.ui.theme.DriveWarningAmber
-import com.drivepartner.app.ui.theme.DriveYellowContainer
+import com.drivepartner.app.ui.theme.DriveTextRoles
+import com.drivepartner.app.data.local.PerformanceTargetRepository
+import com.drivepartner.app.ui.icons.DriveIcons
+import com.drivepartner.app.ui.viewmodel.HomeMetricsUiState
+import com.drivepartner.app.ui.viewmodel.HomeMetricsViewModel
 import com.drivepartner.app.ui.viewmodel.HomeUiEvent
 import com.drivepartner.app.ui.viewmodel.HomeUiState
 import com.drivepartner.app.ui.viewmodel.HomeViewModel
@@ -113,14 +103,18 @@ import com.drivepartner.app.ui.viewmodel.HomeViewModel
 @Composable
 fun HomeRoute(
     viewModel: HomeViewModel,
+    metricsViewModel: HomeMetricsViewModel,
     onOpenOrders: () -> Unit,
     onOpenSupport: () -> Unit,
+    onOpenRewards: () -> Unit,
+    onOpenSafety: () -> Unit,
     activeTrip: ActiveTrip? = null,
     incomingOffer: WorkOffer? = null,
     incomingOfferRemainingSeconds: Int = 0,
     modifier: Modifier = Modifier
 ) {
     val uiState by viewModel.uiState.collectAsState()
+    val metricsState by metricsViewModel.uiState.collectAsState()
     val context = LocalContext.current
 
     val locationPermissionLauncher = rememberLauncherForActivityResult(
@@ -197,6 +191,9 @@ fun HomeRoute(
 
     HomeScreen(
         uiState = uiState,
+        metricsState = metricsState,
+        onRefreshMetrics = metricsViewModel::refresh,
+        onSetDailyTarget = metricsViewModel::setDailyTarget,
         onToggleDutyStatus = ::requestNotificationPermissionIfNeededAndToggleDuty,
         onRecenterMap = viewModel::onRefreshLocationClick,
         onGrantPermissionClick = viewModel::onRequestLocationFromBanner,
@@ -207,6 +204,8 @@ fun HomeRoute(
         onToggleDemoEligibility = viewModel::onToggleDemoEligibility,
         onOpenOrders = onOpenOrders,
         onOpenSupport = onOpenSupport,
+        onOpenRewards = onOpenRewards,
+        onOpenSafety = onOpenSafety,
         activeTrip = activeTrip,
         incomingOffer = incomingOffer,
         incomingOfferRemainingSeconds = incomingOfferRemainingSeconds,
@@ -217,6 +216,9 @@ fun HomeRoute(
 @Composable
 fun HomeScreen(
     uiState: HomeUiState,
+    metricsState: HomeMetricsUiState = HomeMetricsUiState(),
+    onRefreshMetrics: () -> Unit = {},
+    onSetDailyTarget: (Int?) -> Unit = {},
     onToggleDutyStatus: () -> Unit,
     onRecenterMap: () -> Unit = {},
     onGrantPermissionClick: () -> Unit = {},
@@ -227,14 +229,87 @@ fun HomeScreen(
     onToggleDemoEligibility: (Boolean) -> Unit = {},
     onOpenOrders: () -> Unit = {},
     onOpenSupport: () -> Unit = {},
+    onOpenRewards: () -> Unit = {},
+    onOpenSafety: () -> Unit = {},
     activeTrip: ActiveTrip? = null,
     incomingOffer: WorkOffer? = null,
     incomingOfferRemainingSeconds: Int = 0,
     modifier: Modifier = Modifier
 ) {
     var showPreferencesSheet by remember { mutableStateOf(false) }
+    var showTargetDialog by remember { mutableStateOf(false) }
+    var performanceExpanded by remember { mutableStateOf(false) }
     val scrollState = rememberScrollState()
     val context = LocalContext.current
+    val autoBoostOn = uiState.preferences?.autoBoostEnabled == true
+
+    val promoShortcuts = listOf(
+        HomeShortcut(
+            id = "daily_rewards",
+            labelRes = R.string.shortcut_daily_rewards,
+            noteRes = R.string.home_shortcut_rewards_note,
+            icon = DriveIcons.Rewards,
+            onClick = onOpenRewards
+        ),
+        HomeShortcut(
+            id = "refer_earn",
+            labelRes = R.string.shortcut_refer_earn,
+            noteRes = R.string.home_shortcut_refer_note,
+            icon = DriveIcons.Share,
+            onClick = onOpenRewards
+        ),
+        HomeShortcut(
+            id = "bonus_challenges",
+            labelRes = R.string.shortcut_bonus_challenges,
+            noteRes = R.string.home_shortcut_bonus_note,
+            icon = DriveIcons.Zap,
+            onClick = onOpenRewards
+        ),
+        HomeShortcut(
+            id = "safety_insurance",
+            labelRes = R.string.shortcut_safety_insurance,
+            noteRes = R.string.home_shortcut_safety_note,
+            icon = DriveIcons.ShieldCheck,
+            onClick = onOpenSafety
+        ),
+        HomeShortcut(
+            id = "auto_boost",
+            labelRes = R.string.shortcut_auto_boost,
+            noteRes = if (autoBoostOn) R.string.home_shortcut_auto_boost_on
+            else R.string.home_shortcut_auto_boost_off,
+            icon = DriveIcons.Fuel,
+            onClick = { showPreferencesSheet = true }
+        ),
+        HomeShortcut(
+            id = "priority_orders",
+            labelRes = R.string.shortcut_priority_orders,
+            noteRes = R.string.home_shortcut_priority_note,
+            icon = DriveIcons.Navigation,
+            onClick = onOpenOrders
+        ),
+        HomeShortcut(
+            id = "my_performance",
+            labelRes = R.string.shortcut_my_performance,
+            noteRes = R.string.home_shortcut_performance_note,
+            icon = DriveIcons.Chart,
+            onClick = { performanceExpanded = true }
+        )
+    )
+
+    if (showTargetDialog) {
+        DailyTargetDialog(
+            currentTarget = metricsState.performance.dailyTarget,
+            onSave = { target ->
+                showTargetDialog = false
+                onSetDailyTarget(target)
+            },
+            onClear = {
+                showTargetDialog = false
+                onSetDailyTarget(null)
+            },
+            onDismiss = { showTargetDialog = false }
+        )
+    }
 
     if (uiState.showPermissionEducation) {
         AlertDialog(
@@ -275,7 +350,7 @@ fun HomeScreen(
     BoxWithConstraints(
         modifier = modifier
             .fillMaxSize()
-            .background(DriveSurfaceSubtle)
+            .background(DriveColors.current.backgroundSubtle)
     ) {
         val isWideViewport = maxWidth >= 600.dp
 
@@ -288,8 +363,8 @@ fun HomeScreen(
         ) {
             if (activeTrip != null && activeTrip.isExecutionActive) {
                 DriveCard(
-                    backgroundColor = DriveBlueContainer,
-                    borderColor = DriveBluePrimary.copy(alpha = 0.55f)
+                    backgroundColor = DriveColors.current.brandContainer,
+                    borderColor = DriveColors.current.brand.copy(alpha = 0.55f)
                 ) {
                     Row(
                         modifier = Modifier.fillMaxWidth(),
@@ -302,20 +377,20 @@ fun HomeScreen(
                                     activeTrip.status.name
                                 ),
                                 style = MaterialTheme.typography.bodySmall,
-                                color = DriveOnBlueContainer,
+                                color = DriveColors.current.onBrandContainer,
                                 fontWeight = FontWeight.Bold
                             )
                             Text(
                                 text = "${activeTrip.pickup.addressSummary} -> ${activeTrip.drop.addressSummary}",
                                 style = MaterialTheme.typography.labelSmall,
-                                color = DriveOnBlueContainer
+                                color = DriveColors.current.onBrandContainer
                             )
                         }
                         Spacer(modifier = Modifier.width(DriveSpacing.sm))
                         TextButton(onClick = onOpenOrders) {
                             Text(
                                 text = stringResource(R.string.home_active_trip_action),
-                                color = DriveBluePrimary,
+                                color = DriveColors.current.brand,
                                 fontWeight = FontWeight.Bold
                             )
                         }
@@ -325,8 +400,8 @@ fun HomeScreen(
 
             if (incomingOffer != null && incomingOfferRemainingSeconds > 0) {
                 DriveCard(
-                    backgroundColor = DriveGreenContainer,
-                    borderColor = DriveGreenOnline.copy(alpha = 0.55f)
+                    backgroundColor = DriveColors.current.successContainer,
+                    borderColor = DriveColors.current.success.copy(alpha = 0.55f)
                 ) {
                     Row(
                         modifier = Modifier.fillMaxWidth(),
@@ -339,20 +414,20 @@ fun HomeScreen(
                                     "${incomingOfferRemainingSeconds}s"
                                 ),
                                 style = MaterialTheme.typography.bodySmall,
-                                color = DriveOnGreenContainer,
+                                color = DriveColors.current.onSuccessContainer,
                                 fontWeight = FontWeight.Bold
                             )
                             Text(
                                 text = "${incomingOffer.pickupSummary} → ${incomingOffer.dropSummary}",
                                 style = MaterialTheme.typography.labelSmall,
-                                color = DriveOnGreenContainer
+                                color = DriveColors.current.onSuccessContainer
                             )
                         }
                         Spacer(modifier = Modifier.width(DriveSpacing.sm))
                         TextButton(onClick = onOpenOrders) {
                             Text(
                                 text = stringResource(R.string.home_incoming_offer_action),
-                                color = DriveGreenOnline,
+                                color = DriveColors.current.success,
                                 fontWeight = FontWeight.Bold
                             )
                         }
@@ -362,13 +437,13 @@ fun HomeScreen(
 
             if (uiState.dataOrigin == DataOrigin.LIVE && !uiState.boundaryMessage.isNullOrBlank()) {
                 DriveCard(
-                    backgroundColor = DriveErrorContainer,
-                    borderColor = DriveError.copy(alpha = 0.35f)
+                    backgroundColor = DriveColors.current.dangerContainer,
+                    borderColor = DriveColors.current.danger.copy(alpha = 0.35f)
                 ) {
                     Text(
                         text = uiState.boundaryMessage,
                         style = MaterialTheme.typography.bodySmall,
-                        color = DriveOnErrorContainer,
+                        color = DriveColors.current.onDangerContainer,
                         fontWeight = FontWeight.Medium
                     )
                 }
@@ -376,13 +451,13 @@ fun HomeScreen(
 
             if (uiState.actionFeedback != null) {
                 DriveCard(
-                    backgroundColor = DriveYellowContainer,
-                    borderColor = DriveWarningAmber.copy(alpha = 0.5f)
+                    backgroundColor = DriveColors.current.warningContainer,
+                    borderColor = DriveColors.current.warning.copy(alpha = 0.5f)
                 ) {
                     Text(
                         text = uiState.actionFeedback.asString(context),
                         style = MaterialTheme.typography.bodySmall,
-                        color = DriveOnYellowContainer,
+                        color = DriveColors.current.onWarningContainer,
                         fontWeight = FontWeight.Medium
                     )
                 }
@@ -424,45 +499,32 @@ fun HomeScreen(
                 )
             } else if (uiState.permissionStatus == LocationPermissionStatus.GRANTED_APPROXIMATE) {
                 DriveCard(
-                    backgroundColor = DriveYellowContainer,
-                    borderColor = DriveWarningAmber.copy(alpha = 0.4f)
+                    backgroundColor = DriveColors.current.warningContainer,
+                    borderColor = DriveColors.current.warning.copy(alpha = 0.4f)
                 ) {
                     Text(
                         text = stringResource(R.string.location_approximate_banner),
                         style = MaterialTheme.typography.bodySmall,
-                        color = DriveOnYellowContainer
+                        color = DriveColors.current.onWarningContainer
                     )
                 }
             }
 
-            if (isWideViewport) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(DriveSpacing.md)
-                ) {
-                    PartnerIdentityCard(
-                        partnerProfile = uiState.partnerProfile,
-                        isVerified = uiState.partnerProfile?.isVerified == true,
-                        modifier = Modifier.weight(1f)
-                    )
-                    DutyControlCard(
-                        dutyControlState = uiState.dutyControlState,
-                        isActionInFlight = uiState.isActionInFlight,
-                        onToggleDutyStatus = onToggleDutyStatus,
-                        modifier = Modifier.weight(1f)
-                    )
-                }
-            } else {
-                PartnerIdentityCard(
-                    partnerProfile = uiState.partnerProfile,
-                    isVerified = uiState.partnerProfile?.isVerified == true
-                )
-                DutyControlCard(
-                    dutyControlState = uiState.dutyControlState,
-                    isActionInFlight = uiState.isActionInFlight,
-                    onToggleDutyStatus = onToggleDutyStatus
-                )
-            }
+            // Large Online/Offline duty control (spec section 9)
+            DutySwitchLarge(
+                dutyControlState = uiState.dutyControlState,
+                isEligible = uiState.eligibility?.isEligibleForOnline != false,
+                blockingNotice = uiState.eligibility
+                    ?.blockingReasons
+                    ?.firstOrNull()
+                    ?.let { reason -> stringResource(blockingReasonRes(reason)) },
+                onToggle = onToggleDutyStatus
+            )
+
+            PartnerIdentityCard(
+                partnerProfile = uiState.partnerProfile,
+                isVerified = uiState.partnerProfile?.isVerified == true
+            )
 
             // Eligibility Card
             EligibilityStatusCard(eligibility = uiState.eligibility)
@@ -482,76 +544,43 @@ fun HomeScreen(
                 onRecenterClick = onRecenterMap
             )
 
-            // Today's Overview & Service Area / Auto Boost Preferences
-            if (isWideViewport) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(DriveSpacing.md)
-                ) {
-                    TodayOverviewCard(uiState = uiState, modifier = Modifier.weight(1f))
-                    ServiceAreaCard(
-                        uiState = uiState,
-                        onOpenPreferences = { showPreferencesSheet = true },
-                        modifier = Modifier.weight(1f)
-                    )
-                }
-            } else {
-                TodayOverviewCard(uiState = uiState)
-                ServiceAreaCard(
-                    uiState = uiState,
-                    onOpenPreferences = { showPreferencesSheet = true }
-                )
-            }
+            // Today's earnings summary (spec section 9)
+            HomeTodaySummaryCard(
+                metrics = metricsState.today,
+                isLoading = metricsState.isLoading,
+                isRefreshing = metricsState.isRefreshing,
+                errorMessageRes = metricsState.errorMessageRes,
+                onRefresh = onRefreshMetrics
+            )
 
-            // Quick Actions
-            DriveCard {
-                Text(
-                    text = stringResource(R.string.home_quick_actions),
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.SemiBold
-                )
-                Spacer(modifier = Modifier.height(DriveSpacing.md))
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(DriveSpacing.md)
-                ) {
-                    DriveOutlinedButton(
-                        onClick = onOpenOrders,
-                        modifier = Modifier.weight(1f)
-                    ) {
-                        Icon(
-                            imageVector = Icons.Outlined.ListAlt,
-                            contentDescription = null,
-                            modifier = Modifier.size(DriveSpacing.iconSmall)
-                        )
-                        Spacer(modifier = Modifier.width(6.dp))
-                        Text(text = stringResource(R.string.nav_orders))
-                    }
-                    DriveOutlinedButton(
-                        onClick = onOpenSupport,
-                        modifier = Modifier.weight(1f)
-                    ) {
-                        Icon(
-                            imageVector = Icons.Outlined.Headphones,
-                            contentDescription = null,
-                            modifier = Modifier.size(DriveSpacing.iconSmall)
-                        )
-                        Spacer(modifier = Modifier.width(6.dp))
-                        Text(text = stringResource(R.string.action_help))
-                    }
-                }
-            }
+            // Performance card with daily target progress + weekly figures + suggestions
+            HomePerformanceCard(
+                performance = metricsState.performance,
+                suggestions = metricsState.suggestions,
+                expanded = performanceExpanded,
+                onToggleExpanded = { performanceExpanded = !performanceExpanded },
+                onEditTarget = { showTargetDialog = true }
+            )
+
+            // Service Area / Auto Boost Preferences
+            ServiceAreaCard(
+                uiState = uiState,
+                onOpenPreferences = { showPreferencesSheet = true }
+            )
+
+            // Horizontally scrollable promotional shortcuts (spec section 9)
+            HomePromoShortcutsRow(shortcuts = promoShortcuts)
 
             // Isolated DEMO testing switch so reviewers can test eligibility blocking in demo builds only
             if (uiState.dataOrigin == DataOrigin.DEMO) {
                 DriveCard(
-                    backgroundColor = DriveYellowContainer,
-                    borderColor = DriveWarningAmber.copy(alpha = 0.5f)
+                    backgroundColor = DriveColors.current.warningContainer,
+                    borderColor = DriveColors.current.warning.copy(alpha = 0.5f)
                 ) {
                     Text(
                         text = stringResource(R.string.demo_controls_title),
                         style = MaterialTheme.typography.titleSmall,
-                        color = DriveOnYellowContainer,
+                        color = DriveColors.current.onWarningContainer,
                         fontWeight = FontWeight.Bold
                     )
                     Spacer(modifier = Modifier.height(DriveSpacing.sm))
@@ -562,7 +591,7 @@ fun HomeScreen(
                         Text(
                             text = stringResource(R.string.demo_controls_eligible_toggle),
                             style = MaterialTheme.typography.bodySmall,
-                            color = DriveOnYellowContainer,
+                            color = DriveColors.current.onWarningContainer,
                             modifier = Modifier.weight(1f)
                         )
                         Spacer(modifier = Modifier.width(DriveSpacing.sm))
@@ -585,8 +614,8 @@ private fun LocationReadinessBanner(
     onActionClick: () -> Unit
 ) {
     DriveCard(
-        backgroundColor = DriveErrorContainer,
-        borderColor = DriveError.copy(alpha = 0.4f)
+        backgroundColor = DriveColors.current.dangerContainer,
+        borderColor = DriveColors.current.danger.copy(alpha = 0.4f)
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -595,14 +624,14 @@ private fun LocationReadinessBanner(
             Icon(
                 imageVector = icon,
                 contentDescription = null,
-                tint = DriveError,
+                tint = DriveColors.current.danger,
                 modifier = Modifier.size(DriveSpacing.iconMedium)
             )
             Spacer(modifier = Modifier.width(DriveSpacing.md))
             Text(
                 text = message,
                 style = MaterialTheme.typography.bodySmall,
-                color = DriveOnErrorContainer,
+                color = DriveColors.current.onDangerContainer,
                 modifier = Modifier.weight(1f)
             )
             Spacer(modifier = Modifier.width(DriveSpacing.sm))
@@ -610,7 +639,7 @@ private fun LocationReadinessBanner(
                 Text(
                     text = actionLabel,
                     style = MaterialTheme.typography.labelMedium,
-                    color = DriveError,
+                    color = DriveColors.current.danger,
                     fontWeight = FontWeight.Bold
                 )
             }
@@ -632,7 +661,7 @@ private fun PartnerIdentityCard(
             Box(
                 modifier = Modifier
                     .size(48.dp)
-                    .background(DriveBluePrimary.copy(alpha = 0.1f), CircleShape),
+                    .background(DriveColors.current.brand.copy(alpha = 0.1f), CircleShape),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
@@ -644,7 +673,7 @@ private fun PartnerIdentityCard(
                         null -> Icons.Filled.DirectionsBike
                     },
                     contentDescription = null,
-                    tint = DriveBluePrimary
+                    tint = DriveColors.current.brand
                 )
             }
             Spacer(modifier = Modifier.width(DriveSpacing.md))
@@ -658,14 +687,14 @@ private fun PartnerIdentityCard(
                     text = partnerProfile?.let { "${it.vehicleBadge} • ID: ${it.id}" }
                         ?: stringResource(R.string.backend_not_deployed_notice),
                     style = MaterialTheme.typography.bodySmall,
-                    color = DriveTextSecondary
+                    color = DriveColors.current.textSecondary
                 )
             }
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(
                     imageVector = Icons.Outlined.CheckCircle,
                     contentDescription = null,
-                    tint = if (isVerified) DriveGreenOnline else DriveOfflineGrey,
+                    tint = if (isVerified) DriveColors.current.success else DriveColors.current.neutral,
                     modifier = Modifier.size(16.dp)
                 )
                 Spacer(modifier = Modifier.width(4.dp))
@@ -676,103 +705,8 @@ private fun PartnerIdentityCard(
                         stringResource(R.string.status_unverified)
                     },
                     style = MaterialTheme.typography.labelSmall,
-                    color = if (isVerified) DriveGreenOnline else DriveOfflineGrey,
+                    color = if (isVerified) DriveColors.current.success else DriveColors.current.neutral,
                     fontWeight = FontWeight.Medium
-                )
-            }
-        }
-    }
-}
-
-@Composable
-private fun DutyControlCard(
-    dutyControlState: DutyControlState,
-    isActionInFlight: Boolean,
-    onToggleDutyStatus: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    val isOnline = dutyControlState == DutyControlState.ONLINE
-    val cardBackground = when (dutyControlState) {
-        DutyControlState.ONLINE -> DriveGreenContainer
-        DutyControlState.BLOCKED -> DriveErrorContainer
-        DutyControlState.CONNECTION_UNKNOWN,
-        DutyControlState.TURNING_ONLINE,
-        DutyControlState.TURNING_OFFLINE -> DriveYellowContainer
-        DutyControlState.OFFLINE -> DriveSurfaceWhite
-    }
-    val subtitleRes = when (dutyControlState) {
-        DutyControlState.ONLINE -> R.string.ready_to_receive_orders
-        DutyControlState.TURNING_ONLINE -> R.string.duty_turning_online_msg
-        DutyControlState.TURNING_OFFLINE -> R.string.duty_turning_offline_msg
-        DutyControlState.BLOCKED -> R.string.duty_blocked_msg
-        DutyControlState.CONNECTION_UNKNOWN -> R.string.duty_connection_unknown_msg
-        DutyControlState.OFFLINE -> R.string.currently_offline_message
-    }
-    val headingColor = when (dutyControlState) {
-        DutyControlState.ONLINE -> DriveOnGreenContainer
-        DutyControlState.BLOCKED -> DriveOnErrorContainer
-        DutyControlState.CONNECTION_UNKNOWN,
-        DutyControlState.TURNING_ONLINE,
-        DutyControlState.TURNING_OFFLINE -> DriveOnYellowContainer
-        DutyControlState.OFFLINE -> DriveTextPrimary
-    }
-
-    DriveCard(
-        modifier = modifier,
-        backgroundColor = cardBackground
-    ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Column(modifier = Modifier.weight(1f)) {
-                Text(
-                    text = stringResource(R.string.home_duty_status),
-                    style = MaterialTheme.typography.labelMedium,
-                    color = headingColor.copy(alpha = 0.8f)
-                )
-                Text(
-                    text = stringResource(dutyControlState.labelRes),
-                    style = MaterialTheme.typography.titleLarge,
-                    color = headingColor,
-                    fontWeight = FontWeight.Bold
-                )
-                Spacer(modifier = Modifier.height(DriveSpacing.xs))
-                Text(
-                    text = stringResource(subtitleRes),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = headingColor.copy(alpha = 0.85f)
-                )
-            }
-
-            Spacer(modifier = Modifier.width(DriveSpacing.md))
-
-            Button(
-                onClick = onToggleDutyStatus,
-                enabled = !isActionInFlight && dutyControlState != DutyControlState.BLOCKED,
-                shape = DriveButtonShape,
-                modifier = Modifier.heightIn(min = DriveSpacing.secondaryButtonHeight),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = if (isOnline) DriveOfflineGrey else DriveGreenOnline
-                )
-            ) {
-                if (isActionInFlight) {
-                    CircularProgressIndicator(
-                        modifier = Modifier.size(18.dp),
-                        color = DriveSurfaceWhite,
-                        strokeWidth = 2.dp
-                    )
-                } else {
-                    Icon(
-                        imageVector = Icons.Outlined.PowerSettingsNew,
-                        contentDescription = null,
-                        modifier = Modifier.size(DriveSpacing.iconSmall)
-                    )
-                }
-                Spacer(modifier = Modifier.width(6.dp))
-                Text(
-                    text = if (isOnline) stringResource(R.string.go_offline) else stringResource(R.string.go_online),
-                    style = MaterialTheme.typography.labelMedium
                 )
             }
         }
@@ -787,17 +721,17 @@ private fun EligibilityStatusCard(
     val isBlocked = eligibility != null && !eligibility.isEligibleForOnline
     DriveCard(
         modifier = modifier,
-        backgroundColor = if (isBlocked) DriveErrorContainer else DriveSurfaceWhite,
-        borderColor = if (isBlocked) DriveError.copy(alpha = 0.35f) else DriveSurfaceBorder
+        backgroundColor = if (isBlocked) DriveColors.current.dangerContainer else DriveColors.current.surface,
+        borderColor = if (isBlocked) DriveColors.current.danger.copy(alpha = 0.35f) else DriveColors.current.border
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Icon(
                 imageVector = if (isBlocked) Icons.Outlined.Block else Icons.Outlined.CheckCircle,
                 contentDescription = null,
                 tint = when {
-                    eligibility == null -> DriveOfflineGrey
-                    eligibility.isEligibleForOnline -> DriveGreenOnline
-                    else -> DriveError
+                    eligibility == null -> DriveColors.current.neutral
+                    eligibility.isEligibleForOnline -> DriveColors.current.success
+                    else -> DriveColors.current.danger
                 },
                 modifier = Modifier.size(DriveSpacing.iconMedium)
             )
@@ -815,7 +749,7 @@ private fun EligibilityStatusCard(
                         else -> stringResource(R.string.eligibility_blocked_title)
                     },
                     style = MaterialTheme.typography.bodySmall,
-                    color = if (isBlocked) DriveOnErrorContainer else DriveTextSecondary
+                    color = if (isBlocked) DriveColors.current.onDangerContainer else DriveColors.current.textSecondary
                 )
             }
         }
@@ -823,98 +757,93 @@ private fun EligibilityStatusCard(
         if (isBlocked && eligibility != null && eligibility.blockingReasons.isNotEmpty()) {
             Spacer(modifier = Modifier.height(DriveSpacing.sm))
             eligibility.blockingReasons.forEach { reason ->
-                val reasonRes = when (reason) {
-                    EligibilityBlockingReason.ACCOUNT_NOT_APPROVED -> R.string.elig_reason_account_not_approved
-                    EligibilityBlockingReason.KYC_INCOMPLETE -> R.string.elig_reason_kyc_incomplete
-                    EligibilityBlockingReason.DOCUMENT_REJECTED -> R.string.elig_reason_document_rejected
-                    EligibilityBlockingReason.DOCUMENT_EXPIRED -> R.string.elig_reason_document_expired
-                    EligibilityBlockingReason.VEHICLE_NOT_APPROVED -> R.string.elig_reason_vehicle_not_approved
-                    EligibilityBlockingReason.CITY_NOT_ENABLED -> R.string.elig_reason_city_not_enabled
-                    EligibilityBlockingReason.ACTIVE_SUSPENSION -> R.string.elig_reason_active_suspension
-                    EligibilityBlockingReason.LOCATION_UNAVAILABLE -> R.string.elig_reason_location_unavailable
-                }
+                val reasonRes = blockingReasonRes(reason)
                 Text(
                     text = "• ${stringResource(reasonRes)}",
                     style = MaterialTheme.typography.bodySmall,
-                    color = DriveOnErrorContainer
+                    color = DriveColors.current.onDangerContainer
                 )
             }
         }
     }
 }
 
-@Composable
-private fun TodayOverviewCard(
-    uiState: HomeUiState,
-    modifier: Modifier = Modifier
-) {
-    val summary = uiState.dashboardSummary
-    val displayEarnings = (summary?.todayEstimatedEarnings ?: MoneyPaise.ZERO_INR).formatDisplay()
-    val completedCount = summary?.todayCompletedCount ?: 0
 
-    DriveCard(modifier = modifier) {
-        Text(
-            text = stringResource(R.string.home_today_summary),
-            style = MaterialTheme.typography.titleMedium,
-            fontWeight = FontWeight.SemiBold
-        )
-        Spacer(modifier = Modifier.height(DriveSpacing.md))
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(DriveSpacing.md)
-        ) {
-            Column(modifier = Modifier.weight(1f)) {
+/** Maps a backend eligibility block to its driver-visible explanation. */
+private fun blockingReasonRes(reason: EligibilityBlockingReason): Int = when (reason) {
+    EligibilityBlockingReason.ACCOUNT_NOT_APPROVED -> R.string.elig_reason_account_not_approved
+    EligibilityBlockingReason.KYC_INCOMPLETE -> R.string.elig_reason_kyc_incomplete
+    EligibilityBlockingReason.DOCUMENT_REJECTED -> R.string.elig_reason_document_rejected
+    EligibilityBlockingReason.DOCUMENT_EXPIRED -> R.string.elig_reason_document_expired
+    EligibilityBlockingReason.VEHICLE_NOT_APPROVED -> R.string.elig_reason_vehicle_not_approved
+    EligibilityBlockingReason.CITY_NOT_ENABLED -> R.string.elig_reason_city_not_enabled
+    EligibilityBlockingReason.ACTIVE_SUSPENSION -> R.string.elig_reason_active_suspension
+    EligibilityBlockingReason.LOCATION_UNAVAILABLE -> R.string.elig_reason_location_unavailable
+}
+
+/**
+ * Driver-owned daily target editor for the performance card. Stored on device only; the platform
+ * never mandates a quota, so the dialog also offers clearing the target entirely.
+ */
+@Composable
+private fun DailyTargetDialog(
+    currentTarget: Int?,
+    onSave: (Int) -> Unit,
+    onClear: () -> Unit,
+    onDismiss: () -> Unit
+) {
+    val colors = DriveColors.current
+    var sliderValue by remember(currentTarget) {
+        mutableFloatStateOf((currentTarget ?: PerformanceTargetRepository.DEFAULT_TARGET).toFloat())
+    }
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(stringResource(R.string.home_performance_target_dialog_title)) },
+        text = {
+            Column(verticalArrangement = Arrangement.spacedBy(DriveSpacing.md)) {
                 Text(
-                    text = stringResource(R.string.home_completed_trips_label),
+                    text = stringResource(R.string.home_performance_target_dialog_body),
                     style = MaterialTheme.typography.bodySmall,
-                    color = DriveTextSecondary
+                    color = colors.textSecondary
                 )
                 Text(
-                    text = completedCount.toString(),
-                    style = MaterialTheme.typography.headlineMedium,
-                    fontWeight = FontWeight.Bold
+                    text = stringResource(
+                        R.string.home_performance_target_value,
+                        sliderValue.toInt()
+                    ),
+                    style = DriveTextRoles.moneyMedium,
+                    color = colors.textPrimary
+                )
+                Slider(
+                    value = sliderValue,
+                    onValueChange = { sliderValue = it },
+                    valueRange = PerformanceTargetRepository.MIN_TARGET.toFloat()..
+                        PerformanceTargetRepository.MAX_TARGET.toFloat(),
+                    steps = PerformanceTargetRepository.MAX_TARGET -
+                        PerformanceTargetRepository.MIN_TARGET - 1,
+                    colors = SliderDefaults.colors(
+                        thumbColor = colors.brand,
+                        activeTrackColor = colors.brand
+                    )
+                )
+                Text(
+                    text = stringResource(R.string.home_performance_target_stored_note),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = colors.textTertiary
                 )
             }
-            Column(modifier = Modifier.weight(1f)) {
-                Text(
-                    text = if (uiState.dataOrigin == DataOrigin.DEMO) {
-                        "${stringResource(R.string.home_estimated_earnings_label)} (DEMO)"
-                    } else {
-                        stringResource(R.string.home_estimated_earnings_label)
-                    },
-                    style = MaterialTheme.typography.bodySmall,
-                    color = DriveTextSecondary
-                )
-                Text(
-                    text = displayEarnings,
-                    style = MaterialTheme.typography.headlineMedium,
-                    fontWeight = FontWeight.Bold
-                )
+        },
+        confirmButton = {
+            TextButton(onClick = { onSave(sliderValue.toInt()) }) {
+                Text(stringResource(R.string.home_performance_target_save))
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onClear, enabled = currentTarget != null) {
+                Text(stringResource(R.string.home_performance_target_clear))
             }
         }
-        Spacer(modifier = Modifier.height(DriveSpacing.sm))
-        Text(
-            text = stringResource(R.string.home_estimate_disclaimer),
-            style = MaterialTheme.typography.bodySmall,
-            color = DriveTextSecondary
-        )
-        Spacer(modifier = Modifier.height(DriveSpacing.xs))
-        Text(
-            text = if (!summary?.lastSyncedUtc.isNullOrBlank()) {
-                stringResource(R.string.home_last_synced, summary?.lastSyncedUtc.orEmpty())
-            } else {
-                stringResource(R.string.home_not_synced)
-            },
-            style = MaterialTheme.typography.labelSmall,
-            color = DriveTextSecondary
-        )
-        Spacer(modifier = Modifier.height(DriveSpacing.xs))
-        Text(
-            text = stringResource(R.string.home_empty_message),
-            style = MaterialTheme.typography.bodySmall,
-            color = DriveTextSecondary
-        )
-    }
+    )
 }
 
 @Composable
@@ -935,7 +864,7 @@ private fun ServiceAreaCard(
             Icon(
                 imageVector = Icons.Outlined.Tune,
                 contentDescription = null,
-                tint = DriveBluePrimary,
+                tint = DriveColors.current.brand,
                 modifier = Modifier.size(DriveSpacing.iconMedium)
             )
             Spacer(modifier = Modifier.width(DriveSpacing.md))
@@ -948,7 +877,7 @@ private fun ServiceAreaCard(
                 Text(
                     text = stringResource(R.string.home_zones_placeholder),
                     style = MaterialTheme.typography.bodySmall,
-                    color = DriveTextSecondary
+                    color = DriveColors.current.textSecondary
                 )
             }
         }
@@ -963,7 +892,7 @@ private fun ServiceAreaCard(
                 if (autoBoostEnabled) R.string.home_autoboost_on else R.string.home_autoboost_off
             ),
             style = MaterialTheme.typography.bodySmall,
-            color = DriveTextSecondary
+            color = DriveColors.current.textSecondary
         )
         Spacer(modifier = Modifier.height(DriveSpacing.md))
         DriveOutlinedButton(onClick = onOpenPreferences) {

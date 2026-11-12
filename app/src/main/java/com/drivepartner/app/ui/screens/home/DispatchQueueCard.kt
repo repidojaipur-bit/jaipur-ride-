@@ -33,19 +33,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.drivepartner.app.ui.theme.DriveColors
 import com.drivepartner.app.R
 import com.drivepartner.app.data.model.ServiceType
 import com.drivepartner.app.ui.components.OrderRequestCard
 import com.drivepartner.app.ui.components.state.DriveEmptyView
-import com.drivepartner.app.ui.theme.DriveBluePrimary
 import com.drivepartner.app.ui.theme.DriveCardShape
-import com.drivepartner.app.ui.theme.DriveGreenOnline
-import com.drivepartner.app.ui.theme.DriveSurfaceBorder
-import com.drivepartner.app.ui.theme.DriveSurfaceLightGrey
-import com.drivepartner.app.ui.theme.DriveSurfaceWhite
-import com.drivepartner.app.ui.theme.DriveTextMuted
-import com.drivepartner.app.ui.theme.DriveTextPrimary
-import com.drivepartner.app.ui.theme.DriveTextSecondary
 
 /**
  * DispatchQueueOffer - Represents an active real-time booking dispatch offer item in the queue.
@@ -85,8 +78,8 @@ fun DispatchQueueCard(
     Card(
         modifier = modifier.fillMaxWidth(),
         shape = DriveCardShape,
-        colors = CardDefaults.cardColors(containerColor = DriveSurfaceWhite),
-        border = androidx.compose.foundation.BorderStroke(1.dp, DriveSurfaceBorder),
+        colors = CardDefaults.cardColors(containerColor = DriveColors.current.surface),
+        border = androidx.compose.foundation.BorderStroke(1.dp, DriveColors.current.border),
         elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
     ) {
         Column(
@@ -105,21 +98,21 @@ fun DispatchQueueCard(
                         text = "Live Dispatch Queue",
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold,
-                        color = DriveTextPrimary
+                        color = DriveColors.current.textPrimary
                     )
                     if (incomingOffers.isNotEmpty()) {
                         Spacer(modifier = Modifier.width(8.dp))
                         Box(
                             modifier = Modifier
                                 .clip(CircleShape)
-                                .background(DriveBluePrimary)
+                                .background(DriveColors.current.brand)
                                 .padding(horizontal = 8.dp, vertical = 2.dp)
                         ) {
                             Text(
                                 text = "${incomingOffers.size}",
                                 fontSize = 11.sp,
                                 fontWeight = FontWeight.Bold,
-                                color = DriveSurfaceWhite
+                                color = DriveColors.current.onBrand
                             )
                         }
                     }
@@ -130,14 +123,14 @@ fun DispatchQueueCard(
                     if (isConnectingOrSyncing) {
                         CircularProgressIndicator(
                             modifier = Modifier.size(12.dp),
-                            color = DriveBluePrimary,
+                            color = DriveColors.current.brand,
                             strokeWidth = 2.dp
                         )
                         Spacer(modifier = Modifier.width(6.dp))
                         Text(
                             text = "Syncing...",
                             style = MaterialTheme.typography.labelSmall,
-                            color = DriveBluePrimary,
+                            color = DriveColors.current.brand,
                             fontWeight = FontWeight.Medium
                         )
                     } else if (isOnline) {
@@ -145,13 +138,13 @@ fun DispatchQueueCard(
                             modifier = Modifier
                                 .size(8.dp)
                                 .clip(CircleShape)
-                                .background(DriveGreenOnline)
+                                .background(DriveColors.current.success)
                         )
                         Spacer(modifier = Modifier.width(6.dp))
                         Text(
                             text = "Listening",
                             style = MaterialTheme.typography.labelSmall,
-                            color = DriveGreenOnline,
+                            color = DriveColors.current.success,
                             fontWeight = FontWeight.SemiBold
                         )
                     } else {
@@ -159,13 +152,13 @@ fun DispatchQueueCard(
                             modifier = Modifier
                                 .size(8.dp)
                                 .clip(CircleShape)
-                                .background(DriveTextMuted)
+                                .background(DriveColors.current.neutralContainer)
                         )
                         Spacer(modifier = Modifier.width(6.dp))
                         Text(
                             text = "Offline",
                             style = MaterialTheme.typography.labelSmall,
-                            color = DriveTextMuted,
+                            color = DriveColors.current.textTertiary,
                             fontWeight = FontWeight.Medium
                         )
                     }

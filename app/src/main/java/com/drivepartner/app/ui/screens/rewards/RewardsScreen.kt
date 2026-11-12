@@ -50,6 +50,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
+import com.drivepartner.app.ui.theme.DriveColors
 import com.drivepartner.app.R
 import com.drivepartner.app.core.config.DataOrigin
 import com.drivepartner.app.data.model.CampaignItem
@@ -62,21 +63,8 @@ import com.drivepartner.app.ui.components.DriveCard
 import com.drivepartner.app.ui.components.DriveOutlinedButton
 import com.drivepartner.app.ui.components.DrivePrimaryButton
 import com.drivepartner.app.ui.components.state.DriveEmptyView
-import com.drivepartner.app.ui.theme.DriveBlueContainer
-import com.drivepartner.app.ui.theme.DriveBluePrimary
 import com.drivepartner.app.ui.theme.DriveChipShape
-import com.drivepartner.app.ui.theme.DriveError
-import com.drivepartner.app.ui.theme.DriveErrorContainer
-import com.drivepartner.app.ui.theme.DriveGreenContainer
-import com.drivepartner.app.ui.theme.DriveOnBlueContainer
-import com.drivepartner.app.ui.theme.DriveOnErrorContainer
-import com.drivepartner.app.ui.theme.DriveOnGreenContainer
-import com.drivepartner.app.ui.theme.DriveOnYellowContainer
 import com.drivepartner.app.ui.theme.DriveSpacing
-import com.drivepartner.app.ui.theme.DriveSurfaceSubtle
-import com.drivepartner.app.ui.theme.DriveTextSecondary
-import com.drivepartner.app.ui.theme.DriveWarningAmber
-import com.drivepartner.app.ui.theme.DriveYellowContainer
 import com.drivepartner.app.ui.viewmodel.RewardsUiState
 import com.drivepartner.app.ui.viewmodel.RewardsViewModel
 
@@ -137,7 +125,7 @@ fun RewardsScreen(
     Box(
         modifier = modifier
             .fillMaxSize()
-            .background(DriveSurfaceSubtle)
+            .background(DriveColors.current.backgroundSubtle)
     ) {
         Column(
             modifier = Modifier
@@ -148,13 +136,13 @@ fun RewardsScreen(
         ) {
             if (uiState.dataOrigin == DataOrigin.LIVE && !uiState.boundaryMessage.isNullOrBlank()) {
                 DriveCard(
-                    backgroundColor = DriveErrorContainer,
-                    borderColor = DriveError.copy(alpha = 0.35f)
+                    backgroundColor = DriveColors.current.dangerContainer,
+                    borderColor = DriveColors.current.danger.copy(alpha = 0.35f)
                 ) {
                     Text(
                         text = uiState.boundaryMessage,
                         style = MaterialTheme.typography.bodySmall,
-                        color = DriveOnErrorContainer,
+                        color = DriveColors.current.onDangerContainer,
                         fontWeight = FontWeight.Medium
                     )
                 }
@@ -173,13 +161,13 @@ fun RewardsScreen(
                     Box(
                         modifier = Modifier
                             .size(48.dp)
-                            .background(DriveBlueContainer, CircleShape),
+                            .background(DriveColors.current.brandContainer, CircleShape),
                         contentAlignment = Alignment.Center
                     ) {
                         Icon(
                             imageVector = Icons.Outlined.WorkspacePremium,
                             contentDescription = null,
-                            tint = DriveBluePrimary,
+                            tint = DriveColors.current.brand,
                             modifier = Modifier.size(28.dp)
                         )
                     }
@@ -188,7 +176,7 @@ fun RewardsScreen(
                         Text(
                             text = stringResource(R.string.rewards_current_tier),
                             style = MaterialTheme.typography.titleSmall,
-                            color = DriveTextSecondary
+                            color = DriveColors.current.textSecondary
                         )
                         Text(
                             text = uiState.assignedTierLabel
@@ -221,7 +209,7 @@ fun RewardsScreen(
                 Text(
                     text = stringResource(R.string.rewards_server_eligibility_note),
                     style = MaterialTheme.typography.labelSmall,
-                    color = DriveTextSecondary
+                    color = DriveColors.current.textSecondary
                 )
                 Spacer(modifier = Modifier.height(DriveSpacing.sm))
 
@@ -243,8 +231,8 @@ fun RewardsScreen(
                             onClick = { onSelectCategory(cat) },
                             label = { Text(stringResource(labelRes)) },
                             colors = FilterChipDefaults.filterChipColors(
-                                selectedContainerColor = DriveBlueContainer,
-                                selectedLabelColor = DriveBluePrimary
+                                selectedContainerColor = DriveColors.current.brandContainer,
+                                selectedLabelColor = DriveColors.current.brand
                             )
                         )
                     }
@@ -293,13 +281,13 @@ fun RewardsScreen(
             if (uiState.dataOrigin == DataOrigin.DEMO) {
                 val eligibleNow = uiState.referralSummary?.isEligibleForReferral ?: true
                 DriveCard(
-                    backgroundColor = DriveYellowContainer,
-                    borderColor = DriveWarningAmber.copy(alpha = 0.5f)
+                    backgroundColor = DriveColors.current.warningContainer,
+                    borderColor = DriveColors.current.warning.copy(alpha = 0.5f)
                 ) {
                     Text(
                         text = stringResource(R.string.demo_rewards_sandbox_title),
                         style = MaterialTheme.typography.titleSmall,
-                        color = DriveOnYellowContainer,
+                        color = DriveColors.current.onWarningContainer,
                         fontWeight = FontWeight.Bold
                     )
                     Spacer(modifier = Modifier.height(DriveSpacing.sm))
@@ -310,7 +298,7 @@ fun RewardsScreen(
                         Text(
                             text = stringResource(R.string.demo_rewards_eligibility_toggle),
                             style = MaterialTheme.typography.bodySmall,
-                            color = DriveOnYellowContainer,
+                            color = DriveColors.current.onWarningContainer,
                             modifier = Modifier.weight(1f)
                         )
                         Switch(
@@ -338,11 +326,11 @@ private fun CampaignCard(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Surface(shape = DriveChipShape, color = DriveBlueContainer) {
+            Surface(shape = DriveChipShape, color = DriveColors.current.brandContainer) {
                 Text(
                     text = stringResource(campaign.category.labelRes()),
                     style = MaterialTheme.typography.labelSmall,
-                    color = DriveOnBlueContainer,
+                    color = DriveColors.current.onBrandContainer,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
                 )
@@ -351,7 +339,7 @@ private fun CampaignCard(
                 text = campaign.reward.formatDisplay(),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold,
-                color = DriveBluePrimary
+                color = DriveColors.current.brand
             )
         }
 
@@ -363,7 +351,7 @@ private fun CampaignCard(
         Text(
             text = campaign.termsSummary,
             style = MaterialTheme.typography.bodySmall,
-            color = DriveTextSecondary
+            color = DriveColors.current.textSecondary
         )
         Text(
             text = stringResource(
@@ -372,7 +360,7 @@ private fun CampaignCard(
                 campaign.expiresAtUtc
             ),
             style = MaterialTheme.typography.labelSmall,
-            color = DriveTextSecondary
+            color = DriveColors.current.textSecondary
         )
 
         LinearProgressIndicator(
@@ -390,24 +378,24 @@ private fun CampaignCard(
         )
 
         if (!campaign.isDriverEligible) {
-            Surface(shape = DriveChipShape, color = DriveErrorContainer) {
+            Surface(shape = DriveChipShape, color = DriveColors.current.dangerContainer) {
                 Text(
                     text = campaign.ineligibilityReason ?: stringResource(R.string.rewards_ineligible_badge),
                     style = MaterialTheme.typography.labelSmall,
-                    color = DriveOnErrorContainer,
+                    color = DriveColors.current.onDangerContainer,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
                 )
             }
         } else if (campaign.isQualified) {
-            Surface(shape = DriveChipShape, color = DriveGreenContainer) {
+            Surface(shape = DriveChipShape, color = DriveColors.current.successContainer) {
                 Text(
                     text = stringResource(
                         R.string.rewards_qualified_badge,
                         campaign.rewardCreditedSourceRefId ?: campaign.campaignId
                     ),
                     style = MaterialTheme.typography.labelSmall,
-                    color = DriveOnGreenContainer,
+                    color = DriveColors.current.onSuccessContainer,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
                 )
@@ -441,7 +429,7 @@ private fun ReferralSectionCard(
             Icon(
                 imageVector = Icons.Outlined.CardGiftcard,
                 contentDescription = null,
-                tint = DriveBluePrimary,
+                tint = DriveColors.current.brand,
                 modifier = Modifier.size(DriveSpacing.iconMedium)
             )
             Spacer(modifier = Modifier.width(DriveSpacing.sm))
@@ -457,7 +445,7 @@ private fun ReferralSectionCard(
             Text(
                 text = stringResource(R.string.referral_tracking_empty),
                 style = MaterialTheme.typography.bodySmall,
-                color = DriveTextSecondary
+                color = DriveColors.current.textSecondary
             )
         } else {
             Text(
@@ -473,15 +461,15 @@ private fun ReferralSectionCard(
                     summary.totalEarned.formatDisplay()
                 ),
                 style = MaterialTheme.typography.bodySmall,
-                color = DriveTextSecondary
+                color = DriveColors.current.textSecondary
             )
             if (!summary.isEligibleForReferral) {
                 Spacer(modifier = Modifier.height(4.dp))
-                Surface(shape = DriveChipShape, color = DriveErrorContainer) {
+                Surface(shape = DriveChipShape, color = DriveColors.current.dangerContainer) {
                     Text(
                         text = summary.ineligibilityReason ?: stringResource(R.string.rewards_ineligible_badge),
                         style = MaterialTheme.typography.labelSmall,
-                        color = DriveOnErrorContainer,
+                        color = DriveColors.current.onDangerContainer,
                         modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
                     )
                 }
@@ -532,16 +520,16 @@ private fun ReferralSectionCard(
                 Text(
                     text = stringResource(R.string.referral_tracking_empty),
                     style = MaterialTheme.typography.bodySmall,
-                    color = DriveTextSecondary
+                    color = DriveColors.current.textSecondary
                 )
             } else {
                 summary.referrals.forEach { ref ->
                     val (bg, fg) = when (ref.status) {
                         ReferralStatus.QUALIFIED,
-                        ReferralStatus.REWARDED -> DriveGreenContainer to DriveOnGreenContainer
-                        ReferralStatus.PENDING -> DriveYellowContainer to DriveOnYellowContainer
+                        ReferralStatus.REWARDED -> DriveColors.current.successContainer to DriveColors.current.onSuccessContainer
+                        ReferralStatus.PENDING -> DriveColors.current.warningContainer to DriveColors.current.onWarningContainer
                         ReferralStatus.REJECTED_SELF_REFERRAL,
-                        ReferralStatus.REJECTED_FRAUD -> DriveErrorContainer to DriveOnErrorContainer
+                        ReferralStatus.REJECTED_FRAUD -> DriveColors.current.dangerContainer to DriveColors.current.onDangerContainer
                     }
                     Column(
                         modifier = Modifier
@@ -572,7 +560,7 @@ private fun ReferralSectionCard(
                         Text(
                             text = ref.qualificationSummary,
                             style = MaterialTheme.typography.labelSmall,
-                            color = DriveTextSecondary
+                            color = DriveColors.current.textSecondary
                         )
                         if (dataOrigin == DataOrigin.DEMO &&
                             ref.status == ReferralStatus.PENDING &&
@@ -597,13 +585,13 @@ internal fun RetentionOutcomeBanner(
 ) {
     val (bg, fg, msg) = when (notice) {
         is RetentionSafetyOutcomeNotice.SuccessMessage ->
-            Triple(DriveGreenContainer, DriveOnGreenContainer, notice.message)
+            Triple(DriveColors.current.successContainer, DriveColors.current.onSuccessContainer, notice.message)
         is RetentionSafetyOutcomeNotice.Rejected ->
-            Triple(DriveErrorContainer, DriveOnErrorContainer, notice.message)
+            Triple(DriveColors.current.dangerContainer, DriveColors.current.onDangerContainer, notice.message)
         is RetentionSafetyOutcomeNotice.NetworkFailure ->
-            Triple(DriveErrorContainer, DriveOnErrorContainer, notice.message)
+            Triple(DriveColors.current.dangerContainer, DriveColors.current.onDangerContainer, notice.message)
         is RetentionSafetyOutcomeNotice.BackendUnavailable ->
-            Triple(DriveErrorContainer, DriveOnErrorContainer, notice.reason)
+            Triple(DriveColors.current.dangerContainer, DriveColors.current.onDangerContainer, notice.reason)
     }
 
     DriveCard(backgroundColor = bg) {

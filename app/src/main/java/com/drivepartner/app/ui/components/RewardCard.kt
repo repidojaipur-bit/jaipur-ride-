@@ -29,17 +29,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.drivepartner.app.ui.theme.DriveColors
 import com.drivepartner.app.ui.theme.DriveCardShape
-import com.drivepartner.app.ui.theme.DriveGreenOnline
-import com.drivepartner.app.ui.theme.DriveSurfaceBorder
-import com.drivepartner.app.ui.theme.DriveSurfaceLightGrey
-import com.drivepartner.app.ui.theme.DriveSurfaceWhite
-import com.drivepartner.app.ui.theme.DriveTextMuted
-import com.drivepartner.app.ui.theme.DriveTextPrimary
-import com.drivepartner.app.ui.theme.DriveTextSecondary
-import com.drivepartner.app.ui.theme.DriveYellowContainer
-import com.drivepartner.app.ui.theme.DriveYellowEarning
-import com.drivepartner.app.ui.theme.DriveYellowGold
 
 /**
  * RewardCard - Displays incentive goals, target progress, and bonus rewards.
@@ -67,8 +58,8 @@ fun RewardCard(
     Card(
         modifier = modifier.fillMaxWidth(),
         shape = DriveCardShape,
-        colors = CardDefaults.cardColors(containerColor = DriveSurfaceWhite),
-        border = androidx.compose.foundation.BorderStroke(1.dp, DriveSurfaceBorder),
+        colors = CardDefaults.cardColors(containerColor = DriveColors.current.surface),
+        border = androidx.compose.foundation.BorderStroke(1.dp, DriveColors.current.border),
         elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
     ) {
         Column(
@@ -84,13 +75,13 @@ fun RewardCard(
                     modifier = Modifier
                         .size(42.dp)
                         .clip(CircleShape)
-                        .background(DriveYellowContainer),
+                        .background(DriveColors.current.warningContainer),
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(
                         imageVector = Icons.Filled.EmojiEvents,
                         contentDescription = null,
-                        tint = DriveYellowEarning,
+                        tint = DriveColors.current.warning,
                         modifier = Modifier.size(24.dp)
                     )
                 }
@@ -102,12 +93,12 @@ fun RewardCard(
                         text = title,
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Bold,
-                        color = DriveTextPrimary
+                        color = DriveColors.current.textPrimary
                     )
                     Text(
                         text = expiryText,
                         fontSize = 11.sp,
-                        color = DriveTextMuted
+                        color = DriveColors.current.textTertiary
                     )
                 }
 
@@ -116,10 +107,10 @@ fun RewardCard(
                     text = rewardAmount,
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Black,
-                    color = DriveGreenOnline,
+                    color = DriveColors.current.success,
                     modifier = Modifier
                         .clip(RoundedCornerShape(8.dp))
-                        .background(DriveSurfaceLightGrey)
+                        .background(DriveColors.current.backgroundSubtle)
                         .padding(horizontal = 8.dp, vertical = 4.dp)
                 )
             }
@@ -133,8 +124,8 @@ fun RewardCard(
                     .fillMaxWidth()
                     .height(6.dp)
                     .clip(RoundedCornerShape(3.dp)),
-                color = if (isQualified) DriveGreenOnline else DriveYellowGold,
-                trackColor = DriveSurfaceLightGrey
+                color = if (isQualified) DriveColors.current.success else DriveColors.current.warning,
+                trackColor = DriveColors.current.backgroundSubtle
             )
 
             Spacer(modifier = Modifier.height(8.dp))
@@ -148,7 +139,7 @@ fun RewardCard(
                     text = "$currentProgress of $maxProgress trips completed",
                     fontSize = 11.sp,
                     fontWeight = FontWeight.Medium,
-                    color = DriveTextSecondary
+                    color = DriveColors.current.textSecondary
                 )
 
                 if (isQualified && onClaimClick != null) {
@@ -156,8 +147,8 @@ fun RewardCard(
                         onClick = onClaimClick,
                         shape = RoundedCornerShape(8.dp),
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = DriveGreenOnline,
-                            contentColor = DriveSurfaceWhite
+                            containerColor = DriveColors.current.success,
+                            contentColor = DriveColors.current.onBrand
                         ),
                         contentPadding = androidx.compose.foundation.layout.PaddingValues(horizontal = 12.dp, vertical = 6.dp)
                     ) {
@@ -172,7 +163,7 @@ fun RewardCard(
                         text = if (isQualified) "Qualified" else "${(progressFraction * 100).toInt()}%",
                         fontSize = 11.sp,
                         fontWeight = FontWeight.Bold,
-                        color = if (isQualified) DriveGreenOnline else DriveTextMuted
+                        color = if (isQualified) DriveColors.current.success else DriveColors.current.textTertiary
                     )
                 }
             }

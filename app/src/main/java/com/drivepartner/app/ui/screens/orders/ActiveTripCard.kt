@@ -36,17 +36,20 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import com.drivepartner.app.ui.theme.DriveColors
 import com.drivepartner.app.R
 import com.drivepartner.app.core.config.DataOrigin
 import com.drivepartner.app.data.model.ActiveTrip
@@ -56,22 +59,8 @@ import com.drivepartner.app.data.remote.dto.TripStatus
 import com.drivepartner.app.ui.components.DriveCard
 import com.drivepartner.app.ui.components.DriveOutlinedButton
 import com.drivepartner.app.ui.components.DrivePrimaryButton
-import com.drivepartner.app.ui.theme.DriveBlueContainer
-import com.drivepartner.app.ui.theme.DriveBluePrimary
 import com.drivepartner.app.ui.theme.DriveChipShape
-import com.drivepartner.app.ui.theme.DriveError
-import com.drivepartner.app.ui.theme.DriveErrorContainer
-import com.drivepartner.app.ui.theme.DriveGreenContainer
-import com.drivepartner.app.ui.theme.DriveGreenOnline
-import com.drivepartner.app.ui.theme.DriveOnBlueContainer
-import com.drivepartner.app.ui.theme.DriveOnErrorContainer
-import com.drivepartner.app.ui.theme.DriveOnGreenContainer
-import com.drivepartner.app.ui.theme.DriveOnYellowContainer
 import com.drivepartner.app.ui.theme.DriveSpacing
-import com.drivepartner.app.ui.theme.DriveSurfaceSubtle
-import com.drivepartner.app.ui.theme.DriveSurfaceWhite
-import com.drivepartner.app.ui.theme.DriveTextSecondary
-import com.drivepartner.app.ui.theme.DriveYellowContainer
 
 @Composable
 fun ActiveTripCard(
@@ -126,7 +115,7 @@ fun ActiveTripCard(
                 ) {
                     Text(
                         text = stringResource(R.string.trip_cancel_dialog_confirm),
-                        color = DriveError,
+                        color = DriveColors.current.danger,
                         fontWeight = FontWeight.Bold
                     )
                 }
@@ -141,7 +130,7 @@ fun ActiveTripCard(
 
     DriveCard(
         modifier = modifier,
-        borderColor = DriveBluePrimary.copy(alpha = 0.5f)
+        borderColor = DriveColors.current.brand.copy(alpha = 0.5f)
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -155,7 +144,7 @@ fun ActiveTripCard(
                 Icon(
                     imageVector = Icons.Outlined.DirectionsCar,
                     contentDescription = null,
-                    tint = DriveBluePrimary,
+                    tint = DriveColors.current.brand,
                     modifier = Modifier.size(22.dp)
                 )
                 Spacer(modifier = Modifier.width(DriveSpacing.sm))
@@ -168,7 +157,7 @@ fun ActiveTripCard(
                     Text(
                         text = "${trip.tripId} • ${trip.orderId} • v${trip.version}",
                         style = MaterialTheme.typography.labelSmall,
-                        color = DriveTextSecondary
+                        color = DriveColors.current.textSecondary
                     )
                 }
             }
@@ -177,12 +166,12 @@ fun ActiveTripCard(
                 if (trip.dataOrigin == DataOrigin.DEMO) {
                     Surface(
                         shape = DriveChipShape,
-                        color = DriveYellowContainer
+                        color = DriveColors.current.warningContainer
                     ) {
                         Text(
                             text = "DEMO",
                             style = MaterialTheme.typography.labelSmall,
-                            color = DriveOnYellowContainer,
+                            color = DriveColors.current.onWarningContainer,
                             fontWeight = FontWeight.Bold,
                             modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
                         )
@@ -210,7 +199,7 @@ fun ActiveTripCard(
             Icon(
                 imageVector = Icons.Outlined.MyLocation,
                 contentDescription = null,
-                tint = DriveGreenOnline,
+                tint = DriveColors.current.success,
                 modifier = Modifier.size(18.dp)
             )
             Spacer(modifier = Modifier.width(DriveSpacing.sm))
@@ -225,7 +214,7 @@ fun ActiveTripCard(
             Icon(
                 imageVector = Icons.Outlined.Place,
                 contentDescription = null,
-                tint = DriveError,
+                tint = DriveColors.current.danger,
                 modifier = Modifier.size(18.dp)
             )
             Spacer(modifier = Modifier.width(DriveSpacing.sm))
@@ -240,7 +229,7 @@ fun ActiveTripCard(
         Spacer(modifier = Modifier.height(DriveSpacing.sm))
         Surface(
             shape = DriveChipShape,
-            color = DriveSurfaceSubtle
+            color = DriveColors.current.backgroundSubtle
         ) {
             Column(modifier = Modifier.fillMaxWidth().padding(DriveSpacing.sm)) {
                 trip.estimatedTotal?.let { estimate ->
@@ -253,7 +242,7 @@ fun ActiveTripCard(
                 Text(
                     text = stringResource(R.string.trip_no_local_earnings_note),
                     style = MaterialTheme.typography.labelSmall,
-                    color = DriveTextSecondary
+                    color = DriveColors.current.textSecondary
                 )
             }
         }
@@ -296,7 +285,7 @@ fun ActiveTripCard(
             Text(
                 text = stringResource(R.string.trip_nav_app_missing),
                 style = MaterialTheme.typography.labelSmall,
-                color = DriveError
+                color = DriveColors.current.danger
             )
         }
 
@@ -312,7 +301,7 @@ fun ActiveTripCard(
                     if (inFlightTargetStatus == TripStatus.EN_ROUTE_TO_PICKUP) {
                         CircularProgressIndicator(
                             modifier = Modifier.size(18.dp),
-                            color = DriveSurfaceWhite,
+                            color = DriveColors.current.onBrand,
                             strokeWidth = 2.dp
                         )
                         Spacer(modifier = Modifier.width(6.dp))
@@ -328,7 +317,7 @@ fun ActiveTripCard(
                     if (inFlightTargetStatus == TripStatus.ARRIVED_AT_PICKUP) {
                         CircularProgressIndicator(
                             modifier = Modifier.size(18.dp),
-                            color = DriveSurfaceWhite,
+                            color = DriveColors.current.onBrand,
                             strokeWidth = 2.dp
                         )
                         Spacer(modifier = Modifier.width(6.dp))
@@ -360,7 +349,7 @@ fun ActiveTripCard(
                     if (inFlightTargetStatus == TripStatus.IN_PROGRESS) {
                         CircularProgressIndicator(
                             modifier = Modifier.size(18.dp),
-                            color = DriveSurfaceWhite,
+                            color = DriveColors.current.onBrand,
                             strokeWidth = 2.dp
                         )
                         Spacer(modifier = Modifier.width(6.dp))
@@ -383,7 +372,7 @@ fun ActiveTripCard(
                     if (inFlightTargetStatus == TripStatus.COMPLETED) {
                         CircularProgressIndicator(
                             modifier = Modifier.size(18.dp),
-                            color = DriveSurfaceWhite,
+                            color = DriveColors.current.onBrand,
                             strokeWidth = 2.dp
                         )
                         Spacer(modifier = Modifier.width(6.dp))
@@ -429,7 +418,7 @@ fun ActiveTripCard(
                 OutlinedButton(
                     onClick = { showCancelDialog = true },
                     enabled = !isActionBusy,
-                    colors = ButtonDefaults.outlinedButtonColors(contentColor = DriveError),
+                    colors = ButtonDefaults.outlinedButtonColors(contentColor = DriveColors.current.danger),
                     modifier = Modifier.weight(1f)
                 ) {
                     Icon(
@@ -447,7 +436,7 @@ fun ActiveTripCard(
             Text(
                 text = stringResource(R.string.trip_contact_unavailable_note),
                 style = MaterialTheme.typography.labelSmall,
-                color = DriveTextSecondary
+                color = DriveColors.current.textSecondary
             )
         }
     }
@@ -460,9 +449,9 @@ fun TerminalTripSummaryCard(
     modifier: Modifier = Modifier
 ) {
     val isCompleted = trip.status == TripStatus.COMPLETED
-    val bgColor = if (isCompleted) DriveGreenContainer else DriveErrorContainer
-    val fgColor = if (isCompleted) DriveOnGreenContainer else DriveOnErrorContainer
-    val borderColor = if (isCompleted) DriveGreenOnline.copy(alpha = 0.5f) else DriveError.copy(alpha = 0.5f)
+    val bgColor = if (isCompleted) DriveColors.current.successContainer else DriveColors.current.dangerContainer
+    val fgColor = if (isCompleted) DriveColors.current.onSuccessContainer else DriveColors.current.onDangerContainer
+    val borderColor = if (isCompleted) DriveColors.current.success.copy(alpha = 0.5f) else DriveColors.current.danger.copy(alpha = 0.5f)
 
     DriveCard(
         modifier = modifier,
@@ -555,22 +544,26 @@ private fun launchExternalNavigation(
     }
 }
 
-private fun TripStatus.containerColor() = when (this) {
+@Composable
+@ReadOnlyComposable
+private fun TripStatus.containerColor(): Color = when (this) {
     TripStatus.ASSIGNED,
-    TripStatus.EN_ROUTE_TO_PICKUP -> DriveBlueContainer
-    TripStatus.ARRIVED_AT_PICKUP -> DriveYellowContainer
+    TripStatus.EN_ROUTE_TO_PICKUP -> DriveColors.current.brandContainer
+    TripStatus.ARRIVED_AT_PICKUP -> DriveColors.current.warningContainer
     TripStatus.IN_PROGRESS,
-    TripStatus.COMPLETED -> DriveGreenContainer
+    TripStatus.COMPLETED -> DriveColors.current.successContainer
     TripStatus.CANCELLED,
-    TripStatus.DISPUTED -> DriveErrorContainer
+    TripStatus.DISPUTED -> DriveColors.current.dangerContainer
 }
 
-private fun TripStatus.contentColor() = when (this) {
+@Composable
+@ReadOnlyComposable
+private fun TripStatus.contentColor(): Color = when (this) {
     TripStatus.ASSIGNED,
-    TripStatus.EN_ROUTE_TO_PICKUP -> DriveOnBlueContainer
-    TripStatus.ARRIVED_AT_PICKUP -> DriveOnYellowContainer
+    TripStatus.EN_ROUTE_TO_PICKUP -> DriveColors.current.onBrandContainer
+    TripStatus.ARRIVED_AT_PICKUP -> DriveColors.current.onWarningContainer
     TripStatus.IN_PROGRESS,
-    TripStatus.COMPLETED -> DriveOnGreenContainer
+    TripStatus.COMPLETED -> DriveColors.current.onSuccessContainer
     TripStatus.CANCELLED,
-    TripStatus.DISPUTED -> DriveOnErrorContainer
+    TripStatus.DISPUTED -> DriveColors.current.onDangerContainer
 }

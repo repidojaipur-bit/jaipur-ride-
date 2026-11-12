@@ -50,6 +50,7 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.drivepartner.app.ui.theme.DriveColors
 import com.drivepartner.app.R
 import com.drivepartner.app.core.config.DataOrigin
 import com.drivepartner.app.data.model.DispatchTimestampParser
@@ -59,27 +60,9 @@ import com.drivepartner.app.data.model.ServiceType
 import com.drivepartner.app.data.model.WorkOffer
 import com.drivepartner.app.ui.components.DriveCard
 import com.drivepartner.app.ui.components.DriveOutlinedButton
-import com.drivepartner.app.ui.theme.DriveBlueContainer
-import com.drivepartner.app.ui.theme.DriveBluePrimary
 import com.drivepartner.app.ui.theme.DriveButtonShape
-import com.drivepartner.app.ui.theme.DriveError
-import com.drivepartner.app.ui.theme.DriveErrorContainer
-import com.drivepartner.app.ui.theme.DriveGreenContainer
-import com.drivepartner.app.ui.theme.DriveGreenOnline
-import com.drivepartner.app.ui.theme.DriveInfoBlue
-import com.drivepartner.app.ui.theme.DriveOnBlueContainer
-import com.drivepartner.app.ui.theme.DriveOnErrorContainer
-import com.drivepartner.app.ui.theme.DriveOnGreenContainer
-import com.drivepartner.app.ui.theme.DriveOnYellowContainer
 import com.drivepartner.app.ui.theme.DriveChipShape
 import com.drivepartner.app.ui.theme.DriveSpacing
-import com.drivepartner.app.ui.theme.DriveSurfaceBorder
-import com.drivepartner.app.ui.theme.DriveSurfaceSubtle
-import com.drivepartner.app.ui.theme.DriveSurfaceWhite
-import com.drivepartner.app.ui.theme.DriveTextPrimary
-import com.drivepartner.app.ui.theme.DriveTextSecondary
-import com.drivepartner.app.ui.theme.DriveWarningAmber
-import com.drivepartner.app.ui.theme.DriveYellowContainer
 
 /**
  * Phase 4 Order Offer Request Card per Design.md Section 5 ("Offer card").
@@ -145,7 +128,7 @@ fun OfferRequestCard(
                 ) {
                     Text(
                         text = stringResource(R.string.offer_reject_dialog_confirm),
-                        color = DriveError,
+                        color = DriveColors.current.danger,
                         fontWeight = FontWeight.Bold
                     )
                 }
@@ -161,9 +144,9 @@ fun OfferRequestCard(
     DriveCard(
         modifier = modifier,
         borderColor = when {
-            isExpired -> DriveError.copy(alpha = 0.5f)
-            isUrgent -> DriveWarningAmber.copy(alpha = 0.7f)
-            else -> DriveBluePrimary.copy(alpha = 0.45f)
+            isExpired -> DriveColors.current.danger.copy(alpha = 0.5f)
+            isUrgent -> DriveColors.current.warning.copy(alpha = 0.7f)
+            else -> DriveColors.current.brand.copy(alpha = 0.45f)
         }
     ) {
         // Header row: Service Category + Backend Priority/Demo Tags + Countdown Chip
@@ -179,7 +162,7 @@ fun OfferRequestCard(
             ) {
                 Surface(
                     shape = DriveChipShape,
-                    color = DriveBlueContainer
+                    color = DriveColors.current.brandContainer
                 ) {
                     Row(
                         modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp),
@@ -193,14 +176,14 @@ fun OfferRequestCard(
                                 ServiceType.DELIVERY -> Icons.Filled.LocalShipping
                             },
                             contentDescription = null,
-                            tint = DriveOnBlueContainer,
+                            tint = DriveColors.current.onBrandContainer,
                             modifier = Modifier.size(16.dp)
                         )
                         Spacer(modifier = Modifier.width(6.dp))
                         Text(
                             text = stringResource(offer.serviceType.titleRes),
                             style = MaterialTheme.typography.labelMedium,
-                            color = DriveOnBlueContainer,
+                            color = DriveColors.current.onBrandContainer,
                             fontWeight = FontWeight.SemiBold
                         )
                     }
@@ -209,12 +192,12 @@ fun OfferRequestCard(
                 if (!offer.priorityLabel.isNullOrBlank()) {
                     Surface(
                         shape = DriveChipShape,
-                        color = DriveYellowContainer
+                        color = DriveColors.current.warningContainer
                     ) {
                         Text(
                             text = offer.priorityLabel,
                             style = MaterialTheme.typography.labelSmall,
-                            color = DriveOnYellowContainer,
+                            color = DriveColors.current.onWarningContainer,
                             fontWeight = FontWeight.Bold,
                             modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
                         )
@@ -224,12 +207,12 @@ fun OfferRequestCard(
                 if (offer.dataOrigin == DataOrigin.DEMO) {
                     Surface(
                         shape = DriveChipShape,
-                        color = DriveYellowContainer
+                        color = DriveColors.current.warningContainer
                     ) {
                         Text(
                             text = "DEMO",
                             style = MaterialTheme.typography.labelSmall,
-                            color = DriveOnYellowContainer,
+                            color = DriveColors.current.onWarningContainer,
                             fontWeight = FontWeight.Bold,
                             modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
                         )
@@ -242,9 +225,9 @@ fun OfferRequestCard(
             Surface(
                 shape = DriveChipShape,
                 color = when {
-                    isExpired -> DriveErrorContainer
-                    isUrgent -> DriveYellowContainer
-                    else -> DriveGreenContainer
+                    isExpired -> DriveColors.current.dangerContainer
+                    isUrgent -> DriveColors.current.warningContainer
+                    else -> DriveColors.current.successContainer
                 },
                 modifier = Modifier.semantics {
                     contentDescription = countdownText
@@ -258,9 +241,9 @@ fun OfferRequestCard(
                         imageVector = Icons.Outlined.AccessTime,
                         contentDescription = null,
                         tint = when {
-                            isExpired -> DriveOnErrorContainer
-                            isUrgent -> DriveOnYellowContainer
-                            else -> DriveOnGreenContainer
+                            isExpired -> DriveColors.current.onDangerContainer
+                            isUrgent -> DriveColors.current.onWarningContainer
+                            else -> DriveColors.current.onSuccessContainer
                         },
                         modifier = Modifier.size(14.dp)
                     )
@@ -270,9 +253,9 @@ fun OfferRequestCard(
                         style = MaterialTheme.typography.labelMedium,
                         fontWeight = FontWeight.Bold,
                         color = when {
-                            isExpired -> DriveOnErrorContainer
-                            isUrgent -> DriveOnYellowContainer
-                            else -> DriveOnGreenContainer
+                            isExpired -> DriveColors.current.onDangerContainer
+                            isUrgent -> DriveColors.current.onWarningContainer
+                            else -> DriveColors.current.onSuccessContainer
                         }
                     )
                 }
@@ -290,13 +273,13 @@ fun OfferRequestCard(
                 modifier = Modifier
                     .padding(top = 4.dp)
                     .size(24.dp)
-                    .background(DriveGreenContainer, CircleShape),
+                    .background(DriveColors.current.successContainer, CircleShape),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
                     imageVector = Icons.Outlined.MyLocation,
                     contentDescription = null,
-                    tint = DriveGreenOnline,
+                    tint = DriveColors.current.success,
                     modifier = Modifier.size(14.dp)
                 )
             }
@@ -310,13 +293,13 @@ fun OfferRequestCard(
                         )
                     }",
                     style = MaterialTheme.typography.labelMedium,
-                    color = DriveGreenOnline,
+                    color = DriveColors.current.success,
                     fontWeight = FontWeight.SemiBold
                 )
                 Text(
                     text = offer.pickupSummary,
                     style = MaterialTheme.typography.bodyLarge,
-                    color = DriveTextPrimary,
+                    color = DriveColors.current.textPrimary,
                     fontWeight = FontWeight.Medium
                 )
             }
@@ -332,13 +315,13 @@ fun OfferRequestCard(
                 modifier = Modifier
                     .padding(top = 4.dp)
                     .size(24.dp)
-                    .background(DriveBlueContainer, CircleShape),
+                    .background(DriveColors.current.brandContainer, CircleShape),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
                     imageVector = Icons.Outlined.Place,
                     contentDescription = null,
-                    tint = DriveInfoBlue,
+                    tint = DriveColors.current.info,
                     modifier = Modifier.size(14.dp)
                 )
             }
@@ -353,25 +336,25 @@ fun OfferRequestCard(
                         )
                     }",
                     style = MaterialTheme.typography.labelMedium,
-                    color = DriveInfoBlue,
+                    color = DriveColors.current.info,
                     fontWeight = FontWeight.SemiBold
                 )
                 Text(
                     text = offer.dropSummary,
                     style = MaterialTheme.typography.bodyLarge,
-                    color = DriveTextPrimary,
+                    color = DriveColors.current.textPrimary,
                     fontWeight = FontWeight.Medium
                 )
             }
         }
 
         Spacer(modifier = Modifier.height(DriveSpacing.md))
-        HorizontalDivider(color = DriveSurfaceBorder)
+        HorizontalDivider(color = DriveColors.current.border)
         Spacer(modifier = Modifier.height(DriveSpacing.md))
 
         // Estimated Fare + Eligible Incentive + Total Estimate Breakdown
         Surface(
-            color = DriveSurfaceSubtle,
+            color = DriveColors.current.backgroundSubtle,
             shape = MaterialTheme.shapes.medium,
             modifier = Modifier.fillMaxWidth()
         ) {
@@ -386,7 +369,7 @@ fun OfferRequestCard(
                     Text(
                         text = stringResource(R.string.offer_estimated_base),
                         style = MaterialTheme.typography.bodySmall,
-                        color = DriveTextSecondary
+                        color = DriveColors.current.textSecondary
                     )
                     Text(
                         text = offer.estimatedBase.formatDisplay(),
@@ -403,19 +386,19 @@ fun OfferRequestCard(
                         Text(
                             text = stringResource(R.string.offer_eligible_incentive),
                             style = MaterialTheme.typography.bodySmall,
-                            color = DriveGreenOnline,
+                            color = DriveColors.current.success,
                             fontWeight = FontWeight.Medium
                         )
                         Text(
                             text = "+ ${offer.eligibleIncentive.formatDisplay()}",
                             style = MaterialTheme.typography.bodyMedium,
-                            color = DriveGreenOnline,
+                            color = DriveColors.current.success,
                             fontWeight = FontWeight.SemiBold
                         )
                     }
                 }
 
-                HorizontalDivider(color = DriveSurfaceBorder)
+                HorizontalDivider(color = DriveColors.current.border)
 
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -430,7 +413,7 @@ fun OfferRequestCard(
                     Text(
                         text = offer.estimatedTotal.formatDisplay(),
                         style = MaterialTheme.typography.titleLarge,
-                        color = DriveBluePrimary,
+                        color = DriveColors.current.brand,
                         fontWeight = FontWeight.Bold
                     )
                 }
@@ -438,7 +421,7 @@ fun OfferRequestCard(
                 Text(
                     text = stringResource(R.string.offer_estimate_disclaimer),
                     style = MaterialTheme.typography.labelSmall,
-                    color = DriveTextSecondary
+                    color = DriveColors.current.textSecondary
                 )
             }
         }
@@ -447,7 +430,7 @@ fun OfferRequestCard(
         Text(
             text = stringResource(R.string.offer_never_auto_accept_note),
             style = MaterialTheme.typography.labelSmall,
-            color = DriveTextSecondary
+            color = DriveColors.current.textSecondary
         )
         Spacer(modifier = Modifier.height(DriveSpacing.md))
 
@@ -473,12 +456,12 @@ fun OfferRequestCard(
                         imageVector = Icons.Outlined.Close,
                         contentDescription = null,
                         modifier = Modifier.size(DriveSpacing.iconSmall),
-                        tint = DriveError
+                        tint = DriveColors.current.danger
                     )
                     Spacer(modifier = Modifier.width(6.dp))
                     Text(
                         text = stringResource(R.string.offer_reject_action),
-                        color = DriveError
+                        color = DriveColors.current.danger
                     )
                 }
             }
@@ -491,14 +474,14 @@ fun OfferRequestCard(
                     .weight(1f)
                     .heightIn(min = DriveSpacing.primaryButtonHeight),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = DriveGreenOnline,
-                    contentColor = DriveSurfaceWhite
+                    containerColor = DriveColors.current.success,
+                    contentColor = DriveColors.current.onBrand
                 )
             ) {
                 if (isActionInFlight && inFlightAction == OfferAction.ACCEPT) {
                     CircularProgressIndicator(
                         modifier = Modifier.size(18.dp),
-                        color = DriveSurfaceWhite,
+                        color = DriveColors.current.onBrand,
                         strokeWidth = 2.dp
                     )
                     Spacer(modifier = Modifier.width(6.dp))

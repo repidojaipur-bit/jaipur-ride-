@@ -24,23 +24,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.drivepartner.app.ui.icons.DriveIconSpec
+import com.drivepartner.app.ui.icons.DriveIcons
+import com.drivepartner.app.ui.theme.DriveColors
 import com.drivepartner.app.data.model.PartnerStatus
 import com.drivepartner.app.ui.theme.DriveChipShape
-import com.drivepartner.app.ui.theme.DriveError
-import com.drivepartner.app.ui.theme.DriveErrorContainer
-import com.drivepartner.app.ui.theme.DriveGreenContainer
-import com.drivepartner.app.ui.theme.DriveGreenOnline
-import com.drivepartner.app.ui.theme.DriveOfflineContainer
-import com.drivepartner.app.ui.theme.DriveOfflineGrey
-import com.drivepartner.app.ui.theme.DriveOnErrorContainer
-import com.drivepartner.app.ui.theme.DriveOnGreenContainer
-import com.drivepartner.app.ui.theme.DriveOnYellowContainer
-import com.drivepartner.app.ui.theme.DriveYellowContainer
-import com.drivepartner.app.ui.theme.DriveYellowEarning
 
 /**
  * StatusChip - Reusable semantic status indicator.
@@ -54,9 +45,9 @@ import com.drivepartner.app.ui.theme.DriveYellowEarning
 fun StatusChip(
     label: String,
     modifier: Modifier = Modifier,
-    containerColor: Color = DriveGreenContainer,
-    contentColor: Color = DriveOnGreenContainer,
-    icon: ImageVector? = null,
+    containerColor: Color = DriveColors.current.successContainer,
+    contentColor: Color = DriveColors.current.onSuccessContainer,
+    icon: DriveIconSpec? = null,
     showDot: Boolean = false
 ) {
     Surface(
@@ -77,11 +68,11 @@ fun StatusChip(
                 )
                 Spacer(modifier = Modifier.width(6.dp))
             } else if (icon != null) {
-                Icon(
-                    imageVector = icon,
+                DriveIcon(
+                    icon = icon,
                     contentDescription = null,
                     tint = contentColor,
-                    modifier = Modifier.size(15.dp)
+                    size = 15.dp
                 )
                 Spacer(modifier = Modifier.width(5.dp))
             }
@@ -107,16 +98,16 @@ fun PartnerStatusChip(
     when (status) {
         PartnerStatus.ONLINE -> StatusChip(
             label = "Online",
-            containerColor = DriveGreenContainer,
-            contentColor = DriveOnGreenContainer,
-            icon = Icons.Outlined.GpsFixed,
+            containerColor = DriveColors.current.successContainer,
+            contentColor = DriveColors.current.onSuccessContainer,
+            icon = DriveIcons.Crosshair,
             modifier = modifier
         )
         PartnerStatus.OFFLINE -> StatusChip(
             label = "Offline",
-            containerColor = DriveOfflineContainer,
-            contentColor = DriveOfflineGrey,
-            icon = Icons.Outlined.PowerSettingsNew,
+            containerColor = DriveColors.current.neutralContainer,
+            contentColor = DriveColors.current.neutral,
+            icon = DriveIcons.Power,
             modifier = modifier
         )
     }
@@ -137,30 +128,30 @@ fun VerificationStatusChip(
     when (type) {
         VerificationBadgeType.VERIFIED -> StatusChip(
             label = "Verified",
-            containerColor = DriveGreenContainer,
-            contentColor = DriveOnGreenContainer,
-            icon = Icons.Filled.CheckCircle,
+            containerColor = DriveColors.current.successContainer,
+            contentColor = DriveColors.current.onSuccessContainer,
+            icon = DriveIcons.ShieldCheck,
             modifier = modifier
         )
         VerificationBadgeType.UNDER_REVIEW -> StatusChip(
             label = "Under Review",
-            containerColor = DriveYellowContainer,
-            contentColor = DriveOnYellowContainer,
-            icon = Icons.Filled.Warning,
+            containerColor = DriveColors.current.warningContainer,
+            contentColor = DriveColors.current.onWarningContainer,
+            icon = DriveIcons.Clock,
             modifier = modifier
         )
         VerificationBadgeType.ACTION_REQUIRED -> StatusChip(
             label = "Action Required",
-            containerColor = DriveErrorContainer,
-            contentColor = DriveOnErrorContainer,
-            icon = Icons.Outlined.Cancel,
+            containerColor = DriveColors.current.dangerContainer,
+            contentColor = DriveColors.current.onDangerContainer,
+            icon = DriveIcons.ShieldAlert,
             modifier = modifier
         )
         VerificationBadgeType.SUSPENDED -> StatusChip(
             label = "Suspended",
-            containerColor = DriveErrorContainer,
-            contentColor = DriveError,
-            icon = Icons.Outlined.Cancel,
+            containerColor = DriveColors.current.dangerContainer,
+            contentColor = DriveColors.current.danger,
+            icon = DriveIcons.ShieldAlert,
             modifier = modifier
         )
     }

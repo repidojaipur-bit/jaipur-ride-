@@ -1,6 +1,20 @@
 package com.drivepartner.app.ui.screens.onboarding
 
 import android.net.Uri
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.State
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.unit.dp
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
@@ -57,6 +71,43 @@ fun DocumentsKycScreen(
     var maskedRef by rememberSaveable { mutableStateOf("") }
     var expiry by rememberSaveable { mutableStateOf("") }
     var previewUris by remember { mutableStateOf<Map<KycDocumentType, Uri>>(emptyMap()) }
+
+    val context = LocalContext.current
+    var pendingCapture by remember { mutableStateOf<Pair<KycDocumentType, Uri>?>(null) }
+
+    val cameraLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.TakePicture()
+    ) { success ->
+        val pending = pendingCapture
+        pendingCapture = null
+        if (success && pending != null) {
+            val (type, captureUri) = pending
+            previewUris = previewUris + (type to captureUri)
+            onUploadDocument(
+                type,
+                "image/jpeg",
+                captureFileSize(context, captureUri),
+                maskedRef.takeIf { it.isNotBlank() },
+                expiry.takeIf { it.isNotBlank() }
+            )
+        }
+    }
+
+    fun launchCamera(type: KycDocumentType) {
+        val directory = java.io.File(context.externalCacheDir, "captures").apply { mkdirs() }
+        val target = java.io.File(
+            directory,
+            "kyc_${type.name.lowercase(java.util.Locale.US)}_${System.currentTimeMillis()}.jpg"
+        )
+        val uri = androidx.core.content.FileProvider.getUriForFile(
+            context,
+            "${context.packageName}.fileprovider",
+            target
+        )
+        activeType = type
+        pendingCapture = type to uri
+        cameraLauncher.launch(uri)
+    }
 
     val picker = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent()
@@ -178,20 +229,57 @@ fun DocumentsKycScreen(
                             color = MaterialTheme.colorScheme.error
                         )
                     }
-                    if (previewUris[docType] != null) {
-                        Text(
-                            text = stringResource(R.string.kyc_selected_preview_uri, previewUris[docType]?.lastPathSegment ?: "file"),
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
+                    val previewUri = previewUris[docType]
+                    if (previewUri != null) {
+                        val bitmap by rememberDocumentBitmap(previewUri)
+                        bitmap?.let { decoded ->
+                            Image(
+                                bitmap = decoded.asImageBitmap(),
+                                contentDescription = stringResource(R.string.kyc_preview_cd),
+                                contentScale = ContentScale.Crop,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(140.dp)
+                                    .clip(DriveCardShape)
+                            )
+                        }
+                    }
+                    if (uiState.isLoading && activeType == docType) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            CircularProgressIndicator(
+                                strokeWidth = 2.dp,
+                                modifier = Modifier.size(DriveSpacing.space16)
+                            )
+                            Spacer(modifier = Modifier.width(DriveSpacing.space8))
+                            Text(
+                                text = stringResource(R.string.kyc_upload_in_progress),
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
                     }
                     Row(horizontalArrangement = Arrangement.spacedBy(DriveSpacing.space8)) {
+                        OutlinedButton(
+                            onClick = { launchCamera(docType) },
+                            enabled = !uiState.isLoading,
+                            modifier = Modifier
+                                .weight(1f)
+                                .defaultMinSize(minHeight = DriveSpacing.minTouchTarget)
+                        ) {
+                            Text(text = stringResource(
+                                if (previewUris[docType] == null) R.string.kyc_capture_camera
+                                else R.string.kyc_retake_replace
+                            ))
+                        }
                         OutlinedButton(
                             onClick = {
                                 activeType = docType
                                 picker.launch("image/*")
                             },
-                            modifier = Modifier.defaultMinSize(minHeight = DriveSpacing.minTouchTarget)
+                            enabled = !uiState.isLoading,
+                            modifier = Modifier
+                                .weight(1f)
+                                .defaultMinSize(minHeight = DriveSpacing.minTouchTarget)
                         ) {
                             Text(text = stringResource(R.string.kyc_pick_gallery))
                         }
@@ -255,3 +343,26 @@ fun DocumentsKycScreen(
         }
     }
 }
+
+/** Decodes a local capture/gallery image off the main thread for the inline preview. */
+@Composable
+private fun rememberDocumentBitmap(uri: Uri): State<android.graphics.Bitmap?> {
+    val context = LocalContext.current
+    val bitmapState = remember(uri) { mutableStateOf<android.graphics.Bitmap?>(null) }
+    LaunchedEffect(uri) {
+        val decoded = kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.IO) {
+            runCatching {
+                context.contentResolver.openInputStream(uri)?.use { stream ->
+                    android.graphics.BitmapFactory.decodeStream(stream)
+                }
+            }.getOrNull()
+        }
+        bitmapState.value = decoded
+    }
+    return bitmapState
+}
+
+private fun captureFileSize(context: android.content.Context, uri: Uri): Long =
+    runCatching {
+        context.contentResolver.openFileDescriptor(uri, "r")?.use { it.statSize }
+    }.getOrNull() ?: 0L

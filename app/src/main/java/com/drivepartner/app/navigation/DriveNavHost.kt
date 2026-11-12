@@ -18,6 +18,7 @@ import com.drivepartner.app.data.model.PartnerProfile
 import com.drivepartner.app.data.model.PartnerStatus
 import com.drivepartner.app.data.model.ServiceType
 import com.drivepartner.app.data.model.ThemePreference
+import com.drivepartner.app.ui.screens.designsystem.DesignSystemGalleryScreen
 import com.drivepartner.app.ui.screens.earnings.EarningsRoute
 import com.drivepartner.app.ui.screens.home.HomeRoute
 import com.drivepartner.app.ui.screens.notifications.NotificationsRoute
@@ -30,6 +31,7 @@ import com.drivepartner.app.ui.screens.safety.SafetyCenterRoute
 import com.drivepartner.app.ui.screens.settings.SettingsLegalScreen
 import com.drivepartner.app.ui.screens.support.SupportRoute
 import com.drivepartner.app.ui.viewmodel.EarningsViewModel
+import com.drivepartner.app.ui.viewmodel.HomeMetricsViewModel
 import com.drivepartner.app.ui.viewmodel.HomeViewModel
 import com.drivepartner.app.ui.viewmodel.NotificationsViewModel
 import com.drivepartner.app.ui.viewmodel.OnboardingAuthViewModel
@@ -57,6 +59,9 @@ fun DriveNavHost(
     boundaryMessage: String? = null
 ) {
     val homeViewModel: HomeViewModel = viewModel(factory = HomeViewModel.provideFactory(appContainer))
+    val homeMetricsViewModel: HomeMetricsViewModel = viewModel(
+        factory = HomeMetricsViewModel.provideFactory(appContainer)
+    )
     val ordersViewModel: OrdersViewModel = viewModel(factory = OrdersViewModel.provideFactory(appContainer))
     val earningsViewModel: EarningsViewModel = viewModel(factory = EarningsViewModel.provideFactory(appContainer))
     val rewardsViewModel: RewardsViewModel = viewModel(factory = RewardsViewModel.provideFactory(appContainer))
@@ -84,6 +89,7 @@ fun DriveNavHost(
             } ?: 0
             HomeRoute(
                 viewModel = homeViewModel,
+                metricsViewModel = homeMetricsViewModel,
                 activeTrip = ordersUiState.activeTrip,
                 incomingOffer = activeIncoming,
                 incomingOfferRemainingSeconds = remainingSeconds,
@@ -98,6 +104,16 @@ fun DriveNavHost(
                 },
                 onOpenSupport = {
                     navController.navigate(DriveDestination.Support.route) {
+                        launchSingleTop = true
+                    }
+                },
+                onOpenRewards = {
+                    navController.navigate(DriveDestination.Rewards.route) {
+                        launchSingleTop = true
+                    }
+                },
+                onOpenSafety = {
+                    navController.navigate(DriveDestination.EmergencySos.route) {
                         launchSingleTop = true
                     }
                 }
@@ -199,6 +215,9 @@ fun DriveNavHost(
                 viewModel = safetyViewModel,
                 activeTripId = ordersUiState.activeTrip?.tripId
             )
+        }
+        composable(DriveDestination.DesignSystem.route) {
+            DesignSystemGalleryScreen()
         }
         composable(DriveDestination.Settings.route) {
             SettingsLegalScreen(

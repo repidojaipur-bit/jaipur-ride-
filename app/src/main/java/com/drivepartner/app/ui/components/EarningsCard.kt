@@ -26,16 +26,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.drivepartner.app.ui.theme.DriveColors
 import com.drivepartner.app.ui.theme.DriveCardShape
-import com.drivepartner.app.ui.theme.DriveOnYellowContainer
-import com.drivepartner.app.ui.theme.DriveSurfaceBorder
-import com.drivepartner.app.ui.theme.DriveSurfaceWhite
-import com.drivepartner.app.ui.theme.DriveTextMuted
-import com.drivepartner.app.ui.theme.DriveTextPrimary
-import com.drivepartner.app.ui.theme.DriveTextSecondary
-import com.drivepartner.app.ui.theme.DriveYellowContainer
-import com.drivepartner.app.ui.theme.DriveYellowEarning
-import com.drivepartner.app.ui.theme.DriveYellowGold
 
 /**
  * EarningsCard - Dedicated high-visibility earnings highlight card.
@@ -69,8 +61,8 @@ fun EarningsCard(
         Card(
             modifier = cardModifier,
             shape = DriveCardShape,
-            colors = CardDefaults.cardColors(containerColor = DriveYellowContainer),
-            border = androidx.compose.foundation.BorderStroke(1.dp, DriveYellowGold.copy(alpha = 0.6f)),
+            colors = CardDefaults.cardColors(containerColor = DriveColors.current.warningContainer),
+            border = androidx.compose.foundation.BorderStroke(1.dp, DriveColors.current.warning.copy(alpha = 0.6f)),
             elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
         ) {
             Column(
@@ -87,14 +79,14 @@ fun EarningsCard(
                         text = periodLabel.uppercase(),
                         fontSize = 11.sp,
                         fontWeight = FontWeight.Bold,
-                        color = DriveOnYellowContainer,
+                        color = DriveColors.current.onWarningContainer,
                         letterSpacing = 0.8.sp
                     )
                     if (onClick != null) {
                         Icon(
                             imageVector = Icons.Filled.ChevronRight,
                             contentDescription = "View details",
-                            tint = DriveOnYellowContainer,
+                            tint = DriveColors.current.onWarningContainer,
                             modifier = Modifier.size(20.dp)
                         )
                     }
@@ -104,7 +96,7 @@ fun EarningsCard(
                     text = amountFormatted,
                     fontSize = 28.sp,
                     fontWeight = FontWeight.Black,
-                    color = DriveOnYellowContainer,
+                    color = DriveColors.current.onWarningContainer,
                     letterSpacing = (-0.5).sp
                 )
                 if (!subtext.isNullOrBlank()) {
@@ -112,7 +104,7 @@ fun EarningsCard(
                     Text(
                         text = subtext,
                         fontSize = 11.sp,
-                        color = DriveOnYellowContainer.copy(alpha = 0.8f),
+                        color = DriveColors.current.onWarningContainer.copy(alpha = 0.8f),
                         fontWeight = FontWeight.Medium
                     )
                 }
@@ -123,8 +115,8 @@ fun EarningsCard(
         Card(
             modifier = cardModifier,
             shape = DriveCardShape,
-            colors = CardDefaults.cardColors(containerColor = DriveSurfaceWhite),
-            border = androidx.compose.foundation.BorderStroke(1.dp, DriveSurfaceBorder),
+            colors = CardDefaults.cardColors(containerColor = DriveColors.current.surface),
+            border = androidx.compose.foundation.BorderStroke(1.dp, DriveColors.current.border),
             elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
         ) {
             Column(
@@ -136,21 +128,21 @@ fun EarningsCard(
                     text = periodLabel,
                     fontSize = 12.sp,
                     fontWeight = FontWeight.Medium,
-                    color = DriveTextSecondary
+                    color = DriveColors.current.textSecondary
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
                     text = amountFormatted,
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Bold,
-                    color = DriveTextPrimary
+                    color = DriveColors.current.textPrimary
                 )
                 if (!subtext.isNullOrBlank()) {
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
                         text = subtext,
                         fontSize = 11.sp,
-                        color = DriveTextMuted
+                        color = DriveColors.current.textTertiary
                     )
                 }
             }

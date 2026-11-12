@@ -36,6 +36,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
+import com.drivepartner.app.ui.theme.DriveColors
 import com.drivepartner.app.R
 import com.drivepartner.app.core.config.DataOrigin
 import com.drivepartner.app.data.model.AppNotificationItem
@@ -45,19 +46,8 @@ import com.drivepartner.app.ui.components.DriveCard
 import com.drivepartner.app.ui.components.DriveOutlinedButton
 import com.drivepartner.app.ui.components.state.DriveEmptyView
 import com.drivepartner.app.ui.screens.rewards.RetentionOutcomeBanner
-import com.drivepartner.app.ui.theme.DriveBlueContainer
-import com.drivepartner.app.ui.theme.DriveBluePrimary
 import com.drivepartner.app.ui.theme.DriveChipShape
-import com.drivepartner.app.ui.theme.DriveError
-import com.drivepartner.app.ui.theme.DriveErrorContainer
-import com.drivepartner.app.ui.theme.DriveOnBlueContainer
-import com.drivepartner.app.ui.theme.DriveOnErrorContainer
-import com.drivepartner.app.ui.theme.DriveOnYellowContainer
 import com.drivepartner.app.ui.theme.DriveSpacing
-import com.drivepartner.app.ui.theme.DriveSurfaceSubtle
-import com.drivepartner.app.ui.theme.DriveTextSecondary
-import com.drivepartner.app.ui.theme.DriveWarningAmber
-import com.drivepartner.app.ui.theme.DriveYellowContainer
 import com.drivepartner.app.ui.viewmodel.NotificationsUiState
 import com.drivepartner.app.ui.viewmodel.NotificationsViewModel
 
@@ -103,7 +93,7 @@ fun NotificationsScreen(
     Box(
         modifier = modifier
             .fillMaxSize()
-            .background(DriveSurfaceSubtle)
+            .background(DriveColors.current.backgroundSubtle)
     ) {
         Column(
             modifier = Modifier
@@ -114,13 +104,13 @@ fun NotificationsScreen(
         ) {
             if (uiState.dataOrigin == DataOrigin.LIVE && !uiState.boundaryMessage.isNullOrBlank()) {
                 DriveCard(
-                    backgroundColor = DriveErrorContainer,
-                    borderColor = DriveError.copy(alpha = 0.35f)
+                    backgroundColor = DriveColors.current.dangerContainer,
+                    borderColor = DriveColors.current.danger.copy(alpha = 0.35f)
                 ) {
                     Text(
                         text = uiState.boundaryMessage,
                         style = MaterialTheme.typography.bodySmall,
-                        color = DriveOnErrorContainer,
+                        color = DriveColors.current.onDangerContainer,
                         fontWeight = FontWeight.Medium
                     )
                 }
@@ -145,7 +135,7 @@ fun NotificationsScreen(
                         Text(
                             text = stringResource(R.string.notifications_unread_summary, uiState.unreadCount),
                             style = MaterialTheme.typography.labelSmall,
-                            color = DriveTextSecondary
+                            color = DriveColors.current.textSecondary
                         )
                     }
                     IconButton(onClick = onRefresh, enabled = !uiState.isRefreshing) {
@@ -182,7 +172,7 @@ fun NotificationsScreen(
                                         Box(
                                             modifier = Modifier
                                                 .size(8.dp)
-                                                .background(DriveBluePrimary, CircleShape)
+                                                .background(DriveColors.current.brand, CircleShape)
                                         )
                                         Spacer(modifier = Modifier.width(6.dp))
                                     }
@@ -192,11 +182,11 @@ fun NotificationsScreen(
                                         fontWeight = if (!item.isRead) FontWeight.Bold else FontWeight.Medium,
                                         modifier = Modifier.weight(1f)
                                     )
-                                    Surface(shape = DriveChipShape, color = DriveBlueContainer) {
+                                    Surface(shape = DriveChipShape, color = DriveColors.current.brandContainer) {
                                         Text(
                                             text = item.category,
                                             style = MaterialTheme.typography.labelSmall,
-                                            color = DriveOnBlueContainer,
+                                            color = DriveColors.current.onBrandContainer,
                                             modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
                                         )
                                     }
@@ -205,7 +195,7 @@ fun NotificationsScreen(
                                 Text(
                                     text = item.body,
                                     style = MaterialTheme.typography.bodySmall,
-                                    color = DriveTextSecondary
+                                    color = DriveColors.current.textSecondary
                                 )
                                 Row(
                                     modifier = Modifier.fillMaxWidth(),
@@ -215,7 +205,7 @@ fun NotificationsScreen(
                                     Text(
                                         text = item.createdAtUtc,
                                         style = MaterialTheme.typography.labelSmall,
-                                        color = DriveTextSecondary
+                                        color = DriveColors.current.textSecondary
                                     )
                                     if (resolvedDest != null) {
                                         Text(
@@ -224,7 +214,7 @@ fun NotificationsScreen(
                                                 stringResource(resolvedDest.titleRes)
                                             ),
                                             style = MaterialTheme.typography.labelSmall,
-                                            color = DriveBluePrimary,
+                                            color = DriveColors.current.brand,
                                             fontWeight = FontWeight.SemiBold
                                         )
                                     }
@@ -283,13 +273,13 @@ fun NotificationsScreen(
             // Isolated DEMO Push Notification Simulator
             if (uiState.dataOrigin == DataOrigin.DEMO) {
                 DriveCard(
-                    backgroundColor = DriveYellowContainer,
-                    borderColor = DriveWarningAmber.copy(alpha = 0.5f)
+                    backgroundColor = DriveColors.current.warningContainer,
+                    borderColor = DriveColors.current.warning.copy(alpha = 0.5f)
                 ) {
                     Text(
                         text = stringResource(R.string.demo_rewards_sandbox_title),
                         style = MaterialTheme.typography.titleSmall,
-                        color = DriveOnYellowContainer,
+                        color = DriveColors.current.onWarningContainer,
                         fontWeight = FontWeight.Bold
                     )
                     Spacer(modifier = Modifier.height(DriveSpacing.sm))

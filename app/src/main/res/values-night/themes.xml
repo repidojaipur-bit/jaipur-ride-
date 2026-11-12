@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Night theme: dark canvas, night brand ramp, transparent system bars. -->
+    <style name="Theme.DrivePartner" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/drive_brand_night</item>
+        <item name="colorPrimaryDark">@color/drive_window_background</item>
+        <item name="colorAccent">@color/drive_brand_night</item>
+        <item name="android:windowBackground">@color/drive_window_background</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
+</resources>

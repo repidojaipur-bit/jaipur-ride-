@@ -22,11 +22,8 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.drivepartner.app.ui.theme.DriveColors
 import com.drivepartner.app.R
-import com.drivepartner.app.ui.theme.DriveBluePrimary
-import com.drivepartner.app.ui.theme.DriveSurfaceLightGrey
-import com.drivepartner.app.ui.theme.DriveSurfaceWhite
-import com.drivepartner.app.ui.theme.DriveTextSecondary
 
 @Composable
 fun DriveEmptyView(
@@ -39,7 +36,7 @@ fun DriveEmptyView(
     Box(
         modifier = modifier
             .fillMaxSize()
-            .background(DriveSurfaceWhite)
+            .background(DriveColors.current.surface)
             .padding(32.dp),
         contentAlignment = Alignment.Center
     ) {
@@ -50,13 +47,13 @@ fun DriveEmptyView(
             Box(
                 modifier = Modifier
                     .size(80.dp)
-                    .background(DriveSurfaceLightGrey, CircleShape),
+                    .background(DriveColors.current.backgroundSubtle, CircleShape),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
                     imageVector = icon,
                     contentDescription = null,
-                    tint = DriveBluePrimary,
+                    tint = DriveColors.current.brand,
                     modifier = Modifier.size(40.dp)
                 )
             }
@@ -70,7 +67,7 @@ fun DriveEmptyView(
             Text(
                 text = description,
                 style = MaterialTheme.typography.bodyMedium,
-                color = DriveTextSecondary,
+                color = DriveColors.current.textSecondary,
                 textAlign = TextAlign.Center
             )
             if (actionContent != null) {

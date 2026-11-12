@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Inbox
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -20,18 +19,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.drivepartner.app.ui.theme.DriveBluePrimary
+import com.drivepartner.app.ui.icons.DriveIcons
+import com.drivepartner.app.ui.icons.DriveIconSpec
+import com.drivepartner.app.ui.theme.DriveColors
 import com.drivepartner.app.ui.theme.DriveCardShape
-import com.drivepartner.app.ui.theme.DriveSurfaceBorder
-import com.drivepartner.app.ui.theme.DriveSurfaceLightGrey
-import com.drivepartner.app.ui.theme.DriveSurfaceWhite
-import com.drivepartner.app.ui.theme.DriveTextMuted
-import com.drivepartner.app.ui.theme.DriveTextPrimary
 
 /**
  * EmptyState - Clean, truthful empty state display.
@@ -47,15 +42,15 @@ fun EmptyState(
     title: String,
     subtitle: String,
     modifier: Modifier = Modifier,
-    icon: ImageVector = Icons.Outlined.Inbox,
+    icon: DriveIconSpec = DriveIcons.Inbox,
     actionLabel: String? = null,
     onActionClick: (() -> Unit)? = null
 ) {
     Card(
         modifier = modifier.fillMaxWidth(),
         shape = DriveCardShape,
-        colors = CardDefaults.cardColors(containerColor = DriveSurfaceWhite),
-        border = androidx.compose.foundation.BorderStroke(1.dp, DriveSurfaceBorder),
+        colors = CardDefaults.cardColors(containerColor = DriveColors.current.surface),
+        border = androidx.compose.foundation.BorderStroke(1.dp, DriveColors.current.border),
         elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
     ) {
         Column(
@@ -69,14 +64,14 @@ fun EmptyState(
                 modifier = Modifier
                     .size(56.dp)
                     .clip(CircleShape)
-                    .background(DriveSurfaceLightGrey),
+                    .background(DriveColors.current.tintedWell(DriveColors.current.brand)),
                 contentAlignment = Alignment.Center
             ) {
-                Icon(
-                    imageVector = icon,
+                DriveIcon(
+                    icon = icon,
                     contentDescription = null,
-                    tint = DriveBluePrimary,
-                    modifier = Modifier.size(28.dp)
+                    tint = DriveColors.current.brand,
+                    size = 28.dp
                 )
             }
 
@@ -86,7 +81,7 @@ fun EmptyState(
                 text = title,
                 fontSize = 15.sp,
                 fontWeight = FontWeight.Bold,
-                color = DriveTextPrimary,
+                color = DriveColors.current.textPrimary,
                 textAlign = TextAlign.Center
             )
 
@@ -95,7 +90,7 @@ fun EmptyState(
             Text(
                 text = subtitle,
                 fontSize = 12.sp,
-                color = DriveTextMuted,
+                color = DriveColors.current.textTertiary,
                 textAlign = TextAlign.Center,
                 lineHeight = 16.sp
             )

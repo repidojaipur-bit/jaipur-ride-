@@ -36,22 +36,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.drivepartner.app.ui.theme.DriveColors
 import com.drivepartner.app.R
 import com.drivepartner.app.data.model.PartnerProfile
 import com.drivepartner.app.data.model.PartnerStatus
-import com.drivepartner.app.ui.theme.DriveBluePrimary
 import com.drivepartner.app.ui.theme.DriveCardShape
-import com.drivepartner.app.ui.theme.DriveGreenOnline
-import com.drivepartner.app.ui.theme.DriveOnYellowContainer
-import com.drivepartner.app.ui.theme.DriveSurfaceBorder
-import com.drivepartner.app.ui.theme.DriveSurfaceLightGrey
-import com.drivepartner.app.ui.theme.DriveSurfaceWhite
-import com.drivepartner.app.ui.theme.DriveTextMuted
-import com.drivepartner.app.ui.theme.DriveTextPrimary
-import com.drivepartner.app.ui.theme.DriveTextSecondary
-import com.drivepartner.app.ui.theme.DriveYellowContainer
-import com.drivepartner.app.ui.theme.DriveYellowEarning
-import com.drivepartner.app.ui.theme.DriveYellowGold
 
 /**
  * TodaySummaryCard - Partner dashboard card displaying daily operational metrics:
@@ -79,8 +68,8 @@ fun TodaySummaryCard(
     Card(
         modifier = modifier.fillMaxWidth(),
         shape = DriveCardShape,
-        colors = CardDefaults.cardColors(containerColor = DriveSurfaceWhite),
-        border = androidx.compose.foundation.BorderStroke(1.dp, DriveSurfaceBorder),
+        colors = CardDefaults.cardColors(containerColor = DriveColors.current.surface),
+        border = androidx.compose.foundation.BorderStroke(1.dp, DriveColors.current.border),
         elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
     ) {
         Column(
@@ -98,7 +87,7 @@ fun TodaySummaryCard(
                     text = stringResource(R.string.home_today_summary),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold,
-                    color = DriveTextPrimary
+                    color = DriveColors.current.textPrimary
                 )
                 if (onViewBreakdownClick != null) {
                     Row(
@@ -111,14 +100,14 @@ fun TodaySummaryCard(
                         Text(
                             text = "View Breakdown",
                             style = MaterialTheme.typography.labelSmall,
-                            color = DriveBluePrimary,
+                            color = DriveColors.current.brand,
                             fontWeight = FontWeight.SemiBold
                         )
                         Spacer(modifier = Modifier.width(2.dp))
                         Icon(
                             imageVector = Icons.Filled.ChevronRight,
                             contentDescription = null,
-                            tint = DriveBluePrimary,
+                            tint = DriveColors.current.brand,
                             modifier = Modifier.size(16.dp)
                         )
                     }
@@ -134,9 +123,9 @@ fun TodaySummaryCard(
                 modifier = Modifier
                     .fillMaxWidth()
                     .clip(DriveCardShape),
-                color = DriveYellowContainer,
+                color = DriveColors.current.warningContainer,
                 shape = DriveCardShape,
-                border = androidx.compose.foundation.BorderStroke(1.dp, DriveYellowGold.copy(alpha = 0.6f))
+                border = androidx.compose.foundation.BorderStroke(1.dp, DriveColors.current.warning.copy(alpha = 0.6f))
             ) {
                 Row(
                     modifier = Modifier.padding(horizontal = 16.dp, vertical = 14.dp),
@@ -148,13 +137,13 @@ fun TodaySummaryCard(
                             modifier = Modifier
                                 .size(44.dp)
                                 .clip(CircleShape)
-                                .background(DriveYellowEarning),
+                                .background(DriveColors.current.warning),
                             contentAlignment = Alignment.Center
                         ) {
                             Icon(
                                 imageVector = Icons.Filled.CurrencyRupee,
                                 contentDescription = null,
-                                tint = DriveSurfaceWhite,
+                                tint = DriveColors.current.onBrand,
                                 modifier = Modifier.size(24.dp)
                             )
                         }
@@ -164,14 +153,14 @@ fun TodaySummaryCard(
                                 text = stringResource(R.string.earnings_today).uppercase(),
                                 fontSize = 11.sp,
                                 fontWeight = FontWeight.Bold,
-                                color = DriveOnYellowContainer,
+                                color = DriveColors.current.onWarningContainer,
                                 letterSpacing = 0.5.sp
                             )
                             Text(
                                 text = todayEarningFormatted,
                                 fontSize = 26.sp,
                                 fontWeight = FontWeight.Black,
-                                color = DriveOnYellowContainer,
+                                color = DriveColors.current.onWarningContainer,
                                 letterSpacing = (-0.5).sp
                             )
                         }
@@ -182,7 +171,7 @@ fun TodaySummaryCard(
                         text = "Reset 12:00 AM",
                         fontSize = 10.sp,
                         fontWeight = FontWeight.Medium,
-                        color = DriveOnYellowContainer.copy(alpha = 0.75f)
+                        color = DriveColors.current.onWarningContainer.copy(alpha = 0.75f)
                     )
                 }
             }
@@ -200,21 +189,21 @@ fun TodaySummaryCard(
                     title = stringResource(R.string.home_completed_trips),
                     value = "$completedTrips",
                     icon = Icons.Outlined.CheckCircle,
-                    valueColor = DriveTextPrimary,
+                    valueColor = DriveColors.current.textPrimary,
                     modifier = Modifier.weight(1f)
                 )
                 TodayMetricTile(
                     title = stringResource(R.string.home_online_hours),
                     value = onlineTimeDisplay,
                     icon = Icons.Outlined.Timer,
-                    valueColor = if (isOnline) DriveGreenOnline else DriveTextPrimary,
+                    valueColor = if (isOnline) DriveColors.current.success else DriveColors.current.textPrimary,
                     modifier = Modifier.weight(1f)
                 )
                 TodayMetricTile(
                     title = stringResource(R.string.home_acceptance_rate),
                     value = "$acceptanceRateInt%",
                     icon = Icons.Outlined.Speed,
-                    valueColor = DriveGreenOnline,
+                    valueColor = DriveColors.current.success,
                     modifier = Modifier.weight(1f)
                 )
             }
@@ -236,8 +225,8 @@ private fun TodayMetricTile(
     Surface(
         modifier = modifier,
         shape = RoundedCornerShape(12.dp),
-        color = DriveSurfaceLightGrey,
-        border = androidx.compose.foundation.BorderStroke(1.dp, DriveSurfaceBorder)
+        color = DriveColors.current.backgroundSubtle,
+        border = androidx.compose.foundation.BorderStroke(1.dp, DriveColors.current.border)
     ) {
         Column(
             modifier = Modifier.padding(horizontal = 10.dp, vertical = 10.dp),
@@ -247,7 +236,7 @@ private fun TodayMetricTile(
             Icon(
                 imageVector = icon,
                 contentDescription = null,
-                tint = DriveTextSecondary,
+                tint = DriveColors.current.textSecondary,
                 modifier = Modifier.size(16.dp)
             )
             Spacer(modifier = Modifier.height(4.dp))
@@ -261,7 +250,7 @@ private fun TodayMetricTile(
             Text(
                 text = title,
                 fontSize = 10.sp,
-                color = DriveTextMuted,
+                color = DriveColors.current.textTertiary,
                 fontWeight = FontWeight.Medium,
                 maxLines = 1
             )

@@ -54,20 +54,12 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.drivepartner.app.ui.theme.DriveColors
 import com.drivepartner.app.R
 import com.drivepartner.app.data.model.ServiceType
 import com.drivepartner.app.ui.components.PrimaryButton
 import com.drivepartner.app.ui.components.SecondaryButton
-import com.drivepartner.app.ui.theme.DriveBluePrimary
 import com.drivepartner.app.ui.theme.DriveCardShape
-import com.drivepartner.app.ui.theme.DriveError
-import com.drivepartner.app.ui.theme.DriveGreenOnline
-import com.drivepartner.app.ui.theme.DriveSurfaceBorder
-import com.drivepartner.app.ui.theme.DriveSurfaceLightGrey
-import com.drivepartner.app.ui.theme.DriveSurfaceWhite
-import com.drivepartner.app.ui.theme.DriveTextMuted
-import com.drivepartner.app.ui.theme.DriveTextPrimary
-import com.drivepartner.app.ui.theme.DriveTextSecondary
 
 /**
  * TripStage - Enumerates the sequential state-machine stages of an active booking trip.
@@ -128,7 +120,7 @@ fun ActiveTripScreen(
     Box(
         modifier = modifier
             .fillMaxSize()
-            .background(DriveSurfaceLightGrey)
+            .background(DriveColors.current.backgroundSubtle)
     ) {
         Column(
             modifier = Modifier.fillMaxSize()
@@ -141,10 +133,10 @@ fun ActiveTripScreen(
                     .fillMaxWidth()
                     .padding(16.dp),
                 shape = DriveCardShape,
-                color = DriveSurfaceWhite,
+                color = DriveColors.current.onBrand,
                 tonalElevation = 4.dp,
                 shadowElevation = 4.dp,
-                border = androidx.compose.foundation.BorderStroke(1.dp, DriveSurfaceBorder)
+                border = androidx.compose.foundation.BorderStroke(1.dp, DriveColors.current.border)
             ) {
                 Row(
                     modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
@@ -153,10 +145,10 @@ fun ActiveTripScreen(
                 ) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         val (stageText, stageColor) = when (tripData.stage) {
-                            TripStage.ASSIGNED -> stringResource(R.string.trip_stage_assigned) to DriveBluePrimary
-                            TripStage.ARRIVED_AT_PICKUP -> stringResource(R.string.trip_stage_arrived) to Color(0xFFD97706) // Amber
-                            TripStage.IN_PROGRESS -> stringResource(R.string.trip_stage_in_progress) to DriveGreenOnline
-                            TripStage.COMPLETED -> stringResource(R.string.trip_stage_completed) to DriveGreenOnline
+                            TripStage.ASSIGNED -> stringResource(R.string.trip_stage_assigned) to DriveColors.current.brand
+                            TripStage.ARRIVED_AT_PICKUP -> stringResource(R.string.trip_stage_arrived) to DriveColors.current.warningStrong // Amber
+                            TripStage.IN_PROGRESS -> stringResource(R.string.trip_stage_in_progress) to DriveColors.current.success
+                            TripStage.COMPLETED -> stringResource(R.string.trip_stage_completed) to DriveColors.current.success
                         }
 
                         Box(
@@ -171,14 +163,14 @@ fun ActiveTripScreen(
                                 text = "TRIP STATUS",
                                 fontSize = 10.sp,
                                 fontWeight = FontWeight.Bold,
-                                color = DriveTextMuted,
+                                color = DriveColors.current.textTertiary,
                                 letterSpacing = 0.5.sp
                             )
                             Text(
                                 text = stageText,
                                 fontSize = 13.sp,
                                 fontWeight = FontWeight.Bold,
-                                color = DriveTextPrimary
+                                color = DriveColors.current.textPrimary
                             )
                         }
                     }
@@ -188,7 +180,7 @@ fun ActiveTripScreen(
                         modifier = Modifier
                             .clip(CircleShape)
                             .clickable(onClick = onSosClick),
-                        color = Color(0xFFFEE2E2)
+                        color = DriveColors.current.dangerContainer
                     ) {
                         Row(
                             modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp),
@@ -197,7 +189,7 @@ fun ActiveTripScreen(
                             Icon(
                                 imageVector = Icons.Filled.Shield,
                                 contentDescription = "Emergency SOS",
-                                tint = DriveError,
+                                tint = DriveColors.current.danger,
                                 modifier = Modifier.size(16.dp)
                             )
                             Spacer(modifier = Modifier.width(4.dp))
@@ -205,7 +197,7 @@ fun ActiveTripScreen(
                                 text = "SOS",
                                 fontSize = 11.sp,
                                 fontWeight = FontWeight.Bold,
-                                color = DriveError
+                                color = DriveColors.current.danger
                             )
                         }
                     }
@@ -221,8 +213,8 @@ fun ActiveTripScreen(
                     .weight(1f)
                     .padding(horizontal = 16.dp)
                     .clip(DriveCardShape)
-                    .background(Color(0xFFE2E8F0))
-                    .border(1.dp, DriveSurfaceBorder, DriveCardShape),
+                    .background(DriveColors.current.surfaceTonal)
+                    .border(1.dp, DriveColors.current.border, DriveCardShape),
                 contentAlignment = Alignment.Center
             ) {
                 // Map vector texture simulation
@@ -234,7 +226,7 @@ fun ActiveTripScreen(
                     Icon(
                         imageVector = Icons.Filled.Map,
                         contentDescription = "Map Navigation View",
-                        tint = DriveBluePrimary.copy(alpha = 0.4f),
+                        tint = DriveColors.current.brand.copy(alpha = 0.4f),
                         modifier = Modifier.size(56.dp)
                     )
                     Spacer(modifier = Modifier.height(8.dp))
@@ -242,7 +234,7 @@ fun ActiveTripScreen(
                         text = "GPS Map & Live Navigation Polyline",
                         fontSize = 13.sp,
                         fontWeight = FontWeight.Bold,
-                        color = DriveTextSecondary
+                        color = DriveColors.current.textSecondary
                     )
                     Text(
                         text = if (tripData.stage == TripStage.IN_PROGRESS) {
@@ -251,7 +243,7 @@ fun ActiveTripScreen(
                             "Heading to Pickup: ${tripData.pickupAddress}"
                         },
                         fontSize = 11.sp,
-                        color = DriveTextMuted,
+                        color = DriveColors.current.textTertiary,
                         textAlign = TextAlign.Center,
                         maxLines = 2,
                         modifier = Modifier.padding(top = 4.dp)
@@ -265,7 +257,7 @@ fun ActiveTripScreen(
                         .padding(12.dp)
                         .clip(RoundedCornerShape(20.dp))
                         .clickable(onClick = onNavigateExternalClick),
-                    color = DriveBluePrimary,
+                    color = DriveColors.current.brand,
                     shadowElevation = 4.dp
                 ) {
                     Row(
@@ -275,7 +267,7 @@ fun ActiveTripScreen(
                         Icon(
                             imageVector = Icons.Filled.Navigation,
                             contentDescription = null,
-                            tint = DriveSurfaceWhite,
+                            tint = DriveColors.current.onBrand,
                             modifier = Modifier.size(16.dp)
                         )
                         Spacer(modifier = Modifier.width(6.dp))
@@ -283,7 +275,7 @@ fun ActiveTripScreen(
                             text = "Maps",
                             fontSize = 12.sp,
                             fontWeight = FontWeight.Bold,
-                            color = DriveSurfaceWhite
+                            color = DriveColors.current.onBrand
                         )
                     }
                 }
@@ -299,8 +291,8 @@ fun ActiveTripScreen(
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp, vertical = 8.dp),
                 shape = DriveCardShape,
-                colors = CardDefaults.cardColors(containerColor = DriveSurfaceWhite),
-                border = androidx.compose.foundation.BorderStroke(1.dp, DriveSurfaceBorder),
+                colors = CardDefaults.cardColors(containerColor = DriveColors.current.surface),
+                border = androidx.compose.foundation.BorderStroke(1.dp, DriveColors.current.border),
                 elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
             ) {
                 Column(
@@ -319,7 +311,7 @@ fun ActiveTripScreen(
                                 modifier = Modifier
                                     .size(40.dp)
                                     .clip(CircleShape)
-                                    .background(DriveSurfaceLightGrey),
+                                    .background(DriveColors.current.backgroundSubtle),
                                 contentAlignment = Alignment.Center
                             ) {
                                 val categoryIcon = when (tripData.serviceType) {
@@ -331,7 +323,7 @@ fun ActiveTripScreen(
                                 Icon(
                                     imageVector = categoryIcon,
                                     contentDescription = null,
-                                    tint = DriveBluePrimary,
+                                    tint = DriveColors.current.brand,
                                     modifier = Modifier.size(20.dp)
                                 )
                             }
@@ -341,12 +333,12 @@ fun ActiveTripScreen(
                                     text = tripData.customerName,
                                     fontSize = 15.sp,
                                     fontWeight = FontWeight.Bold,
-                                    color = DriveTextPrimary
+                                    color = DriveColors.current.textPrimary
                                 )
                                 Text(
                                     text = tripData.customerPhoneMasked,
                                     fontSize = 12.sp,
-                                    color = DriveTextMuted
+                                    color = DriveColors.current.textTertiary
                                 )
                             }
                         }
@@ -356,8 +348,8 @@ fun ActiveTripScreen(
                             modifier = Modifier
                                 .clip(CircleShape)
                                 .clickable(onClick = onCallCustomerClick),
-                            color = DriveSurfaceLightGrey,
-                            border = androidx.compose.foundation.BorderStroke(1.dp, DriveSurfaceBorder)
+                            color = DriveColors.current.backgroundSubtle,
+                            border = androidx.compose.foundation.BorderStroke(1.dp, DriveColors.current.border)
                         ) {
                             Row(
                                 modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
@@ -366,7 +358,7 @@ fun ActiveTripScreen(
                                 Icon(
                                     imageVector = Icons.Filled.Call,
                                     contentDescription = stringResource(R.string.trip_call_customer),
-                                    tint = DriveGreenOnline,
+                                    tint = DriveColors.current.success,
                                     modifier = Modifier.size(16.dp)
                                 )
                                 Spacer(modifier = Modifier.width(6.dp))
@@ -374,7 +366,7 @@ fun ActiveTripScreen(
                                     text = "Call",
                                     fontSize = 12.sp,
                                     fontWeight = FontWeight.Bold,
-                                    color = DriveGreenOnline
+                                    color = DriveColors.current.success
                                 )
                             }
                         }
@@ -387,7 +379,7 @@ fun ActiveTripScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .clip(RoundedCornerShape(12.dp))
-                            .background(DriveSurfaceLightGrey)
+                            .background(DriveColors.current.backgroundSubtle)
                             .padding(12.dp)
                     ) {
                         if (tripData.stage == TripStage.ASSIGNED || tripData.stage == TripStage.ARRIVED_AT_PICKUP) {
@@ -395,14 +387,14 @@ fun ActiveTripScreen(
                                 text = "PICKUP LOCATION (${tripData.pickupDistance})",
                                 fontSize = 10.sp,
                                 fontWeight = FontWeight.Bold,
-                                color = DriveGreenOnline,
+                                color = DriveColors.current.success,
                                 letterSpacing = 0.5.sp
                             )
                             Text(
                                 text = tripData.pickupAddress,
                                 fontSize = 13.sp,
                                 fontWeight = FontWeight.Medium,
-                                color = DriveTextPrimary,
+                                color = DriveColors.current.textPrimary,
                                 maxLines = 2,
                                 modifier = Modifier.padding(top = 2.dp)
                             )
@@ -411,14 +403,14 @@ fun ActiveTripScreen(
                                 text = "DROP-OFF LOCATION (${tripData.dropDistance})",
                                 fontSize = 10.sp,
                                 fontWeight = FontWeight.Bold,
-                                color = DriveError,
+                                color = DriveColors.current.danger,
                                 letterSpacing = 0.5.sp
                             )
                             Text(
                                 text = tripData.dropAddress,
                                 fontSize = 13.sp,
                                 fontWeight = FontWeight.Medium,
-                                color = DriveTextPrimary,
+                                color = DriveColors.current.textPrimary,
                                 maxLines = 2,
                                 modifier = Modifier.padding(top = 2.dp)
                             )
@@ -433,7 +425,7 @@ fun ActiveTripScreen(
                             PrimaryButton(
                                 text = stringResource(R.string.trip_action_arrived_pickup),
                                 onClick = { onStageChange(TripStage.ARRIVED_AT_PICKUP) },
-                                containerColor = DriveBluePrimary
+                                containerColor = DriveColors.current.brand
                             )
                         }
                         TripStage.ARRIVED_AT_PICKUP -> {
@@ -444,7 +436,7 @@ fun ActiveTripScreen(
                                     pinErrorText = null
                                     showPinDialog = true
                                 },
-                                containerColor = DriveGreenOnline
+                                containerColor = DriveColors.current.success
                             )
                         }
                         TripStage.IN_PROGRESS -> {
@@ -454,14 +446,14 @@ fun ActiveTripScreen(
                                     onStageChange(TripStage.COMPLETED)
                                     onCompleteTrip()
                                 },
-                                containerColor = DriveGreenOnline
+                                containerColor = DriveColors.current.success
                             )
                         }
                         TripStage.COMPLETED -> {
                             PrimaryButton(
                                 text = "Fare Collected • Ready for Next",
                                 onClick = onCompleteTrip,
-                                containerColor = DriveBluePrimary
+                                containerColor = DriveColors.current.brand
                             )
                         }
                     }
@@ -480,7 +472,7 @@ fun ActiveTripScreen(
                     Icon(
                         imageVector = Icons.Filled.CheckCircle,
                         contentDescription = null,
-                        tint = DriveGreenOnline,
+                        tint = DriveColors.current.success,
                         modifier = Modifier.size(36.dp)
                     )
                 },
@@ -500,7 +492,7 @@ fun ActiveTripScreen(
                         Text(
                             text = stringResource(R.string.trip_verify_pin_instruction),
                             fontSize = 12.sp,
-                            color = DriveTextSecondary,
+                            color = DriveColors.current.textSecondary,
                             textAlign = TextAlign.Center
                         )
                         Spacer(modifier = Modifier.height(16.dp))
@@ -519,8 +511,8 @@ fun ActiveTripScreen(
                             singleLine = true,
                             modifier = Modifier.fillMaxWidth(),
                             colors = OutlinedTextFieldDefaults.colors(
-                                focusedBorderColor = DriveBluePrimary,
-                                unfocusedBorderColor = DriveSurfaceBorder
+                                focusedBorderColor = DriveColors.current.brand,
+                                unfocusedBorderColor = DriveColors.current.border
                             )
                         )
 
@@ -528,7 +520,7 @@ fun ActiveTripScreen(
                             Text(
                                 text = pinErrorText!!,
                                 fontSize = 11.sp,
-                                color = DriveError,
+                                color = DriveColors.current.danger,
                                 modifier = Modifier.padding(top = 4.dp)
                             )
                         }
@@ -545,7 +537,7 @@ fun ActiveTripScreen(
                                 pinErrorText = "Incorrect PIN. Please ask the rider for the 4-digit code."
                             }
                         },
-                        containerColor = DriveGreenOnline,
+                        containerColor = DriveColors.current.success,
                         modifier = Modifier.fillMaxWidth()
                     )
                 },

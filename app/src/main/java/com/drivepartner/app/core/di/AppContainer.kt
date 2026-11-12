@@ -27,6 +27,11 @@ import com.drivepartner.app.data.local.DataStoreDemoRetentionSafetyPersistence
 import com.drivepartner.app.data.local.DataStoreDemoTripPersistence
 import com.drivepartner.app.data.local.DataStoreLanguagePreferencesRepository
 import com.drivepartner.app.data.local.LanguagePreferencesRepository
+import com.drivepartner.app.data.local.PerformanceTargetRepository
+import com.drivepartner.app.data.local.SavedLocationsRepository
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import com.drivepartner.app.data.repository.AuthOnboardingRepository
 import com.drivepartner.app.data.repository.DemoAuthOnboardingCoordinator
 import com.drivepartner.app.data.repository.DemoAuthOnboardingRepository
@@ -76,6 +81,12 @@ interface AppContainer {
     val locationProvider: DriverLocationProvider
     val dutyLocationTrackerController: DutyLocationTrackerController
     val languagePreferencesRepository: LanguagePreferencesRepository
+
+    /** On-device favourite/saved locations behind the top-bar shortcut (spec section 4). */
+    val savedLocationsRepository: SavedLocationsRepository
+
+    /** Driver-owned personal daily target behind the home performance card (spec section 9). */
+    val performanceTargetRepository: PerformanceTargetRepository
 }
 
 class DefaultAppContainer(
@@ -268,5 +279,16 @@ class DefaultAppContainer(
 
     override val languagePreferencesRepository: LanguagePreferencesRepository by lazy {
         DataStoreLanguagePreferencesRepository(appContext)
+    }
+
+    /** App-lifetime scope for device-local DataStore mirrors; dies with the process. */
+    private val deviceLocalScope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
+
+    override val savedLocationsRepository: SavedLocationsRepository by lazy {
+        SavedLocationsRepository(context = appContext, scope = deviceLocalScope)
+    }
+
+    override val performanceTargetRepository: PerformanceTargetRepository by lazy {
+        PerformanceTargetRepository(context = appContext, scope = deviceLocalScope)
     }
 }

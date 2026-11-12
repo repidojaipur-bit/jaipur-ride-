@@ -18,11 +18,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.drivepartner.app.ui.theme.DriveColors
 import com.drivepartner.app.R
-import com.drivepartner.app.ui.theme.DriveBluePrimary
-import com.drivepartner.app.ui.theme.DriveSurfaceWhite
-import com.drivepartner.app.ui.theme.DriveTextMuted
-import com.drivepartner.app.ui.theme.DriveTextPrimary
 
 /**
  * LoadingIndicator - Consistent loading indicator component.
@@ -41,7 +38,7 @@ fun LoadingIndicator(
     Box(
         modifier = modifier
             .fillMaxSize()
-            .background(DriveSurfaceWhite)
+            .background(DriveColors.current.surface)
             .padding(24.dp),
         contentAlignment = Alignment.Center
     ) {
@@ -51,7 +48,7 @@ fun LoadingIndicator(
         ) {
             CircularProgressIndicator(
                 modifier = Modifier.size(44.dp),
-                color = DriveBluePrimary,
+                color = DriveColors.current.brand,
                 strokeWidth = 3.5.dp
             )
 
@@ -61,7 +58,7 @@ fun LoadingIndicator(
                 text = message ?: stringResource(R.string.state_loading),
                 fontSize = 15.sp,
                 fontWeight = FontWeight.SemiBold,
-                color = DriveTextPrimary
+                color = DriveColors.current.textPrimary
             )
 
             if (!subMessage.isNullOrBlank()) {
@@ -69,7 +66,7 @@ fun LoadingIndicator(
                 Text(
                     text = subMessage,
                     fontSize = 12.sp,
-                    color = DriveTextMuted
+                    color = DriveColors.current.textTertiary
                 )
             }
         }

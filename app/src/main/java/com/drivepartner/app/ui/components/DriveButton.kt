@@ -10,22 +10,30 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import com.drivepartner.app.ui.theme.DriveBluePrimary
 import com.drivepartner.app.ui.theme.DriveButtonShape
-import com.drivepartner.app.ui.theme.DriveError
+import com.drivepartner.app.ui.theme.DriveColors
 import com.drivepartner.app.ui.theme.DriveSpacing
-import com.drivepartner.app.ui.theme.DriveSurfaceBorder
-import com.drivepartner.app.ui.theme.DriveSurfaceWhite
 
+/**
+ * Drive Partner buttons.
+ *
+ * Rules enforced here rather than per screen:
+ * - minimum height 52 dp (primary) / 48 dp (secondary) — gloved, one-handed use,
+ * - full-width by default so thumb reach is predictable at the bottom of a screen,
+ * - pressed/disabled colours come from semantic tokens so both themes behave,
+ * - every semantic variant pairs its container with an accessible content colour
+ *   (white on `#1769AA` = 5.77:1, white on `#12875A` = 4.53:1, white on `#DC3545` = 4.53:1).
+ */
 @Composable
 fun DrivePrimaryButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    containerColor: Color = DriveBluePrimary,
-    contentColor: Color = DriveSurfaceWhite,
+    containerColor: Color = DriveColors.current.brand,
+    contentColor: Color = DriveColors.current.onBrand,
     content: @Composable RowScope.() -> Unit
 ) {
+    val colors = DriveColors.current
     Button(
         onClick = onClick,
         modifier = modifier
@@ -35,7 +43,35 @@ fun DrivePrimaryButton(
         shape = DriveButtonShape,
         colors = ButtonDefaults.buttonColors(
             containerColor = containerColor,
-            contentColor = contentColor
+            contentColor = contentColor,
+            disabledContainerColor = colors.surfaceTonal,
+            disabledContentColor = colors.textDisabled
+        ),
+        content = content
+    )
+}
+
+/** Accept / confirm actions that mean money or a commitment. */
+@Composable
+fun DriveSuccessButton(
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true,
+    content: @Composable RowScope.() -> Unit
+) {
+    val colors = DriveColors.current
+    Button(
+        onClick = onClick,
+        modifier = modifier
+            .fillMaxWidth()
+            .heightIn(min = DriveSpacing.primaryButtonHeight),
+        enabled = enabled,
+        shape = DriveButtonShape,
+        colors = ButtonDefaults.buttonColors(
+            containerColor = colors.successStrong,
+            contentColor = colors.onSuccess,
+            disabledContainerColor = colors.surfaceTonal,
+            disabledContentColor = colors.textDisabled
         ),
         content = content
     )
@@ -48,6 +84,7 @@ fun DriveOutlinedButton(
     enabled: Boolean = true,
     content: @Composable RowScope.() -> Unit
 ) {
+    val colors = DriveColors.current
     OutlinedButton(
         onClick = onClick,
         modifier = modifier
@@ -55,7 +92,12 @@ fun DriveOutlinedButton(
             .heightIn(min = DriveSpacing.secondaryButtonHeight),
         enabled = enabled,
         shape = DriveButtonShape,
-        border = BorderStroke(DriveSpacing.hairlineBorder, DriveSurfaceBorder),
+        border = BorderStroke(DriveSpacing.hairlineBorder, colors.borderStrong),
+        colors = ButtonDefaults.outlinedButtonColors(
+            contentColor = colors.textPrimary,
+            disabledContentColor = colors.textDisabled,
+            containerColor = Color.Transparent
+        ),
         content = content
     )
 }
@@ -67,6 +109,7 @@ fun DriveDangerButton(
     enabled: Boolean = true,
     content: @Composable RowScope.() -> Unit
 ) {
+    val colors = DriveColors.current
     Button(
         onClick = onClick,
         modifier = modifier
@@ -75,8 +118,10 @@ fun DriveDangerButton(
         enabled = enabled,
         shape = DriveButtonShape,
         colors = ButtonDefaults.buttonColors(
-            containerColor = DriveError,
-            contentColor = DriveSurfaceWhite
+            containerColor = colors.danger,
+            contentColor = colors.onDanger,
+            disabledContainerColor = colors.surfaceTonal,
+            disabledContentColor = colors.textDisabled
         ),
         content = content
     )

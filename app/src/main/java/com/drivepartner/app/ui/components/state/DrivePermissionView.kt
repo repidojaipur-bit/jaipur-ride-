@@ -24,14 +24,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.drivepartner.app.ui.theme.DriveColors
 import com.drivepartner.app.R
-import com.drivepartner.app.ui.theme.DriveBluePrimary
 import com.drivepartner.app.ui.theme.DriveButtonShape
 import com.drivepartner.app.ui.theme.DriveSpacing
-import com.drivepartner.app.ui.theme.DriveSurfaceWhite
-import com.drivepartner.app.ui.theme.DriveTextSecondary
-import com.drivepartner.app.ui.theme.DriveWarningAmber
-import com.drivepartner.app.ui.theme.DriveYellowContainer
 
 @Composable
 fun DrivePermissionView(
@@ -44,7 +40,7 @@ fun DrivePermissionView(
     Box(
         modifier = modifier
             .fillMaxSize()
-            .background(DriveSurfaceWhite)
+            .background(DriveColors.current.surface)
             .padding(DriveSpacing.xl),
         contentAlignment = Alignment.Center
     ) {
@@ -55,13 +51,13 @@ fun DrivePermissionView(
             Box(
                 modifier = Modifier
                     .size(76.dp)
-                    .background(DriveYellowContainer, CircleShape),
+                    .background(DriveColors.current.warningContainer, CircleShape),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
                     imageVector = Icons.Outlined.Lock,
                     contentDescription = null,
-                    tint = DriveWarningAmber,
+                    tint = DriveColors.current.warning,
                     modifier = Modifier.size(38.dp)
                 )
             }
@@ -75,7 +71,7 @@ fun DrivePermissionView(
             Text(
                 text = message,
                 style = MaterialTheme.typography.bodyMedium,
-                color = DriveTextSecondary,
+                color = DriveColors.current.textSecondary,
                 textAlign = TextAlign.Center
             )
             if (onActionClick != null) {
@@ -84,7 +80,7 @@ fun DrivePermissionView(
                     onClick = onActionClick,
                     shape = DriveButtonShape,
                     modifier = Modifier.heightIn(min = DriveSpacing.secondaryButtonHeight),
-                    colors = ButtonDefaults.buttonColors(containerColor = DriveBluePrimary)
+                    colors = ButtonDefaults.buttonColors(containerColor = DriveColors.current.brand)
                 ) {
                     Text(
                         text = actionLabel,

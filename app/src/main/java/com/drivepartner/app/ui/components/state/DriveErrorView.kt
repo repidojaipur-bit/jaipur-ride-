@@ -24,13 +24,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.drivepartner.app.ui.theme.DriveColors
 import com.drivepartner.app.R
-import com.drivepartner.app.ui.theme.DriveBluePrimary
 import com.drivepartner.app.ui.theme.DriveButtonShape
-import com.drivepartner.app.ui.theme.DriveError
-import com.drivepartner.app.ui.theme.DriveErrorContainer
-import com.drivepartner.app.ui.theme.DriveSurfaceWhite
-import com.drivepartner.app.ui.theme.DriveTextSecondary
 
 @Composable
 fun DriveErrorView(
@@ -42,7 +38,7 @@ fun DriveErrorView(
     Box(
         modifier = modifier
             .fillMaxSize()
-            .background(DriveSurfaceWhite)
+            .background(DriveColors.current.surface)
             .padding(32.dp),
         contentAlignment = Alignment.Center
     ) {
@@ -53,13 +49,13 @@ fun DriveErrorView(
             Box(
                 modifier = Modifier
                     .size(80.dp)
-                    .background(DriveErrorContainer, CircleShape),
+                    .background(DriveColors.current.dangerContainer, CircleShape),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
                     imageVector = Icons.Outlined.ErrorOutline,
                     contentDescription = null,
-                    tint = DriveError,
+                    tint = DriveColors.current.danger,
                     modifier = Modifier.size(42.dp)
                 )
             }
@@ -73,7 +69,7 @@ fun DriveErrorView(
             Text(
                 text = message,
                 style = MaterialTheme.typography.bodyMedium,
-                color = DriveTextSecondary,
+                color = DriveColors.current.textSecondary,
                 textAlign = TextAlign.Center
             )
             if (onRetry != null) {
@@ -81,7 +77,7 @@ fun DriveErrorView(
                 Button(
                     onClick = onRetry,
                     shape = DriveButtonShape,
-                    colors = ButtonDefaults.buttonColors(containerColor = DriveBluePrimary)
+                    colors = ButtonDefaults.buttonColors(containerColor = DriveColors.current.brand)
                 ) {
                     Icon(
                         imageVector = Icons.Outlined.Refresh,

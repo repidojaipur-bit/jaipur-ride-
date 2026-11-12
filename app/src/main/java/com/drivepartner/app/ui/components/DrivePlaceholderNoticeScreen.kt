@@ -23,16 +23,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.drivepartner.app.ui.theme.DriveColors
 import com.drivepartner.app.R
-import com.drivepartner.app.ui.theme.DriveBlueContainer
-import com.drivepartner.app.ui.theme.DriveBluePrimary
 import com.drivepartner.app.ui.theme.DriveChipShape
-import com.drivepartner.app.ui.theme.DriveOnBlueContainer
-import com.drivepartner.app.ui.theme.DriveOnYellowContainer
 import com.drivepartner.app.ui.theme.DriveSpacing
-import com.drivepartner.app.ui.theme.DriveSurfaceSubtle
-import com.drivepartner.app.ui.theme.DriveTextSecondary
-import com.drivepartner.app.ui.theme.DriveYellowContainer
 
 /**
  * Reusable explicit placeholder notice screen for secondary shell routes
@@ -49,7 +43,7 @@ fun DrivePlaceholderNoticeScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(DriveSurfaceSubtle)
+            .background(DriveColors.current.backgroundSubtle)
             .padding(DriveSpacing.lg),
         verticalArrangement = Arrangement.spacedBy(DriveSpacing.lg)
     ) {
@@ -61,25 +55,25 @@ fun DrivePlaceholderNoticeScreen(
                 Box(
                     modifier = Modifier
                         .size(72.dp)
-                        .background(DriveBlueContainer, CircleShape),
+                        .background(DriveColors.current.brandContainer, CircleShape),
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(
                         imageVector = icon,
                         contentDescription = null,
-                        tint = DriveBluePrimary,
+                        tint = DriveColors.current.brand,
                         modifier = Modifier.size(36.dp)
                     )
                 }
                 Spacer(modifier = Modifier.height(DriveSpacing.md))
                 Surface(
-                    color = DriveYellowContainer,
+                    color = DriveColors.current.warningContainer,
                     shape = DriveChipShape
                 ) {
                     Text(
                         text = stringResource(R.string.not_implemented_badge),
                         style = MaterialTheme.typography.labelSmall,
-                        color = DriveOnYellowContainer,
+                        color = DriveColors.current.onWarningContainer,
                         fontWeight = FontWeight.Bold,
                         modifier = Modifier.padding(horizontal = 12.dp, vertical = 4.dp)
                     )
@@ -94,7 +88,7 @@ fun DrivePlaceholderNoticeScreen(
                 Text(
                     text = description,
                     style = MaterialTheme.typography.bodyMedium,
-                    color = DriveTextSecondary,
+                    color = DriveColors.current.textSecondary,
                     textAlign = TextAlign.Center
                 )
             }
