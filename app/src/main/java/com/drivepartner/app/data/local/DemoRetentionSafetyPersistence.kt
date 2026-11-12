@@ -19,6 +19,8 @@ import com.drivepartner.app.data.remote.dto.SosAlertResponse
 import com.drivepartner.app.data.remote.dto.SupportMessageDto
 import com.drivepartner.app.data.remote.dto.SupportTicketDto
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import kotlinx.serialization.Serializable
 
 private val Context.demoRetentionSafetyDataStore: DataStore<Preferences> by preferencesDataStore(
@@ -67,14 +69,15 @@ interface DemoRetentionSafetyPersistence {
 class InMemoryDemoRetentionSafetyPersistence(
     initialSnapshot: DemoRetentionSafetyStoreSnapshot = DemoRetentionSafetyStoreSnapshot()
 ) : DemoRetentionSafetyPersistence {
+    private val mutex = Mutex()
     private var snapshot: DemoRetentionSafetyStoreSnapshot = initialSnapshot
 
-    @Synchronized
-    override suspend fun load(): DemoRetentionSafetyStoreSnapshot = snapshot
+    override suspend fun load(): DemoRetentionSafetyStoreSnapshot = mutex.withLock { snapshot }
 
-    @Synchronized
     override suspend fun save(snapshot: DemoRetentionSafetyStoreSnapshot) {
-        this.snapshot = snapshot
+        mutex.withLock {
+            this.snapshot = snapshot
+        }
     }
 }
 

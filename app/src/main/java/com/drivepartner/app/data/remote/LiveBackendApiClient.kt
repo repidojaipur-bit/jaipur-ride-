@@ -69,7 +69,7 @@ import com.drivepartner.app.data.remote.dto.WalletSummaryResponse
 import com.drivepartner.app.data.remote.dto.WorkOfferDto
 
 /**
- * Transport-backed contract adapter aligned with 04_TECHSPEC.md `/api/v1/*` endpoints.
+ * Transport-backed contract adapter aligned with 04_TECHSPEC.md `/api/v1/...` endpoints.
  * When paired with [com.drivepartner.app.core.network.UnconfiguredApiTransport],
  * calls truthfully resolve to [ApiResult.BackendNotDeployed] instead of simulating live success.
  */

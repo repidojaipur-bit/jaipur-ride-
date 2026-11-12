@@ -16,7 +16,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
 /**
- * Live backend Dispatch repository backed by `/api/v1/offers/*` in PostgreSQL.
+ * Live backend Dispatch repository backed by `/api/v1/offers/...` in PostgreSQL.
  *
  * Guarantees:
  * - Never generates or falls back to simulated/demo offers in LIVE builds.

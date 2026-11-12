@@ -18,7 +18,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
 /**
- * Live backend Phase 5 Repository backed by `/api/v1/trips/*` and `/api/v1/orders*`
+ * Live backend Phase 5 Repository backed by `/api/v1/trips/...` and `/api/v1/orders*`
  * in PostgreSQL.
  *
  * Guarantees:

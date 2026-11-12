@@ -20,7 +20,7 @@ import retrofit2.http.Query
 /**
  * Concrete Retrofit contract for Phase 3 (Home summary, Driver Eligibility,
  * Online/Offline Availability, Zone/Auto-Boost Preferences, and Duty Location pings)
- * aligned with 04_TECHSPEC.md `/api/v1/*` routes.
+ * aligned with 04_TECHSPEC.md `/api/v1/...` routes.
  */
 interface DrivePartnerDutyRetrofitApi {
 

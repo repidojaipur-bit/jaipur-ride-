@@ -11,6 +11,8 @@ import com.drivepartner.app.core.network.RetrofitClientFactory
 import com.drivepartner.app.data.remote.dto.ActiveTripDto
 import com.drivepartner.app.data.remote.dto.OrderDetailDto
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import kotlinx.serialization.Serializable
 
 private val Context.demoTripDataStore: DataStore<Preferences> by preferencesDataStore(
@@ -48,14 +50,15 @@ interface DemoTripPersistence {
 class InMemoryDemoTripPersistence(
     initialSnapshot: DemoTripStoreSnapshot = DemoTripStoreSnapshot()
 ) : DemoTripPersistence {
+    private val mutex = Mutex()
     private var snapshot: DemoTripStoreSnapshot = initialSnapshot
 
-    @Synchronized
-    override suspend fun load(): DemoTripStoreSnapshot = snapshot
+    override suspend fun load(): DemoTripStoreSnapshot = mutex.withLock { snapshot }
 
-    @Synchronized
     override suspend fun save(snapshot: DemoTripStoreSnapshot) {
-        this.snapshot = snapshot
+        mutex.withLock {
+            this.snapshot = snapshot
+        }
     }
 }
 

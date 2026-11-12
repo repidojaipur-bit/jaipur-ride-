@@ -72,6 +72,9 @@ class MainViewModel(
     private val themeFlow: Flow<ThemePreference> =
         languagePreferencesRepository?.themePreference ?: _fallbackTheme
 
+    private val dutyStateFlow: Flow<DutyControlState> =
+        dutyLocationRepository?.dutyControlState ?: MutableStateFlow(DutyControlState.OFFLINE)
+
     private val repositoryFlows = combine(
         repository.partnerStatus,
         repository.partnerProfile,

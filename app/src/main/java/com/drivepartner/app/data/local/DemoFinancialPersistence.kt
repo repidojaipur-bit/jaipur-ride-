@@ -13,6 +13,8 @@ import com.drivepartner.app.data.remote.dto.LedgerEntryDto
 import com.drivepartner.app.data.remote.dto.PayoutAccountDto
 import com.drivepartner.app.data.remote.dto.PayoutDto
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import kotlinx.serialization.Serializable
 
 private val Context.demoFinancialDataStore: DataStore<Preferences> by preferencesDataStore(
@@ -47,14 +49,15 @@ interface DemoFinancialPersistence {
 class InMemoryDemoFinancialPersistence(
     initialSnapshot: DemoFinancialStoreSnapshot = DemoFinancialStoreSnapshot()
 ) : DemoFinancialPersistence {
+    private val mutex = Mutex()
     private var snapshot: DemoFinancialStoreSnapshot = initialSnapshot
 
-    @Synchronized
-    override suspend fun load(): DemoFinancialStoreSnapshot = snapshot
+    override suspend fun load(): DemoFinancialStoreSnapshot = mutex.withLock { snapshot }
 
-    @Synchronized
     override suspend fun save(snapshot: DemoFinancialStoreSnapshot) {
-        this.snapshot = snapshot
+        mutex.withLock {
+            this.snapshot = snapshot
+        }
     }
 }
 

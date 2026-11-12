@@ -7,6 +7,7 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.drivepartner.app.core.config.DataOrigin
 import com.drivepartner.app.core.di.AppContainer
+import com.drivepartner.app.core.location.DriverLocationProvider
 import com.drivepartner.app.core.network.ApiResult
 import com.drivepartner.app.core.realtime.DispatchRealtimeBoundary
 import com.drivepartner.app.core.realtime.OfferIdempotencyTracker
@@ -101,7 +102,8 @@ class OrdersViewModel(
     private val clockMillis: () -> Long = { System.currentTimeMillis() },
     private val enableCountdownTicker: Boolean = true,
     private val tripHistoryRepository: TripHistoryRepository? = null,
-    private val tripTransitionIdempotencyTracker: TripTransitionIdempotencyTracker = TripTransitionIdempotencyTracker()
+    private val tripTransitionIdempotencyTracker: TripTransitionIdempotencyTracker = TripTransitionIdempotencyTracker(),
+    private val locationProvider: DriverLocationProvider? = null
 ) : ViewModel() {
 
     private val _selectedTab = MutableStateFlow(OrdersTab.ACTIVE)
@@ -615,7 +617,7 @@ class OrdersViewModel(
                 targetStatus = targetStatus,
                 expectedVersion = currentTrip.version
             )
-            val snapshotLocation = dutyLocationRepository?.latestLocation?.value
+            val snapshotLocation = locationProvider?.getCurrentLocation()
             try {
                 when (
                     val result = repo.submitTripTransition(
@@ -897,7 +899,8 @@ class OrdersViewModel(
                     dutyLocationRepository = appContainer.dutyLocationRepository,
                     dispatchRepository = appContainer.dispatchRepository,
                     realtimeBoundary = appContainer.dispatchRealtimeBoundary,
-                    tripHistoryRepository = appContainer.tripHistoryRepository
+                    tripHistoryRepository = appContainer.tripHistoryRepository,
+                    locationProvider = appContainer.locationProvider
                 )
             }
         }

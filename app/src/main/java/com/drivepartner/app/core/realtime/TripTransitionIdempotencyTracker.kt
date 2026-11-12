@@ -39,4 +39,7 @@ class TripTransitionIdempotencyTracker(
             }
         }
     }
+
+    @Synchronized
+    fun clearTrip(tripId: String) = clearForTrip(tripId)
 }

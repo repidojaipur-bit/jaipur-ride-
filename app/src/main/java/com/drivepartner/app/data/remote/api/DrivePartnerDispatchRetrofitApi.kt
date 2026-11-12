@@ -14,7 +14,7 @@ import retrofit2.http.Path
 
 /**
  * Concrete Retrofit contract for Phase 4 Dispatch & Atomic Offer Accept/Reject endpoints
- * aligned with 04_TECHSPEC.md `/api/v1/offers/*` routes.
+ * aligned with 04_TECHSPEC.md `/api/v1/offers/...` routes.
  */
 interface DrivePartnerDispatchRetrofitApi {
 

@@ -16,7 +16,7 @@ import retrofit2.http.Query
 
 /**
  * Concrete Retrofit contract for Phase 5 Active Trip Lifecycle & Order History
- * aligned with 04_TECHSPEC.md `/api/v1/trips/*` and `/api/v1/orders*` routes.
+ * aligned with 04_TECHSPEC.md `/api/v1/trips/...` and `/api/v1/orders*` routes.
  */
 interface DrivePartnerTripsOrdersRetrofitApi {
 
