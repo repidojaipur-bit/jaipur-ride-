@@ -56,6 +56,6 @@ jobs:
         run: |
           set -o pipefail
           gradle testDemoDebugUnitTest testLiveDebugUnitTest --console=plain 2>&1 | tee /tmp/gradle-test.log || {
-            python3 -c 'import pathlib, re; lines = [l.replace("\r", "").replace("%", "%25") for l in pathlib.Path("/tmp/gradle-test.log").read_text(errors="replace").splitlines() if re.search(r"FAILED|FAILURE:|Error|> Task .* FAILED", l)]; print("\n".join("::error::" + "%0A".join(lines[i:i+15]) for i in range(0, min(len(lines), 120), 15)))'
+            python3 -c 'import pathlib, re; lines = [l.replace("\r", "").replace("%", "%25") for l in pathlib.Path("/tmp/gradle-test.log").read_text(errors="replace").splitlines() if re.search(r"^e: |FAILED|FAILURE:|Error|Exception|> Task .* FAILED", l)]; print("\n".join("::error::" + "%0A".join(lines[i:i+15]) for i in range(0, min(len(lines), 120), 15)))'
             exit 1
           }
